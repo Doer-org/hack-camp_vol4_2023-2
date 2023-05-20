@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { DebugButton } from "./_ui";
 import { useEnv } from "@/utils/env";
+import { PopoverDemo } from "@/ui/popover";
 export default function Home() {
   const { clientURL } = useEnv();
   return (
@@ -24,6 +25,7 @@ export default function Home() {
       <div>
         <DebugButton label="Get Profile" url={`${clientURL}/api/auth/me`} />
       </div>
+      <PopoverDemo />
     </main>
   );
 }
