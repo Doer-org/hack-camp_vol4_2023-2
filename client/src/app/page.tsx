@@ -11,7 +11,7 @@ export default function Home() {
         </Link>
       </div>
       <div>
-        <Link href="/api/auth/login" prefetch={false}>
+        <Link href="/api/auth/logout" prefetch={false}>
           Logout
         </Link>
       </div>
