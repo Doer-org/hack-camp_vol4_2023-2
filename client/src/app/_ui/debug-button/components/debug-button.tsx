@@ -9,7 +9,7 @@ type Props = {
 const _DebugButton = ({ label, url }: Props) => {
   return (
     <Button
-      variant="black"
+      color="black"
       label={label}
       onClick={() => {
         (async () => {

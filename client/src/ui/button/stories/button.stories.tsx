@@ -28,7 +28,7 @@ export const Black: Story = {
   render: () => {
     return (
       <Button
-        variant="black"
+        color="black"
         label="Log in"
       />
     );
@@ -39,7 +39,7 @@ export const Gray: Story = {
   render: () => {
     return (
       <Button
-        variant="gray"
+        color="gray"
         label="音楽"
       />
     );
@@ -50,7 +50,7 @@ export const Pink: Story = {
   render: () => {
     return (
       <Button
-        variant="pink"
+        color="pink"
         label="始める"
       />
     );
