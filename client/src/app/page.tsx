@@ -18,12 +18,13 @@ export default function Home() {
       </div>
       <div>
         <DebugButton
+          color="black"
           label="Health Check Button"
           url={`${clientURL}/api/health`}
         />
       </div>
       <div>
-        <DebugButton label="Get Profile" url={`${clientURL}/api/auth/me`} />
+        <DebugButton color="black" label="Get Profile" url={`${clientURL}/api/auth/me`} />
       </div>
       <PopoverDemo />
     </main>

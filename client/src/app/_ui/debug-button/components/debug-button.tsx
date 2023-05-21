@@ -2,14 +2,15 @@
 import { Button } from "@/ui";
 
 type Props = {
+  color: "black" | "gray" | "pink";
   label: string;
   url: string;
 };
 
-const _DebugButton = ({ label, url }: Props) => {
+const _DebugButton = ({ color, label, url }: Props) => {
   return (
     <Button
-      color="black"
+      color={color}
       label={label}
       onClick={() => {
         (async () => {
