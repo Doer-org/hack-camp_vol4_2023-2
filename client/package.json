@@ -10,7 +10,8 @@
     "lint": "next lint",
     "format": "prettier --write *.{js,ts,jsx,tsx,md,json}",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "prepare": "cd .. && husky install client/.husky"
   },
   "lint-staged": {
     "*.{js,ts,jsx,tsx}": [
@@ -22,6 +23,8 @@
   },
   "dependencies": {
     "@auth0/nextjs-auth0": "^2.6.0",
+    "@radix-ui/colors": "^0.1.8",
+    "@radix-ui/react-popover": "^1.0.5",
     "@types/node": "18.16.3",
     "@types/react": "18.2.5",
     "@types/react-dom": "18.2.3",
@@ -33,8 +36,6 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "tailwindcss": "3.3.2",
-    "@radix-ui/react-popover": "^1.0.5",
-    "@radix-ui/colors": "^0.1.8",
     "typescript": "5.0.4"
   },
   "engines": {
@@ -57,6 +58,8 @@
     "eslint-plugin-react": "^7.32.2",
     "eslint-plugin-storybook": "^0.6.12",
     "eslint-plugin-unused-imports": "^2.0.0",
+    "husky": "^8.0.0",
+    "lint-staged": "^13.2.2",
     "mini-css-extract-plugin": "^2.7.6",
     "prettier": "^2.8.8",
     "storybook": "7.0.8",
