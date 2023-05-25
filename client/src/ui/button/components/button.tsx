@@ -7,17 +7,16 @@ type Props = {
   onClick?: () => void;
 };
 
-export const Button = ({ color, label, ...props }: Props) => {
+export const _Button = ({ color, label, ...props }: Props) => {
   return (
     <button
       type="button"
-      className={[
-        styles.background[color],
-        styles.contentStyle,
-      ].join(" ")}
+      className={[styles.background[color], styles.contentStyle].join(" ")}
       {...props}
     >
       {label}
     </button>
   );
 };
+
+export const Button = _Button;
