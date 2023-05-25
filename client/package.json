@@ -8,7 +8,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "format": "prettier --write *.{js,ts,jsx,tsx,md,json}",
+    "format": "prettier --write **/*.{js,ts,jsx,tsx,md,json}",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "prepare": "cd .. && husky install client/.husky"
