@@ -10,21 +10,7 @@ const _Modal = () => {
           <span className={styles.crossBarStyle}></span>
         </div>
       </div>
-      <div className={styles.contentStyle}>
-        <div className={styles.buttonStyle}>
-          <img
-            className={styles.buttonImageStyle}
-            src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg"
-          />
-          <span className={styles.buttonTextStyle}>GitHubでログイン</span>
-        </div>
-        <p className={styles.contentTextStyle}>
-          アカウントをお持ちでない方は
-          <a href="#" className={styles.contentTextLinkStyle}>
-            こちら
-          </a>
-        </p>
-      </div>
+      <div className={styles.contentStyle}></div>
     </div>
   );
 };
