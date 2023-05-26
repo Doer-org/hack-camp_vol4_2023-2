@@ -1,1 +1,1 @@
-dotnet run --project build/build.fsproj -- "$(echo -n "$@")"
+dotnet run --project build/build.fsproj -- "$(echo "$@")"
