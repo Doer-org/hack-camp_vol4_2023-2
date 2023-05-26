@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { Modal } from "../components/modal";
 
 const meta: Meta<typeof Modal> = {
-  title: "Example/Modal",
+  title: "Hack/Modal",
   component: Modal,
   decorators: [
     (Story) => (
