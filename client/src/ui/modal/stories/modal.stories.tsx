@@ -27,6 +27,6 @@ type Story = StoryObj<typeof Modal>;
 
 export const Default: Story = {
   render: () => {
-    return <Modal />;
+    return <Modal>Default</Modal>;
   },
 };

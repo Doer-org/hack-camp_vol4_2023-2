@@ -26,6 +26,7 @@ export const crossStyle = style({
 export const crossBarStyle = style({
   display: "inline-block",
   width: "24px",
+  height: "0",
   border: "1px solid #0b002a",
   position: "absolute",
   top: "50%",

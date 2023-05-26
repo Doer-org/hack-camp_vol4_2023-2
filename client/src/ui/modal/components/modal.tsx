@@ -1,7 +1,11 @@
 import React from "react";
 import * as styles from "../styles/modal.css";
 
-const _Modal = () => {
+type Props = {
+  children: React.ReactNode;
+};
+
+const _Modal = ({ children, ...props }: Props) => {
   return (
     <div className={styles.frameStyle}>
       <div className={styles.crossWrapperStyle}>
@@ -10,7 +14,7 @@ const _Modal = () => {
           <span className={styles.crossBarStyle}></span>
         </div>
       </div>
-      <div className={styles.contentStyle}></div>
+      <div className={styles.contentStyle}>{children}</div>
     </div>
   );
 };
