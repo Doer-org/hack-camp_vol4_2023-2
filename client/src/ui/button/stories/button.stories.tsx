@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { Button } from "../components/button";
 
 const meta: Meta<typeof Button> = {
-  title: "Example/Button",
+  title: "Hack/Button",
   component: Button,
   decorators: [
     (Story) => (
@@ -26,33 +26,18 @@ type Story = StoryObj<typeof Button>;
 
 export const Black: Story = {
   render: () => {
-    return (
-      <Button
-        color="black"
-        label="Log in"
-      />
-    );
+    return <Button color="black" label="Log in" />;
   },
 };
 
 export const Gray: Story = {
   render: () => {
-    return (
-      <Button
-        color="gray"
-        label="音楽"
-      />
-    );
+    return <Button color="gray" label="音楽" />;
   },
 };
 
 export const Pink: Story = {
   render: () => {
-    return (
-      <Button
-        color="pink"
-        label="始める"
-      />
-    );
+    return <Button color="pink" label="始める" />;
   },
 };
