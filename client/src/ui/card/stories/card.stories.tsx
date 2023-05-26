@@ -5,7 +5,7 @@ import { Avator } from "@/ui/avator";
 import { Button } from "@/ui/button";
 
 const meta: Meta<typeof Card> = {
-  title: "Example/Card",
+  title: "Hack/Card",
   component: Card,
   decorators: [
     (Story) => (
