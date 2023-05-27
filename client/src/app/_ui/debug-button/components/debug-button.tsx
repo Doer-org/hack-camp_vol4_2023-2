@@ -11,7 +11,6 @@ const _DebugButton = ({ color, label, url }: Props) => {
   return (
     <Button
       color={color}
-      label={label}
       onClick={() => {
         (async () => {
           const resp = await fetch(url, {
@@ -22,7 +21,9 @@ const _DebugButton = ({ color, label, url }: Props) => {
           return data;
         })();
       }}
-    />
+    >
+      {label}
+    </Button>
   );
 };
 
