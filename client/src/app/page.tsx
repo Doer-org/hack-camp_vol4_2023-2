@@ -1,32 +1,52 @@
+import { useEnv } from "@/utils/env";
 import Link from "next/link";
 import { DebugButton } from "./_ui";
-import { useEnv } from "@/utils/env";
-import { PopoverDemo } from "@/ui/popover";
 export default function Home() {
   const { clientURL } = useEnv();
+  const linkStyle = {
+    padding: "0.5rem",
+    fontSize: "1.5rem",
+    fontWeight: "bold",
+  };
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div>
-        <Link href="/api/auth/login" prefetch={false}>
-          Login
-        </Link>
-      </div>
-      <div>
-        <Link href="/api/auth/logout" prefetch={false}>
-          Logout
-        </Link>
-      </div>
-      <div>
-        <DebugButton
-          color="black"
-          label="Health Check Button"
-          url={`${clientURL}/api/health`}
-        />
-      </div>
-      <div>
-        <DebugButton color="black" label="Get Profile" url={`${clientURL}/api/auth/me`} />
-      </div>
-      <PopoverDemo />
+      <ul
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          gap: "1rem",
+        }}
+      >
+        <li>
+          <Link href="/api/auth/login" prefetch={false} style={linkStyle}>
+            Login
+          </Link>
+        </li>
+        <li>
+          <Link href="/api/auth/logout" prefetch={false} style={linkStyle}>
+            Logout
+          </Link>
+        </li>
+        <li>
+          <Link href="./profile" prefetch={false} style={linkStyle}>
+            Your Profile
+          </Link>
+        </li>
+        <li>
+          <DebugButton
+            color="black"
+            label="Health Check Button"
+            url={`${clientURL}/api/health`}
+          />
+        </li>
+        <li>
+          <DebugButton
+            color="black"
+            label="Get Profile"
+            url={`${clientURL}/api/auth/me`}
+          />
+        </li>
+      </ul>
     </main>
   );
 }
