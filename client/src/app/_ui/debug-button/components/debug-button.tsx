@@ -14,7 +14,9 @@ const _DebugButton = ({ color, label, url }: Props) => {
       label={label}
       onClick={() => {
         (async () => {
-          const resp = await fetch(url);
+          const resp = await fetch(url, {
+            credentials: "include",
+          });
           const data = await resp.json();
           console.log("debug button clicked", url, data);
           return data;
