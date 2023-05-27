@@ -3,7 +3,6 @@ import { DebugButton } from "../_ui";
 
 const Page = () => {
   const { serverURL } = useEnv();
-  console.log(serverURL);
   return (
     <main className="">
       <div>login successful</div>
