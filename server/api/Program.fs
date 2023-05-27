@@ -138,7 +138,8 @@ module Program =
                DB_HOST = Environment.GetEnvironmentVariable("DB_HOST")
                DB_USER = Environment.GetEnvironmentVariable("DB_USER")
                DB_PASSWORD = Environment.GetEnvironmentVariable("DB_PASSWORD")
-               DB_DATABASE = Environment.GetEnvironmentVariable("DB_DATABASE") |}
+               DB_DATABASE = Environment.GetEnvironmentVariable("DB_DATABASE")
+               CLIENT_URL = Environment.GetEnvironmentVariable("CLIENT_URL") |}
 
         let connectionString =
             $"Server={ENV.DB_HOST};Port=3306;Database={ENV.DB_DATABASE};user={ENV.DB_USER};password={ENV.DB_PASSWORD}"
@@ -149,6 +150,15 @@ module Program =
 
         webHost [||] {
             add_service dbConnectionService
+
+            use_cors "CorsPolicy" (fun options ->
+                options.AddPolicy(
+                    "CorsPolicy",
+                    fun builder ->
+                        builder.AllowAnyHeader() |> ignore
+                        builder.AllowAnyMethod() |> ignore
+                        builder.WithOrigins(ENV.CLIENT_URL).AllowCredentials() |> ignore
+                ))
 
             endpoints
                 [ get "/" (Response.ofPlainText $"Hello F# World! {ENV.ENVIRONMENT}")
