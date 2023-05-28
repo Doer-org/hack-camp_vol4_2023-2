@@ -4,7 +4,7 @@ export const contentStyle = style({
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
-  gap: "12px",
+  gap: "10px",
 });
 
 export const iconWrapperStyle = style({
