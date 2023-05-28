@@ -82,6 +82,7 @@
 
             endpoints
                 [ get "/" (Response.ofPlainText $"Hello F# World! {env.ENVIRONMENT}")
+                  post "/graphql" GraphQL.Handler.handleGraphQL
                   get "/users" (validate [] Handlers.Users.index)
                   get "/users/{id}" (validate [] Handlers.Users.read)
                   post "/users" (validate [] Handlers.Users.create) ]
