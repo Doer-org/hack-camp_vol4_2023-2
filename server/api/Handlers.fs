@@ -3,7 +3,6 @@
 open System
 open Falco
 open Domain
-open Database
 open Store
 
 module Error =
@@ -13,26 +12,22 @@ module Users =
     /// GET /users
     let index: HttpHandler =
         fun ctx ->
-            let users =
-                ctx.GetService<IDbConnectionFactory>()
-                |> fun factory -> factory.CreateConnection()
-                |> fun conn -> UserStore.getAll conn
-                |> Seq.toList
+            let users = ctx.GetService<IStore>() |> (fun store -> store.getAllUsers ())
 
-            Response.ofJson {| data = users |} ctx
+            match users with
+            | Error e -> Response.ofJson {| error = e |} ctx
+            | Ok users -> Response.ofJson {| data = users |} ctx
 
     /// GET /users/{id}
     let read: HttpHandler =
         fun ctx ->
             let route = Request.getRoute ctx
             let id = route.GetString "id"
+            let user = ctx.GetService<IStore>() |> fun store -> store.getUser id
 
-            let user =
-                ctx.GetService<IDbConnectionFactory>()
-                |> fun factory -> factory.CreateConnection()
-                |> fun conn -> UserStore.get conn id
-
-            Response.ofJson {| data = user |} ctx
+            match user with
+            | Error e -> Response.ofJson {| error = e |} ctx
+            | Ok user -> Response.ofJson {| data = user |} ctx
 
     /// POST /users { user_name: string }
     let create: HttpHandler =
@@ -44,10 +39,10 @@ module Users =
                     { user_id = user_id
                       user_name = param.user_name }
 
-                ctx.GetService<IDbConnectionFactory>()
-                |> fun factory -> factory.CreateConnection()
-                |> fun conn -> UserStore.save conn user
+                let user = ctx.GetService<IStore>() |> fun store -> store.createUser user
 
-                Response.ofJson {| data = user |}
+                match user with
+                | Error e -> Response.ofJson {| error = e |}
+                | Ok user -> Response.ofJson {| data = user |}
 
             Request.mapJson handleOk ctx
