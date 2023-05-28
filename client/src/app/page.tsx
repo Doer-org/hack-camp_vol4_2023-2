@@ -1,6 +1,8 @@
 import { useEnv } from "@/utils/env";
 import Link from "next/link";
 import { DebugButton } from "./_ui";
+import { SnsButton } from "./_ui/sns-button";
+
 export default function Home() {
   const { clientURL } = useEnv();
   const linkStyle = {
@@ -44,6 +46,14 @@ export default function Home() {
             color="black"
             label="Get Profile"
             url={`${clientURL}/api/auth/me`}
+          />
+        </li>
+        <li>
+          <SnsButton
+            color="black"
+            icon="github"
+            label="GitHubでログイン"
+            url="#"
           />
         </li>
       </ul>

@@ -47,16 +47,18 @@ export const Header = ({ user, onLogin, onLogout, onCreateAccount }: Props) => (
             <span className="welcome">
               Welcome, <b>{user.name}</b>!
             </span>
-            <Button color="black" onClick={onLogout} label="Log out" />
+            <Button color="black" onClick={onLogout}>
+              Log out
+            </Button>
           </>
         ) : (
           <>
-            <Button color="black" onClick={onLogin} label="Log in" />
-            <Button
-              color="black"
-              onClick={onCreateAccount}
-              label="Sign up"
-            />
+            <Button color="black" onClick={onLogin}>
+              Log in
+            </Button>
+            <Button color="black" onClick={onCreateAccount}>
+              Sign Up
+            </Button>
           </>
         )}
       </div>
