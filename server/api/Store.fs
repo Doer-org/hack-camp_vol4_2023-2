@@ -1,7 +1,5 @@
 ﻿module Store
 
-open System
-open System.Data
 open Domain
 
 type IStore =
