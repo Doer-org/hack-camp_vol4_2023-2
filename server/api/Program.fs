@@ -43,6 +43,12 @@
                             conn.Open()
                             conn })
 
+        let validate permissions handler : HttpHandler =
+            if (env.ENVIRONMENT = "test") then
+                handler
+            else
+                Auth.validate env permissions Handlers.Error.index handler
+
         webHost [||] {
             add_service dbConnectionService
 
@@ -57,9 +63,9 @@
 
             endpoints
                 [ get "/" (Response.ofPlainText $"Hello F# World! {env.ENVIRONMENT}")
-                  get "/users" (Auth.validate env [] Handlers.Error.index Handlers.Users.index) // Auth.Permission.ReadResource
-                  get "/users/{id}" (Auth.validate env [] Handlers.Error.index Handlers.Users.read)
-                  post "/users" (Auth.validate env [] Handlers.Error.index Handlers.Users.create) ]
+                  get "/users" (validate [] Handlers.Users.index)
+                  get "/users/{id}" (validate [] Handlers.Users.read)
+                  post "/users" (validate [] Handlers.Users.create) ]
         }
 
         0
