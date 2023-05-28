@@ -7,7 +7,7 @@ export const contentStyle = style({
   gap: "12px",
 });
 
-export const svgWrapperStyle = style({
+export const iconWrapperStyle = style({
   width: "32px",
   height: "32px",
 });

@@ -49,7 +49,12 @@ export default function Home() {
           />
         </li>
         <li>
-          <SnsButton color="black" label="GitHubでログイン" />
+          <SnsButton
+            color="black"
+            icon="github"
+            label="GitHubでログイン"
+            url="#"
+          />
         </li>
       </ul>
     </main>
