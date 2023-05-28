@@ -31,17 +31,35 @@
                 member _.AUTH0_AUDIENCE = AUTH0_AUDIENCE
                 member _.AUTH0_JWKS = AUTH0_JWKS }
 
-        let dbConnectionService =
+        let storeService =
             let connectionString =
                 $"Server={env.DB_HOST};Port=3306;Database={env.DB_DATABASE};user={env.DB_USER};password={env.DB_PASSWORD}"
 
-            fun (svc: IServiceCollection) ->
-                svc.AddSingleton<IDbConnectionFactory>(fun _ ->
-                    { new IDbConnectionFactory with
-                        member _.CreateConnection() =
-                            let conn = new MySqlConnection(connectionString)
-                            conn.Open()
-                            conn })
+            let dbFactory =
+                { new IDbConnectionFactory with
+                    member _.CreateConnection() =
+                        let conn = new MySqlConnection(connectionString)
+                        conn.Open()
+                        conn }
+
+            let store =
+                { new Store.IStore with
+                    member _.createUser(user: Domain.User) =
+                        let conn = dbFactory.CreateConnection()
+                        let _ = Database.User.save conn user
+                        Ok user
+
+                    member _.getUser(user_id: string) =
+                        let conn = dbFactory.CreateConnection()
+                        let user = Database.User.get conn user_id
+                        Ok user
+
+                    member _.getAllUsers() =
+                        let conn = dbFactory.CreateConnection()
+                        let users = Database.User.getAll conn |> Seq.toList
+                        Ok users }
+
+            fun (svc: IServiceCollection) -> svc.AddSingleton<Store.IStore>(fun _ -> store)
 
         let validate permissions handler : HttpHandler =
             if (env.ENVIRONMENT = "test") then
@@ -49,8 +67,9 @@
             else
                 Auth.validate env permissions Handlers.Error.index handler
 
+
         webHost [||] {
-            add_service dbConnectionService
+            add_service storeService
 
             use_cors "CorsPolicy" (fun options ->
                 options.AddPolicy(
