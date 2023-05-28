@@ -56,7 +56,7 @@ export const Aoki: Story = {
             />
             <b>Aoki</b>
           </div>
-          <Button color="black" label="フォロー中" />
+          <Button color="black">フォロー中</Button>
         </div>
       </Card>
     );

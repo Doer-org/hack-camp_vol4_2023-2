@@ -26,18 +26,18 @@ type Story = StoryObj<typeof Button>;
 
 export const Black: Story = {
   render: () => {
-    return <Button color="black" label="Log in" />;
+    return <Button color="black">Log in</Button>;
   },
 };
 
 export const Gray: Story = {
   render: () => {
-    return <Button color="gray" label="音楽" />;
+    return <Button color="gray">音楽</Button>;
   },
 };
 
 export const Pink: Story = {
   render: () => {
-    return <Button color="pink" label="始める" />;
+    return <Button color="pink">始める</Button>;
   },
 };
