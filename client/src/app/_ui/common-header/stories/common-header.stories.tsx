@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
 import { CommonHeader } from "../components";
-import { Arrow, Hamburger, Logo } from "@/ui";
+import { Arrow, Button, Hamburger, Logo } from "@/ui";
 
 const meta: Meta<typeof CommonHeader> = {
   title: "Hack/Header/CommonHeader",
@@ -40,6 +40,10 @@ export const Edit: Story = {
   args: {
     title: "編集",
     left: <Arrow />,
-    right: <Hamburger />,
+    right: (
+      <Button color="black" size="small">
+        更新
+      </Button>
+    ),
   },
 };
