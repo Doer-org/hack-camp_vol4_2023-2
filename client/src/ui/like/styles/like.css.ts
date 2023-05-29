@@ -1,5 +1,9 @@
 import { style, styleVariants } from "@vanilla-extract/css";
 
+export const wrapperStyle = style({
+  display: "inline-block",
+});
+
 export const contentStyle = style({
   display: "flex",
   justifyContent: "center",

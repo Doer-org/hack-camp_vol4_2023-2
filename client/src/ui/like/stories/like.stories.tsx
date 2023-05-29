@@ -24,14 +24,8 @@ const meta: Meta<typeof Like> = {
 export default meta;
 type Story = StoryObj<typeof Like>;
 
-export const Pink: Story = {
+export const Default: Story = {
   render: () => {
-    return <Like color="pink" />;
-  },
-};
-
-export const Gray: Story = {
-  render: () => {
-    return <Like color="gray" />;
+    return <Like liked={false} num={24} />;
   },
 };
