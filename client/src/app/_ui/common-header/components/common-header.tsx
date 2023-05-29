@@ -10,7 +10,7 @@ type Props = {
 
 const _CommonHeader = ({ left, title, right }: Props) => {
   return (
-    <Header>
+    <Header size="small">
       <div className={styles.contentStyle}>
         {left}
         <h2 className={styles.titleStyle}>{title}</h2>

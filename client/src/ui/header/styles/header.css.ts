@@ -1,4 +1,4 @@
-import { style } from "@vanilla-extract/css";
+import { style, styleVariants } from "@vanilla-extract/css";
 
 export const headerStyle = style({
   width: "100%",
@@ -9,4 +9,8 @@ export const headerStyle = style({
   left: "0",
   boxSizing: "border-box",
   zIndex: "1",
+});
+
+export const size = styleVariants({
+  small: { height: "78px" },
 });
