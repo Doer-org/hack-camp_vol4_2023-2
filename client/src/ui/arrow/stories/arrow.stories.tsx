@@ -19,17 +19,17 @@ const meta: Meta<typeof Arrow> = {
       </div>
     ),
   ],
+  parameters: {
+    nextjs: {
+      appDirectory: true,
+    },
+  },
 };
 
 export default meta;
 type Story = StoryObj<typeof Arrow>;
 
 export const Default: Story = {
-  parameters: {
-    nextjs: {
-      appDirectory: true,
-    },
-  },
   render: () => {
     return <Arrow />;
   },
