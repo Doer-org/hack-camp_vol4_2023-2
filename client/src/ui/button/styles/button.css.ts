@@ -19,3 +19,8 @@ export const background = styleVariants({
   gray: { background: "#B0AEAF" },
   pink: { background: "#FF7987" },
 });
+
+export const size = styleVariants({
+  small: { height: "42px" },
+  medium: { height: "45px" },
+});

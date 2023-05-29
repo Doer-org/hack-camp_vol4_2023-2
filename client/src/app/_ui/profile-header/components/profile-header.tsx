@@ -23,7 +23,7 @@ const _ProfileHeader = ({ user }: Props) => {
           <span>{user.name}</span>
         </div>
         {user.me ? (
-          <Button className={styles.buttonStyle} color="black">
+          <Button size="small" color="black">
             編集
           </Button>
         ) : (

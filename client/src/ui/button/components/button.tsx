@@ -3,19 +3,19 @@ import * as styles from "../styles/button.css";
 
 type Props = {
   color: "black" | "gray" | "pink";
+  size?: "small" | "medium";
   children: React.ReactNode;
-  className?: string;
   onClick?: () => void;
 };
 
-export const _Button = ({ color, children, className, ...props }: Props) => {
+export const _Button = ({ color, children, size, ...props }: Props) => {
   return (
     <button
       type="button"
       className={[
-        styles.background[color],
         styles.contentStyle,
-        className,
+        styles.background[color],
+        size && styles.size[size],
       ].join(" ")}
       {...props}
     >

@@ -14,10 +14,6 @@ export const profileStyle = style({
   fontWeight: "700",
 });
 
-export const buttonStyle = style({
-  height: "42px",
-});
-
 export const followWrapperStyle = style({
   marginTop: "18px",
 });
