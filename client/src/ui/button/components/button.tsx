@@ -8,7 +8,7 @@ type Props = {
   onClick?: () => void;
 };
 
-export const _Button = ({ color, children, size, ...props }: Props) => {
+const _Button = ({ color, children, size, ...props }: Props) => {
   return (
     <button
       type="button"
