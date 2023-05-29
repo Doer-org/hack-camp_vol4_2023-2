@@ -2,6 +2,7 @@ import { style, styleVariants } from "@vanilla-extract/css";
 
 // 共通のスタイル
 const base = {
+  width: "100%",
   display: "flex",
   alignItems: "center",
   fontSize: "14px",
