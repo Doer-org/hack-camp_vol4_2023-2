@@ -11,6 +11,7 @@ export const contentStyle = style({
   justifyContent: "center",
   alignItems: "center",
   cursor: "pointer",
+  boxSizing: "border-box",
 });
 
 export const background = styleVariants({
