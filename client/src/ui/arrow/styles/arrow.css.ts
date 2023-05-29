@@ -1,7 +1,7 @@
 import { style } from "@vanilla-extract/css";
 
 export const contentStyle = style({
-  display: "flex",
+  display: "inline-block",
   alignItems: "center",
   justifyContent: "center",
   height: "16px",

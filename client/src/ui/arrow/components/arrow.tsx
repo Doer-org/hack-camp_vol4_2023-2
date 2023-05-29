@@ -1,5 +1,6 @@
+"use client";
 import React from "react";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import * as styles from "../styles/arrow.css";
 
 const _Arrow = () => {
