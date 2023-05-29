@@ -1,3 +1,4 @@
+export * from "./arrow";
 export * from "./avator";
 export * from "./button";
 export * from "./card";
