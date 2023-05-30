@@ -53,7 +53,8 @@ module User =
 
         cmd.Query(fun rd ->
             { user_id = rd.GetString(0)
-              user_name = rd.GetString(1) })
+              user_name = rd.GetString(1)
+              image_url = "" })
         |> Seq.tryHead
 
     let getAll (conn: IDbConnection) : User seq =
@@ -62,7 +63,8 @@ module User =
 
         cmd.Query(fun rd ->
             { user_id = rd.GetOrdinal("user_id") |> rd.GetString
-              user_name = rd.GetOrdinal("user_name") |> rd.GetString })
+              user_name = rd.GetOrdinal("user_name") |> rd.GetString
+              image_url = "" })
 
 type IDbConnectionFactory =
     abstract member CreateConnection: unit -> IDbConnection

@@ -37,7 +37,8 @@ module Users =
             let handleOk (param: {| user_name: string |}) : HttpHandler =
                 let user =
                     { user_id = user_id
-                      user_name = param.user_name }
+                      user_name = param.user_name
+                      image_url = "" }
 
                 let user = ctx.GetService<IStore>() |> fun store -> store.createUser user
 
