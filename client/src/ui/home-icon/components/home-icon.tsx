@@ -12,7 +12,7 @@ const _HomeIcon = ({ fill }: Props) => {
       <img
         className={styles.imageStyle}
         src={fill ? "/assets/home-fill.png" : "/assets/home-line.png"}
-        alt="ロゴ"
+        alt="ホーム"
       />
     </div>
   );
