@@ -24,6 +24,17 @@ const meta: Meta<typeof Avator> = {
 export default meta;
 type Story = StoryObj<typeof Avator>;
 
+export const Yuga: Story = {
+  render: () => {
+    return (
+      <Avator
+        image="https://avatars.githubusercontent.com/u/113420384?v=4"
+        size="tiny"
+      />
+    );
+  },
+};
+
 export const Aoki: Story = {
   render: () => {
     return (
