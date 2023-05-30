@@ -12,7 +12,7 @@ export const imageStyle = style({
 });
 
 export const size = styleVariants({
-  tiny: { width: "32px", height: "32px" },
+  tiny: { width: "28px", height: "28px" },
   small: { width: "42px", height: "42px" },
   medium: { width: "52px", height: "52px" },
 });
