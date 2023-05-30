@@ -2,13 +2,13 @@ import React from "react";
 import * as styles from "../styles/home-icon.css";
 
 type Props = {
-  fill: boolean;
+  fill?: boolean;
   onClick?: () => void;
 };
 
-const _HomeIcon = ({ fill }: Props) => {
+const _HomeIcon = ({ fill = false, ...props }: Props) => {
   return (
-    <div className={styles.wrapperStyle}>
+    <div className={styles.wrapperStyle} {...props}>
       <img
         className={styles.imageStyle}
         src={fill ? "/assets/home-fill.png" : "/assets/home-line.png"}
