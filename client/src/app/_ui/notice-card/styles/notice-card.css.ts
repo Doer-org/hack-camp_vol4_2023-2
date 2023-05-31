@@ -3,8 +3,8 @@ import { style } from "@vanilla-extract/css";
 export const contentStyle = style({
   display: "flex",
   alignContent: "center",
-  justifyContent: "space-between",
-  gap: "10px",
+  justifyContent: "space-around",
+  gap: "12px",
 });
 
 export const actionStyle = style({
