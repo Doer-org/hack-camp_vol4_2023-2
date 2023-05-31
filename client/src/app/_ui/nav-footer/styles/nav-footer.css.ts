@@ -11,10 +11,15 @@ export const contentStyle = style({
 export const itemStyle = style({
   width: "30%",
   height: "100%",
+  cursor: "pointer",
+});
+
+export const linkStyle = style({
+  width: "100%",
+  height: "100%",
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
-  cursor: "pointer",
 });
 
 export const avatorActive = style({
