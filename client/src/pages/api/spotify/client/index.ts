@@ -5,13 +5,13 @@ const getAccess = async () => {
       Authorization:
         "Basic " +
         Buffer.from(
-          process.env.SPOTIFY_API_CLIENT_ID +
+          process.env.NEXT_PUBLIC_SPOTIFY_API_CLIENT_ID +
             ":" +
-            process.env.SPOTIFY_API_CLIENT_SECRET
+            process.env.NEXT_PUBLIC_SPOTIFY_API_CLIENT_SECRET
         ).toString("base64"),
       "Content-type": "application/x-www-form-urlencoded",
     },
-    body: "grant_type=client_credentials&j",
+    body: "grant_type=client_credentials&sj",
   }).then(async (res) => {
     const data = await res.json();
     if (!res.ok) return { err: data };
