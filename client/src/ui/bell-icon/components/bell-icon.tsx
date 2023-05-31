@@ -11,7 +11,7 @@ const _BellIcon = ({ fill = false, ...props }: Props) => {
     <div className={styles.wrapperStyle} {...props}>
       <img
         className={styles.imageStyle}
-        src={fill ? "/assets/bell-fill.png" : "/assets/bell-line.png"}
+        src={fill ? "/assets/bell-fill.svg" : "/assets/bell-line.svg"}
         alt="ベル"
       />
     </div>

@@ -11,7 +11,7 @@ const _HomeIcon = ({ fill = false, ...props }: Props) => {
     <div className={styles.wrapperStyle} {...props}>
       <img
         className={styles.imageStyle}
-        src={fill ? "/assets/home-fill.png" : "/assets/home-line.png"}
+        src={fill ? "/assets/home-fill.svg" : "/assets/home-line.svg"}
         alt="ホーム"
       />
     </div>
