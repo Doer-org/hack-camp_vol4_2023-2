@@ -1,4 +1,4 @@
-﻿module Handlers
+﻿module Rest.Handlers
 
 open System
 open Falco

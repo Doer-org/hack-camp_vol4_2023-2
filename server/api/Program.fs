@@ -5,7 +5,6 @@
     open Falco.HostBuilder
     open Microsoft.Extensions.DependencyInjection
     open MySql.Data.MySqlClient
-    open Database
 
     [<EntryPoint>]
     let main _ =
@@ -36,7 +35,7 @@
                 $"Server={env.DB_HOST};Port=3306;Database={env.DB_DATABASE};user={env.DB_USER};password={env.DB_PASSWORD}"
 
             let dbFactory =
-                { new IDbConnectionFactory with
+                { new Database.IDbConnectionFactory with
                     member _.CreateConnection() =
                         let conn = new MySqlConnection(connectionString)
                         conn.Open()
@@ -44,20 +43,59 @@
 
             let store =
                 { new Store.IStore with
+
+                    member _.createAccount(account: Domain.User.Account) =
+                        let conn = dbFactory.CreateConnection()
+                        
+
+                        Error "aaa"
+
                     member _.createUser(user: Domain.User) =
                         let conn = dbFactory.CreateConnection()
                         let _ = Database.User.save conn user
                         Ok user
+
+                    member _.followUser(follow: Domain.User.Follow) = Error "ww"
+
+                    member _.unfollowUser(follow: Domain.User.Follow) = Error "ww"
+
+                    member _.updateReaction(reaction: Domain.Profile.Reaction) = Error "ww"
+
+                    member _.updateRamenProfile(ramenya: Domain.Profile.Ramen.FavoriteRamenya) = Error "ww"
+
+
 
                     member _.getUser(user_id: string) =
                         let conn = dbFactory.CreateConnection()
                         let user = Database.User.get conn user_id
                         Ok user
 
+                    member _.getAccount(account: Domain.User.Account) = Error "aaa"
+
+                    member _.getAccountBySub(sub: Domain.sub) = Error "aaa"
+
                     member _.getAllUsers() =
                         let conn = dbFactory.CreateConnection()
                         let users = Database.User.getAll conn |> Seq.toList
-                        Ok users }
+                        Ok users
+
+                    member _.getFollowingUsers(user_id: Domain.UserID) = Error "ww"
+
+                    member _.getFollowers(user_id: Domain.UserID) = Error "ww"
+
+                    member _.getTimeline(user_id: Domain.UserID) = Error "ww"
+
+                    member _.getAllTimeline() = Error "ww"
+
+                    member _.getProfile(user_id: Domain.UserID) = Error "ww"
+
+                    member _.getReaction(user_id: Domain.UserID) = Error "ww"
+
+                    member _.getBookmarkUsers(user_id: Domain.UserID) = Error "ww"
+
+                    member _.getRamenProfile(user_id: Domain.UserID) = Error "ww"
+
+                }
 
             fun (svc: IServiceCollection) -> svc.AddSingleton<Store.IStore>(fun _ -> store)
 
@@ -65,7 +103,11 @@
             if (env.ENVIRONMENT = "test") then
                 handler
             else
-                Auth.validate env permissions Handlers.Error.index handler
+                Auth.validate
+                    (env.AUTH0_JWKS, env.AUTH0_AUDIENCE, env.AUTH0_AUDIENCE)
+                    permissions
+                    Rest.Handlers.Error.index
+                    handler
 
 
         webHost [||] {
@@ -82,10 +124,12 @@
 
             endpoints
                 [ get "/" (Response.ofPlainText $"Hello F# World! {env.ENVIRONMENT}")
-                  post "/graphql" GraphQL.Handler.handleGraphQL
-                  get "/users" (validate [] Handlers.Users.index)
-                  get "/users/{id}" (validate [] Handlers.Users.read)
-                  post "/users" (validate [] Handlers.Users.create) ]
+                  post
+                      "/graphql"
+                      (GraphQL.Handler.handleGraphQL (env.AUTH0_JWKS, env.AUTH0_AUDIENCE, env.AUTH0_AUDIENCE))
+                  get "/users" (validate [] Rest.Handlers.Users.index)
+                  get "/users/{id}" (validate [] Rest.Handlers.Users.read)
+                  post "/users" (validate [] Rest.Handlers.Users.create) ]
         }
 
         0

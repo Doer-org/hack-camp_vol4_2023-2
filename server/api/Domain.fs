@@ -43,14 +43,14 @@ module Profile =
     module Ramen =
         type FavoriteRamenya =
             { user_id: UserID
-              best_ramenya: string
+              ramenya: string
               timestamp: DateTimeOffset }
 
     module Music =
 
         type FavoriteMusic =
             { user_id: UserID
-              artist_info: string
+              music: string
               rank: int
               timestamp: DateTimeOffset }
 
@@ -76,7 +76,7 @@ module Command =
             -> ValidateAccount
             -> {| follow: User.Follow
                   isFollow: bool |}
-            -> CommandResult<User.Follow option>
+            -> CommandResult<User.Follow>
 
     type UpdateReaction =
         User.Account -> ValidateAccount -> Profile.Reaction -> Profile.ChangeLog -> CommandResult<Profile.Reaction>
@@ -87,27 +87,36 @@ module Command =
     type UpdateFavoriteArtist =
         User.Account -> ValidateAccount -> Profile.Music.FavoriteArtist -> CommandResult<Profile.Music.FavoriteArtist>
 
+    type UpdateFavoriteRamenya =
+        User.Account -> ValidateAccount -> Profile.Ramen.FavoriteRamenya -> CommandResult<Profile.Ramen.FavoriteRamenya>
+
 
 module Query =
 
-    type GetAllTimeline = unit -> CommandResult<Profile.ChangeLog seq>
+    type GetAllTimeline = unit -> CommandResult<Profile.ChangeLog list>
 
     type GetFollowingUsersTimeline =
         User.Account
             -> ValidateAccount
             -> DateTimeOffset
             -> Command.UpdateUserLog
-            -> CommandResult<Profile.ChangeLog seq>
+            -> CommandResult<Profile.ChangeLog list>
 
     type GetProfile = User.Account -> ValidateAccount -> CommandResult<Profile>
 
-    type GetReaction = User.Account -> ValidateAccount -> CommandResult<Profile.Reaction seq>
+    type GetReaction = User.Account -> ValidateAccount -> CommandResult<Profile.Reaction list>
 
-    type GetBookmark = User.Account -> ValidateAccount -> CommandResult<Profile.Reaction seq>
+    type GetBookmark = User.Account -> ValidateAccount -> CommandResult<User list>
 
-    type GetFollowingUsers = User.Account -> ValidateAccount -> CommandResult<User seq>
+    type GetFollowingUsers = UserID -> CommandResult<User list>
 
-    type GetFollower = User.Account -> ValidateAccount -> CommandResult<{| user: User; follow: User.Follow |} seq>
+    type GetFollower = UserID -> CommandResult<User list>
+
+    type GetRamenProfile = UserID -> CommandResult<Profile.Ramen.FavoriteRamenya list>
+
+    type GetFavoriteMusicProfile = UserID -> CommandResult<Profile.Music.FavoriteMusic list>
+
+    type GetFavoriteArtistsProfile = UserID -> CommandResult<Profile.Music.FavoriteArtist list>
 
 
 type private Update<'T> = 'T -> CommandResult<'T>
@@ -132,15 +141,15 @@ let updateUserLog (update: Update<User.Log>) : Command.UpdateUserLog =
     fun (account: User.Account) valid log -> validAccount valid account (fun _ -> update log)
 
 let updateFollowUser
-    (follow: User.Follow -> CommandResult<unit>)
-    (unfollow: User.Follow -> CommandResult<unit>)
+    (follow: User.Follow -> CommandResult<User.Follow>)
+    (unfollow: User.Follow -> CommandResult<User.Follow>)
     : Command.UpdateFollow =
     fun account valid args ->
         validAccount valid account (fun _ ->
             if args.isFollow then
-                follow args.follow |> Result.map (fun _ -> Some args.follow)
+                follow args.follow
             else
-                unfollow args.follow |> Result.map (fun _ -> None))
+                unfollow args.follow)
 
 let updateReaction (update: Update<Profile.Reaction>) (profileChangeLogger) : Command.UpdateReaction =
     fun account valid reaction log ->
@@ -158,9 +167,12 @@ let updateFavoriteMusic (update: Update<Profile.Music.FavoriteMusic>) : Command.
 let updateFavoriteArtist (update: Update<Profile.Music.FavoriteArtist>) : Command.UpdateFavoriteArtist =
     fun account valid artist -> validAccount valid account (fun _ -> update artist)
 
-let getAllTimeline (query: Query<unit, Profile.ChangeLog seq>) : Query.GetAllTimeline = query
+let updateFavoriteRamen (update: Update<Profile.Ramen.FavoriteRamenya>) : Command.UpdateFavoriteRamenya =
+    fun account valid ramen -> validAccount valid account (fun _ -> update ramen)
 
-let getFollowingUsersTimeline (query: Query<UserID, Profile.ChangeLog seq>) : Query.GetFollowingUsersTimeline =
+let getAllTimeline (query: Query<unit, Profile.ChangeLog list>) : Query.GetAllTimeline = query
+
+let getFollowingUsersTimeline (query: Query<UserID, Profile.ChangeLog list>) : Query.GetFollowingUsersTimeline =
     fun account valid time updateLog ->
         validAccount valid account (fun _ ->
             let summaries = query account.user_id
@@ -176,14 +188,22 @@ let getFollowingUsersTimeline (query: Query<UserID, Profile.ChangeLog seq>) : Qu
 let getProfile (query: Query<UserID, Profile>) : Query.GetProfile =
     fun account valid -> validAccount valid account (fun _ -> query account.user_id)
 
-let getReaction (query: Query<UserID, Profile.Reaction seq>) : Query.GetReaction =
+let getReaction (query: Query<UserID, Profile.Reaction list>) : Query.GetReaction =
     fun account valid -> validAccount valid account (fun _ -> query account.user_id)
 
-let getBookmark (query: Query<UserID, Profile.Reaction seq>) : Query.GetBookmark =
+let getBookmarkUsers (query: Query<UserID, User list>) : Query.GetBookmark =
     fun account valid -> validAccount valid account (fun _ -> query account.user_id)
 
-let getFollowingUsers (query: Query<UserID, User seq>) : Query.GetFollowingUsers =
-    fun account valid -> validAccount valid account (fun _ -> query account.user_id)
+let getFollowingUsers (query: Query<UserID, User list>) : Query.GetFollowingUsers = query
 
-let getFollower (query: Query<UserID, {| user: User; follow: User.Follow |} seq>) : Query.GetFollower =
-    fun account valid -> validAccount valid account (fun _ -> query account.user_id)
+let getFollowers (query: Query<UserID, User list>) : Query.GetFollower = query
+
+let getRamenProfile (query: Query<UserID, Profile.Ramen.FavoriteRamenya list>) : Query.GetRamenProfile = query
+
+let getFavoriteMusicProfile (query: Query<UserID, Profile.Music.FavoriteMusic list>) : Query.GetFavoriteMusicProfile =
+    query
+
+let getFavoriteArtistsProfile
+    (query: Query<UserID, Profile.Music.FavoriteArtist list>)
+    : Query.GetFavoriteArtistsProfile =
+    query
