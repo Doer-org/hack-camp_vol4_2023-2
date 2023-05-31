@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { searchArtist } from "@/pages/api/spotify/search";
 
 type Artist = {
@@ -13,6 +13,7 @@ export default function Page() {
 
   const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const result = await searchArtist(e.target.value);
+    if (result.type === "error") return;
     setArtists(result);
   };
 
