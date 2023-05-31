@@ -8,7 +8,7 @@ type Artist = {
   image: string;
 };
 
-export default async function Page() {
+export default function Page() {
   const [artists, setArtists] = useState<Artist[]>([]);
 
   const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -18,17 +18,15 @@ export default async function Page() {
 
   return (
     <>
-      <input type="text" onChange={(e) => handleChange(e)} />
-      <div>
-        {artists.map((artist) => {
-          return (
-            <div key={artist.id}>
-              <p>{artist.name}</p>
-              <img src={artist.image} alt="ジャケ写" width={320} height={320} />
-            </div>
-          );
-        })}
-      </div>
+      <input type="text" onChange={handleChange} />
+      {artists?.map((artist) => {
+        return (
+          <div key={artist.id}>
+            <p>{artist.name}</p>
+            <img src={artist.image} alt="ジャケ写" width={320} height={320} />
+          </div>
+        );
+      })}
     </>
   );
 }
