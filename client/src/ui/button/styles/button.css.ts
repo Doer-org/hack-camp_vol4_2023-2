@@ -11,10 +11,16 @@ export const contentStyle = style({
   justifyContent: "center",
   alignItems: "center",
   cursor: "pointer",
+  boxSizing: "border-box",
 });
 
 export const background = styleVariants({
   black: { background: "#0B002A" },
   gray: { background: "#B0AEAF" },
   pink: { background: "#FF7987" },
+});
+
+export const size = styleVariants({
+  small: { height: "42px" },
+  medium: { height: "45px" },
 });

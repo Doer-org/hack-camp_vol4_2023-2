@@ -1,121 +1,5 @@
-﻿open System
-
-type User = { user_id: string; user_name: string }
-
-module Database =
-    open System.Data
-
-    type IDbConnectionFactory =
-        abstract member CreateConnection: unit -> IDbConnection
-
-    type IDbCommand with
-
-        member this.AddParameter(name: string, value: obj) =
-            let param = this.CreateParameter()
-            param.ParameterName <- name
-
-            if isNull value then
-                param.Value <- DBNull.Value
-            else
-                param.Value <- value
-
-            this.Parameters.Add(param) |> ignore
-
-        member private this.Prepare() =
-            if this.Connection.State = ConnectionState.Closed then
-                this.Connection.Open()
-
-        member this.Execute() =
-            this.Prepare()
-            this.ExecuteNonQuery() |> ignore
-
-        member this.Query(map: IDataRecord -> 'a) : 'a seq =
-            this.Prepare()
-            use rd = this.ExecuteReader()
-
-            [ while rd.Read() do
-                  yield map rd ]
-
-    module UserStore =
-        let save (conn: IDbConnection) (user: User) : unit =
-            use cmd = conn.CreateCommand()
-
-            cmd.CommandText <-
-                "
-                INSERT INTO Users (user_id, user_name)
-                VALUES (@user_id, @user_name);"
-
-            cmd.AddParameter("user_id", user.user_id)
-            cmd.AddParameter("user_name", user.user_name)
-
-            cmd.Execute()
-
-        let get (conn: IDbConnection) (user_id: string) : User option =
-            use cmd = conn.CreateCommand()
-            cmd.CommandText <- "SELECT * FROM Users WHERE user_id = @user_id;"
-            cmd.AddParameter("user_id", user_id)
-
-            cmd.Query(fun rd ->
-                { user_id = rd.GetString(0)
-                  user_name = rd.GetString(1) })
-            |> Seq.tryHead
-
-        let getAll (conn: IDbConnection) : User seq =
-            use cmd = conn.CreateCommand()
-            cmd.CommandText <- "SELECT * FROM Users;"
-
-            cmd.Query(fun rd ->
-                { user_id = rd.GetOrdinal("user_id") |> rd.GetString
-                  user_name = rd.GetOrdinal("user_name") |> rd.GetString })
-
-module Handlers =
-    open Falco
-    open Database
-
-    module Users =
-        /// GET /users
-        let index: HttpHandler =
-            fun ctx ->
-                let users =
-                    ctx.GetService<IDbConnectionFactory>()
-                    |> fun factory -> factory.CreateConnection()
-                    |> fun conn -> UserStore.getAll conn
-                    |> Seq.toList
-
-                Response.ofJson {| data = users |} ctx
-
-        /// GET /users/{id}
-        let read: HttpHandler =
-            fun ctx ->
-                let route = Request.getRoute ctx
-                let id = route.GetString "id"
-
-                let user =
-                    ctx.GetService<IDbConnectionFactory>()
-                    |> fun factory -> factory.CreateConnection()
-                    |> fun conn -> UserStore.get conn id
-
-                Response.ofJson {| data = user |} ctx
-
-        /// POST /users { user_name: string}
-        let create: HttpHandler =
-            fun ctx ->
-                let user_id = Guid.NewGuid() |> string
-
-                let handleOk (param: {| user_name: string |}) : HttpHandler =
-                    let user =
-                        { user_id = user_id
-                          user_name = param.user_name }
-
-                    ctx.GetService<IDbConnectionFactory>()
-                    |> fun factory -> factory.CreateConnection()
-                    |> fun conn -> UserStore.save conn user
-
-                    Response.ofJson {| data = user |}
-
-                Request.mapJson handleOk ctx
-
-module Program =
+﻿module Program =
+    open System
     open Falco
     open Falco.Routing
     open Falco.HostBuilder
@@ -123,33 +7,69 @@ module Program =
     open MySql.Data.MySqlClient
     open Database
 
-    type DbConnectionFactory(connectionString: string) =
-        interface IDbConnectionFactory with
-            member _.CreateConnection() =
-                let conn = new MySqlConnection(connectionString)
-                conn.Open()
-                conn
-
     [<EntryPoint>]
     let main _ =
+        let env =
+            let ENVIRONMENT = Environment.GetEnvironmentVariable("ENVIRONMENT")
+            let DB_HOST = Environment.GetEnvironmentVariable("DB_HOST")
+            let DB_USER = Environment.GetEnvironmentVariable("DB_USER")
+            let DB_PASSWORD = Environment.GetEnvironmentVariable("DB_PASSWORD")
+            let DB_DATABASE = Environment.GetEnvironmentVariable("DB_DATABASE")
+            let CLIENT_URL = Environment.GetEnvironmentVariable("CLIENT_URL")
+            let AUTH0_DOMAIN = Environment.GetEnvironmentVariable("AUTH0_DOMAIN")
+            let AUTH0_AUDIENCE = Environment.GetEnvironmentVariable("AUTH0_AUDIENCE")
+            let AUTH0_JWKS = Environment.GetEnvironmentVariable("AUTH0_JWKS")
 
-        let ENV =
-            {| ENVIRONMENT = Environment.GetEnvironmentVariable("ENVIRONMENT")
-               DB_HOST = Environment.GetEnvironmentVariable("DB_HOST")
-               DB_USER = Environment.GetEnvironmentVariable("DB_USER")
-               DB_PASSWORD = Environment.GetEnvironmentVariable("DB_PASSWORD")
-               DB_DATABASE = Environment.GetEnvironmentVariable("DB_DATABASE")
-               CLIENT_URL = Environment.GetEnvironmentVariable("CLIENT_URL") |}
+            { new Env.IEnv with
+                member _.ENVIRONMENT = ENVIRONMENT
+                member _.DB_HOST = DB_HOST
+                member _.DB_USER = DB_USER
+                member _.DB_PASSWORD = DB_PASSWORD
+                member _.DB_DATABASE = DB_DATABASE
+                member _.CLIENT_URL = CLIENT_URL
+                member _.AUTH0_DOMAIN = AUTH0_DOMAIN
+                member _.AUTH0_AUDIENCE = AUTH0_AUDIENCE
+                member _.AUTH0_JWKS = AUTH0_JWKS }
 
-        let connectionString =
-            $"Server={ENV.DB_HOST};Port=3306;Database={ENV.DB_DATABASE};user={ENV.DB_USER};password={ENV.DB_PASSWORD}"
+        let storeService =
+            let connectionString =
+                $"Server={env.DB_HOST};Port=3306;Database={env.DB_DATABASE};user={env.DB_USER};password={env.DB_PASSWORD}"
 
-        let dbConnectionService (svc: IServiceCollection) =
-            svc.AddSingleton<IDbConnectionFactory, DbConnectionFactory>(fun _ -> DbConnectionFactory(connectionString))
+            let dbFactory =
+                { new IDbConnectionFactory with
+                    member _.CreateConnection() =
+                        let conn = new MySqlConnection(connectionString)
+                        conn.Open()
+                        conn }
+
+            let store =
+                { new Store.IStore with
+                    member _.createUser(user: Domain.User) =
+                        let conn = dbFactory.CreateConnection()
+                        let _ = Database.User.save conn user
+                        Ok user
+
+                    member _.getUser(user_id: string) =
+                        let conn = dbFactory.CreateConnection()
+                        let user = Database.User.get conn user_id
+                        Ok user
+
+                    member _.getAllUsers() =
+                        let conn = dbFactory.CreateConnection()
+                        let users = Database.User.getAll conn |> Seq.toList
+                        Ok users }
+
+            fun (svc: IServiceCollection) -> svc.AddSingleton<Store.IStore>(fun _ -> store)
+
+        let validate permissions handler : HttpHandler =
+            if (env.ENVIRONMENT = "test") then
+                handler
+            else
+                Auth.validate env permissions Handlers.Error.index handler
 
 
         webHost [||] {
-            add_service dbConnectionService
+            add_service storeService
 
             use_cors "CorsPolicy" (fun options ->
                 options.AddPolicy(
@@ -157,14 +77,15 @@ module Program =
                     fun builder ->
                         builder.AllowAnyHeader() |> ignore
                         builder.AllowAnyMethod() |> ignore
-                        builder.WithOrigins(ENV.CLIENT_URL).AllowCredentials() |> ignore
+                        builder.WithOrigins(env.CLIENT_URL).AllowCredentials() |> ignore
                 ))
 
             endpoints
-                [ get "/" (Response.ofPlainText $"Hello F# World! {ENV.ENVIRONMENT}")
-                  get "/users" Handlers.Users.index
-                  get "/users/{id}" Handlers.Users.read
-                  post "/users" Handlers.Users.create ]
+                [ get "/" (Response.ofPlainText $"Hello F# World! {env.ENVIRONMENT}")
+                  post "/graphql" GraphQL.Handler.handleGraphQL
+                  get "/users" (validate [] Handlers.Users.index)
+                  get "/users/{id}" (validate [] Handlers.Users.read)
+                  post "/users" (validate [] Handlers.Users.create) ]
         }
 
         0
