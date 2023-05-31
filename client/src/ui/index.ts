@@ -10,3 +10,4 @@ export * from "./home-icon";
 export * from "./like";
 export * from "./logo";
 export * from "./popover";
+export * from "./search-result";
