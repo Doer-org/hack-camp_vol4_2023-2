@@ -8,6 +8,15 @@ export const contentStyle = style({
   justifyContent: "space-around",
 });
 
+export const itemStyle = style({
+  width: "30%",
+  height: "100%",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  cursor: "pointer",
+});
+
 export const avatorActive = style({
   width: "32px",
   height: "32px",

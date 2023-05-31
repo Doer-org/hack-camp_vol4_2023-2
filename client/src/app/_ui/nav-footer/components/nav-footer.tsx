@@ -10,42 +10,33 @@ type User = {
 
 type Props = {
   user: User;
-  active?: "timeline" | "profile" | "notice" | "other";
 };
 
-const _NavFooter = ({ user, active }: Props) => {
-  const [activeState, setActiveState] = useState<Props["active"]>(active);
+const _NavFooter = ({ user }: Props) => {
+  type activeType = "timeline" | "profile" | "notice" | "other";
+  const [active, setActive] = useState<activeType>("timeline");
 
-  const handleTimelineClick = () => setActiveState("timeline");
-  const handleProfileClick = () => setActiveState("profile");
-  const handleNoticeClick = () => setActiveState("notice");
+  const handleTimelineClick = () => setActive("timeline");
+  const handleProfileClick = () => setActive("profile");
+  const handleNoticeClick = () => setActive("notice");
 
   return (
     <Footer>
       <nav className={styles.contentStyle}>
-        <div>
-          <HomeIcon
-            fill={activeState === "timeline"}
-            onClick={handleTimelineClick}
-          />
+        <div className={styles.itemStyle} onClick={handleTimelineClick}>
+          <HomeIcon fill={active === "timeline"} />
         </div>
-        <div>
+        <div className={styles.itemStyle} onClick={handleProfileClick}>
           <div
             className={
-              activeState === "profile"
-                ? styles.avatorActive
-                : styles.avatorInactive
+              active === "profile" ? styles.avatorActive : styles.avatorInactive
             }
-            onClick={handleProfileClick}
           >
             <Avator size="tiny" image={user.icon} />
           </div>
         </div>
-        <div>
-          <BellIcon
-            fill={activeState === "notice"}
-            onClick={handleNoticeClick}
-          />
+        <div className={styles.itemStyle} onClick={handleNoticeClick}>
+          <BellIcon fill={active === "notice"} />
         </div>
       </nav>
     </Footer>
