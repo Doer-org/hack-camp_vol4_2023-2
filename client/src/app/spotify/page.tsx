@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import { searchArtist } from "@/pages/api/spotify/search";
+import { searchArtist } from "@/api/spotify/search";
 
 type Artist = {
   id: string;

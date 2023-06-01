@@ -1,4 +1,4 @@
-import { readArtist } from "@/pages/api/spotify/artist";
+import { readArtist } from "@/api/spotify/artist";
 import { NextResponse } from "next/server";
 
 export async function GET() {

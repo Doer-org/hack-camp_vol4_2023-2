@@ -1,4 +1,4 @@
-import { getAccessToken } from "@/pages/api/spotify/client/client";
+import { getAccessToken } from "@/api/spotify/client/client";
 import { NextResponse } from "next/server";
 
 export async function GET() {
