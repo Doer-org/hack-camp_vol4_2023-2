@@ -58,36 +58,36 @@ INSERT INTO Reaction (reaction_id, user_id_from, user_id_to, kind) VALUES ('abc'
 INSERT INTO Reaction (reaction_id, user_id_from, user_id_to, kind) VALUES ('cdf', 'cdf', 'abc', 'like');
 
 CREATE TABLE `FavoriteRamenya` (
-  `ramenya_id` varchar(255) COLLATE utf8mb4_bin NOT NULL,
   `user_id`    varchar(255) COLLATE utf8mb4_bin NOT NULL,
+  `rank_n`     varchar(255) COLLATE utf8mb4_bin NOT NULL,
   `ramenya`    varchar(255) COLLATE utf8mb4_bin NOT NULL,
   `timestamp`  timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`ramenya_id`)
+  PRIMARY KEY (`user_id`, `rank_n`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
-INSERT INTO FavoriteRamenya (ramenya_id, user_id, ramenya) VALUES ('adfa', 'abc', 'ramenya1');
-INSERT INTO FavoriteRamenya (ramenya_id, user_id, ramenya) VALUES ('vasd', 'abc', 'ramenya2');
-INSERT INTO FavoriteRamenya (ramenya_id, user_id, ramenya) VALUES ('asre', 'abc', 'ramenya3');
-INSERT INTO FavoriteRamenya (ramenya_id, user_id, ramenya) VALUES ('cafw', 'cdf', 'ramenya2');
+INSERT INTO FavoriteRamenya (user_id, rank_n, ramenya) VALUES ('abc', 1, 'ramenya1');
+INSERT INTO FavoriteRamenya (user_id, rank_n, ramenya) VALUES ('abc', 2, 'ramenya2');
+INSERT INTO FavoriteRamenya (user_id, rank_n, ramenya) VALUES ('abc', 3, 'ramenya3');
+INSERT INTO FavoriteRamenya (user_id, rank_n, ramenya) VALUES ('cdf', 1, 'ramenya2');
 
 CREATE TABLE `FavoriteMusic` (
   `user_id`   varchar(255) COLLATE utf8mb4_bin NOT NULL,
-  `rank`      varchar(255) COLLATE utf8mb4_bin NOT NULL,
+  `rank_n`      int NOT NULL,
   `music`     varchar(255) COLLATE utf8mb4_bin NOT NULL,
   `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`user_id`, `rank`)
+  PRIMARY KEY (`user_id`, `rank_n`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin; 
 
-INSERT INTO FavoriteMusic (user_id, rank, music) VALUES ('abc', '1', 'music1');
-INSERT INTO FavoriteMusic (user_id, rank, music) VALUES ('cdf', '2', 'music2');
+INSERT INTO FavoriteMusic (user_id, rank_n, music) VALUES ('abc', 1, 'music1');
+INSERT INTO FavoriteMusic (user_id, rank_n, music) VALUES ('cdf', 1, 'music2');
 
 CREATE TABLE `FavoriteArtist` (
   `user_id`   varchar(255) COLLATE utf8mb4_bin NOT NULL,
-  `rank`      varchar(255) COLLATE utf8mb4_bin NOT NULL,
+  `rank_n`      int NOT NULL,
   `artist`    varchar(255) COLLATE utf8mb4_bin NOT NULL,
   `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`user_id`, `rank`)
+  PRIMARY KEY (`user_id`, `rank_n`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
-INSERT INTO FavoriteArtist (user_id, rank, artist) VALUES ('abc', '1', 'artist1');
-INSERT INTO FavoriteArtist (user_id, rank, artist) VALUES ('cdf', '2', 'artist2');
+INSERT INTO FavoriteArtist (user_id, rank_n, artist) VALUES ('abc', 1, 'artist1');
+INSERT INTO FavoriteArtist (user_id, rank_n, artist) VALUES ('cdf', 2, 'artist2');
