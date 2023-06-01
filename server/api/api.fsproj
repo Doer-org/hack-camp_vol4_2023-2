@@ -15,6 +15,7 @@
     <Compile Include="GraphQL\Handler.fs" />
     <Compile Include="Rest\Handlers.fs" />
     <Compile Include="Database\Database.fs" />
+    <Compile Include="Database\Account.fs" />
     <Compile Include="Database\User.fs" />
     <Compile Include="Auth.fs" />
     <Compile Include="Env.fs" />
