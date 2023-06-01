@@ -1,8 +1,8 @@
 import React from "react";
-import * as styles from "../styles/nav-side.css";
+import * as styles from "../styles/nav-menu.css";
 import Link from "next/link";
 
-const _NavSide = () => {
+const _NavMenu = () => {
   return (
     <div className={styles.frameStyle}>
       <ul className={styles.innerStyle}>
@@ -41,4 +41,4 @@ const _NavSide = () => {
   );
 };
 
-export const NavSide = _NavSide;
+export const NavMenu = _NavMenu;

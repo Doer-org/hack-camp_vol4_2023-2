@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import { Logo, Hamburger } from "@/ui";
-import { CommonHeader, NavSide } from "../_ui";
+import { CommonHeader, NavMenu } from "../_ui";
 import * as styles from "./_styles/timeline.css";
 
 export default function TimelineLayout({
@@ -25,7 +25,7 @@ export default function TimelineLayout({
         right={<Hamburger onClick={handleClick} />}
       />
       <div className={navClassList.join(" ")}>
-        <NavSide />
+        <NavMenu />
       </div>
       <div className={styles.containerStyle}>{children}</div>
     </>
