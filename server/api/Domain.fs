@@ -28,21 +28,23 @@ type Profile =
       timestamp: DateTimeOffset }
 
 module Profile =
-
+    // Todo: change log id
     type ChangeLog =
         { user_id: UserID
           summary: string
           timestamp: DateTimeOffset }
 
     type Reaction =
-        { user_id_from: UserID
+        { reaction_id: string
+          user_id_from: UserID
           user_id_to: UserID
           kind: string
           timestamp: DateTimeOffset }
 
     module Ramen =
         type FavoriteRamenya =
-            { user_id: UserID
+            { ramenya_id: string
+              user_id: UserID
               ramenya: string
               timestamp: DateTimeOffset }
 
@@ -56,7 +58,7 @@ module Profile =
 
         type FavoriteArtist =
             { user_id: UserID
-              artist_info: string
+              artist: string
               rank: int
               timestamp: DateTimeOffset }
 
@@ -128,7 +130,7 @@ let createUser
     (createUser: Update<User>)
     : Command.CreateUser =
     fun (sub: sub) (user: User) ->
-        if not (existAccount sub) then
+        if existAccount sub then
             Ok user
         else
             let account: User.Account = { sub = sub; user_id = user.user_id }

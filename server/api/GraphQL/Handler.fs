@@ -96,7 +96,7 @@ open JWT.Algorithms
 open JWT.Builder
 open JWT.Serializers
 
-let handleGraphQL (AUTH0_JWKS: string, AUTH0_DOMAIN: string, AUTH0_AUDIENCE: string) : HttpHandler =
+let handleGraphQL (auth0_jwks: string, auth0_domain: string, auth0_audience: string) : HttpHandler =
 
     let jwtHeaderDecoder = JwtBuilder.Create().DecodeHeader<JwtHeader>
 
@@ -116,7 +116,7 @@ let handleGraphQL (AUTH0_JWKS: string, AUTH0_DOMAIN: string, AUTH0_AUDIENCE: str
 
     let publicKeys =
         let jwksJson =
-            AUTH0_JWKS
+            auth0_jwks
             |> serializer.Deserialize<{| keys: {| kid: string; x5c: string[] |}[] |}>
 
         let kid2cert = jwksJson.keys |> Seq.map (fun key -> key.kid, key.x5c[0]) |> dict
@@ -174,11 +174,11 @@ let handleGraphQL (AUTH0_JWKS: string, AUTH0_DOMAIN: string, AUTH0_AUDIENCE: str
                                                      aud: string[]
                                                      sub: string |}>
 
-                    let issIsCorrect = $@"https://{AUTH0_DOMAIN}/" = payload.iss
+                    let issIsCorrect = $@"https://{auth0_domain}/" = payload.iss
 
                     let audIsCorrect =
                         let tokenAudience = payload.aud |> Set.ofArray
-                        tokenAudience.Contains AUTH0_AUDIENCE
+                        tokenAudience.Contains auth0_audience
 
                     if issIsCorrect && audIsCorrect then
                         baseHandler (Some payload.sub) store

@@ -6,6 +6,8 @@
     open Microsoft.Extensions.DependencyInjection
     open MySql.Data.MySqlClient
 
+    open Database
+
     [<EntryPoint>]
     let main _ =
         let env =
@@ -46,54 +48,82 @@
 
                     member _.createAccount(account: Domain.User.Account) =
                         let conn = dbFactory.CreateConnection()
-                        
-
-                        Error "aaa"
+                        Database.Account.create conn account
 
                     member _.createUser(user: Domain.User) =
                         let conn = dbFactory.CreateConnection()
                         let _ = Database.User.save conn user
                         Ok user
 
-                    member _.followUser(follow: Domain.User.Follow) = Error "ww"
+                    member _.followUser(follow: Domain.User.Follow) =
+                        let conn = dbFactory.CreateConnection()
+                        Database.Follow.follow conn follow
 
-                    member _.unfollowUser(follow: Domain.User.Follow) = Error "ww"
+                    member _.unfollowUser(follow: Domain.User.Follow) =
+                        let conn = dbFactory.CreateConnection()
+                        Database.Follow.unfollow conn follow
 
-                    member _.updateReaction(reaction: Domain.Profile.Reaction) = Error "ww"
+                    member _.updateReaction(reaction: Domain.Profile.Reaction) =
+                        let conn = dbFactory.CreateConnection()
+                        Database.Reaction.update conn reaction
 
-                    member _.updateRamenProfile(ramenya: Domain.Profile.Ramen.FavoriteRamenya) = Error "ww"
-
-
+                    member _.updateRamenProfile(ramenya: Domain.Profile.Ramen.FavoriteRamenya) = Error "未実装"
 
                     member _.getUser(user_id: string) =
                         let conn = dbFactory.CreateConnection()
                         let user = Database.User.get conn user_id
-                        Ok user
+                        user
 
-                    member _.getAccount(account: Domain.User.Account) = Error "aaa"
+                    member _.getLog(user_id: Domain.UserID) =
+                        let conn = dbFactory.CreateConnection()
+                        Database.Log.getByUserID conn user_id
 
-                    member _.getAccountBySub(sub: Domain.sub) = Error "aaa"
+                    member _.getAccount(account: Domain.User.Account) =
+                        let conn = dbFactory.CreateConnection()
+                        Database.Account.getBySub conn account.sub
+
+                    member _.getAccountBySub(sub: Domain.sub) =
+                        let conn = dbFactory.CreateConnection()
+                        Database.Account.getBySub conn sub
 
                     member _.getAllUsers() =
                         let conn = dbFactory.CreateConnection()
                         let users = Database.User.getAll conn |> Seq.toList
                         Ok users
 
-                    member _.getFollowingUsers(user_id: Domain.UserID) = Error "ww"
+                    member _.getFollowingUsers(user_id: Domain.UserID) =
+                        let conn = dbFactory.CreateConnection()
+                        Database.Follow.getFollowing conn user_id
 
-                    member _.getFollowers(user_id: Domain.UserID) = Error "ww"
+                    member _.getFollowers(user_id: Domain.UserID) =
+                        let conn = dbFactory.CreateConnection()
+                        Database.Follow.getFollowers conn user_id
 
-                    member _.getTimeline(user_id: Domain.UserID) = Error "ww"
+                    member _.getTimeline(user_id: Domain.UserID) =
+                        let conn = dbFactory.CreateConnection()
+                        Database.ProfileChangeLog.getByUserID conn user_id
 
-                    member _.getAllTimeline() = Error "ww"
+                    member _.getAllTimeline() =
+                        let conn = dbFactory.CreateConnection()
+                        //Database.ProfileChangeLog.
+                        Error "未実装"
 
-                    member _.getProfile(user_id: Domain.UserID) = Error "ww"
+                    member _.getProfile(user_id: Domain.UserID) =
+                        let conn = dbFactory.CreateConnection()
+                        //Database.
+                        Error "未実装"
 
-                    member _.getReaction(user_id: Domain.UserID) = Error "ww"
+                    member _.getReaction(user_id: Domain.UserID) =
+                        let conn = dbFactory.CreateConnection()
+                        Database.Reaction.getByUserID conn user_id
 
-                    member _.getBookmarkUsers(user_id: Domain.UserID) = Error "ww"
+                    // member _.getBookmarkUsers(user_id: Domain.UserID) =
+                    //     let conn = dbFactory.CreateConnection()
+                    //     Database.Reaction.getByUserID conn user_id
 
-                    member _.getRamenProfile(user_id: Domain.UserID) = Error "ww"
+                    member _.getRamenProfile(user_id: Domain.UserID) =
+                        let conn = dbFactory.CreateConnection()
+                        Database.FavoriteRamenya.getByUserID conn user_id
 
                 }
 

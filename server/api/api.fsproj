@@ -8,6 +8,7 @@
   <ItemGroup>
     <Compile Include="Domain.fs" />
     <Compile Include="Store.fs" />
+    <Compile Include="Utils.fs" />
     <Compile Include="GraphQL\Schema\Types.fs" />
     <Compile Include="GraphQL\Schema\Query.fs" />
     <Compile Include="GraphQL\Schema\Mutation.fs" />
@@ -17,6 +18,13 @@
     <Compile Include="Database\Database.fs" />
     <Compile Include="Database\Account.fs" />
     <Compile Include="Database\User.fs" />
+    <Compile Include="Database\Follow.fs" />
+    <Compile Include="Database\ProfileChangeLog.fs" />
+    <Compile Include="Database\Reaction.fs" />
+    <Compile Include="Database\FavoriteRamenya.fs" />
+    <Compile Include="Database\FavoriteMusic.fs" />
+    <Compile Include="Database\FavoriteArtist.fs" />
+    <Compile Include="Database\Log.fs" />
     <Compile Include="Auth.fs" />
     <Compile Include="Env.fs" />
     <Compile Include="Program.fs" />

@@ -121,7 +121,7 @@ and ProfileMusicFavoriteArtistType =
         fieldsFn =
             fun () ->
                 [ Define.Field("user_id", String, (fun _ favorite_artist -> favorite_artist.user_id))
-                  Define.Field("artist_info", String, (fun _ favorite_artist -> favorite_artist.artist_info))
+                  Define.Field("artist_info", String, (fun _ favorite_artist -> favorite_artist.artist))
                   Define.Field("rank", Int, (fun _ favorite_artist -> favorite_artist.rank))
                   Define.Field(
                       "timestamp",

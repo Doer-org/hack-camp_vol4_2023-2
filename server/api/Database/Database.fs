@@ -1,8 +1,7 @@
-﻿module Database
+﻿module Database.Database
 
 open System
 open System.Data
-open Domain
 
 type IDbCommand with
 
