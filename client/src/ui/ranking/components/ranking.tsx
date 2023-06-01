@@ -6,10 +6,17 @@ type Props = {
   contentType: "music" | "book" | "person";
   image?: string;
   rank?: number;
+  manageActive?: boolean;
   onClick?: () => void;
 };
 
-const _Ranking = ({ contentType, image, rank, ...props }: Props) => {
+const _Ranking = ({
+  contentType,
+  image,
+  rank,
+  manageActive = false,
+  ...props
+}: Props) => {
   // active状態の管理
   const [active, setActive] = useState<boolean>(false);
   // componentを参照
@@ -27,6 +34,10 @@ const _Ranking = ({ contentType, image, rank, ...props }: Props) => {
 
   // windowのクリックイベントの処理
   useEffect(() => {
+    if (!manageActive) {
+      return;
+    }
+
     const handleWindowClick = (e: MouseEvent) => {
       handleOutsideClick(e);
     };
@@ -36,13 +47,19 @@ const _Ranking = ({ contentType, image, rank, ...props }: Props) => {
     return () => {
       window.removeEventListener("click", handleWindowClick);
     };
-  }, []);
+  }, [manageActive]);
+
+  const handleInsideClick = () => {
+    if (manageActive) {
+      setActive(true);
+    }
+  };
 
   return (
     <div
       ref={componentRef}
       className={styles.contentStyle}
-      onClick={() => setActive(true)}
+      onClick={handleInsideClick}
       {...props}
     >
       {rank !== undefined && <span className={styles.rankStyle}>{rank}</span>}

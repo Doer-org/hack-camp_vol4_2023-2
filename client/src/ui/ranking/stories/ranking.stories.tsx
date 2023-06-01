@@ -31,6 +31,7 @@ export const Music: Story = {
         contentType="music"
         image="https://i.scdn.co/image/ab67616d00001e026bb2b8231817c8d205d07fb2"
         rank={1}
+        manageActive={true}
       />
     );
   },
@@ -43,6 +44,7 @@ export const Book: Story = {
         contentType="book"
         image="https://m.media-amazon.com/images/I/51xHT9ZnmNL._SX350_BO1,204,203,200_.jpg"
         rank={2}
+        manageActive={true}
       />
     );
   },
@@ -55,12 +57,13 @@ export const Person: Story = {
         contentType="person"
         image="https://i.scdn.co/image/ab67616100005174fbe071f5bc42f38d3485a29a"
         rank={3}
+        manageActive={true}
       />
     );
   },
 };
 
-export const NoRankNoImage: Story = {
+export const NoRankImageActive: Story = {
   render: () => {
     return <Ranking contentType="music" />;
   },
