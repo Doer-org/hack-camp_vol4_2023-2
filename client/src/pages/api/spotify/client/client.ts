@@ -5,7 +5,7 @@ export type ResponseError = {
   message: string;
 };
 
-const getAccess = async () => {
+export const getAccessToken = async () => {
   const { data, err } = await fetch("https://accounts.spotify.com/api/token", {
     method: "POST",
     headers: {
@@ -16,15 +16,15 @@ const getAccess = async () => {
             ":" +
             process.env.NEXT_PUBLIC_SPOTIFY_API_CLIENT_SECRET
         ).toString("base64"),
-      "Content-type": "application/x-www-form-urlencoded",
+      "Content-Type": "application/x-www-form-urlencoded",
     },
-    body: "grant_type=client_credentials&sj",
+    body: `grant_type=refresh_token&refresh_token=${process.env.NEXT_PUBLIC_SPOTIFY_API_REFRESH_TOKEN}`,
   }).then(async (res) => {
     const data = await res.json();
     if (!res.ok) return { err: data };
     return { data };
   });
-  return data;
+  return { data, err };
 };
 
 const resp2result = async <T>(
@@ -45,14 +45,15 @@ const resp2result = async <T>(
 
 export const spotifyApiClient = {
   get: async <T>(url: string) => {
-    const { access_token, token_type } = await getAccess();
-    const data = await fetch(url, {
+    const { data, err } = await getAccessToken();
+    if (err) return;
+    const resp = await fetch(url, {
       cache: "no-store",
       method: "GET",
       headers: {
-        Authorization: `${token_type} ${access_token}`,
+        Authorization: `${data.token_type} ${data.access_token}`,
       },
     });
-    return await resp2result<T>(data);
+    return await resp2result<T>(resp);
   },
 };
