@@ -39,6 +39,25 @@ export const imageStyle = styleVariants({
   },
 });
 
+export const noImageStyle = styleVariants({
+  music: {
+    width: "100%",
+    height: "90px",
+    backgroundColor: "#F9F8F4",
+  },
+  book: {
+    width: "100%",
+    height: "128px",
+    backgroundColor: "#F9F8F4",
+  },
+  person: {
+    width: "100%",
+    height: "90px",
+    borderRadius: "50%",
+    backgroundColor: "#F9F8F4",
+  },
+});
+
 export const activeStyle = style({
   outline: "2px solid #0B002A",
   outlineOffset: "-2px",

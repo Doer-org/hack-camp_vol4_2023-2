@@ -4,7 +4,7 @@ import * as styles from "../styles/ranking.css";
 
 type Props = {
   contentType: "music" | "book" | "person";
-  image: string;
+  image?: string;
   rank?: number;
   onClick?: () => void;
 };
@@ -45,17 +45,24 @@ const _Ranking = ({ contentType, image, rank, ...props }: Props) => {
       onClick={() => setActive(true)}
       {...props}
     >
-      {typeof rank !== "undefined" && (
-        <span className={styles.rankStyle}>{rank}</span>
+      {rank !== undefined && <span className={styles.rankStyle}>{rank}</span>}
+      {image === undefined ? (
+        <div
+          className={[
+            styles.noImageStyle[contentType],
+            active && styles.activeStyle,
+          ].join(" ")}
+        ></div>
+      ) : (
+        <img
+          src={image}
+          alt={`${rank}位`}
+          className={[
+            styles.imageStyle[contentType],
+            active && styles.activeStyle,
+          ].join(" ")}
+        />
       )}
-      <img
-        src={image}
-        alt={`${rank}位`}
-        className={[
-          styles.imageStyle[contentType],
-          active && styles.activeStyle,
-        ].join(" ")}
-      />
     </div>
   );
 };

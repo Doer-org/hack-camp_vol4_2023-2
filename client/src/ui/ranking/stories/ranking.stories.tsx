@@ -60,13 +60,8 @@ export const Person: Story = {
   },
 };
 
-export const NoRank: Story = {
+export const NoRankNoImage: Story = {
   render: () => {
-    return (
-      <Ranking
-        contentType="person"
-        image="https://i.scdn.co/image/ab67616100005174104822dfaac494e992c7e3f6"
-      />
-    );
+    return <Ranking contentType="music" />;
   },
 };
