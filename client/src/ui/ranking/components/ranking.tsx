@@ -49,6 +49,7 @@ const _Ranking = ({
     };
   }, [manageActive]);
 
+  // component内部をクリックした場合、activeをtrueに
   const handleInsideClick = () => {
     if (manageActive) {
       setActive(true);
