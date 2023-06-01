@@ -24,7 +24,7 @@ const meta: Meta<typeof SearchResult> = {
 export default meta;
 type Story = StoryObj<typeof SearchResult>;
 
-export const Butter: Story = {
+export const Music: Story = {
   render: () => {
     return (
       <SearchResult
