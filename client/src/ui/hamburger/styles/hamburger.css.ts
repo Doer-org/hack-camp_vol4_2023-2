@@ -1,9 +1,14 @@
 import { style } from "@vanilla-extract/css";
 
-export const boxStyle = style({
+export const wrapperStyle = style({
   display: "inline-block",
   width: "24px",
   height: "24px",
+});
+
+export const boxStyle = style({
+  width: "100%",
+  height: "100%",
   cursor: "pointer",
   position: "relative",
 });

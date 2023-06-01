@@ -7,6 +7,7 @@ export * from "./footer";
 export * from "./hamburger";
 export * from "./header";
 export * from "./home-icon";
+export * from "./label";
 export * from "./like";
 export * from "./logo";
 export * from "./popover";

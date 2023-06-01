@@ -8,7 +8,7 @@ export const headerStyle = style({
   top: "0",
   left: "0",
   boxSizing: "border-box",
-  zIndex: "1",
+  zIndex: "2",
 });
 
 export const size = styleVariants({

@@ -2,7 +2,11 @@
 import React, { useState } from "react";
 import * as styles from "../styles/hamburger.css";
 
-const _Hamburger = () => {
+type Props = {
+  onClick?: () => void;
+};
+
+const _Hamburger = ({ ...props }: Props) => {
   const [open, setOpen] = useState<boolean>(false);
 
   const handleClick = () => {
@@ -12,10 +16,12 @@ const _Hamburger = () => {
   const barClassList = [styles.barStyle, open && styles.barOpenStyle];
 
   return (
-    <div className={styles.boxStyle} onClick={handleClick}>
-      <span className={barClassList.join(" ")}></span>
-      <span className={barClassList.join(" ")}></span>
-      <span className={barClassList.join(" ")}></span>
+    <div className={styles.wrapperStyle} {...props}>
+      <div className={styles.boxStyle} onClick={handleClick}>
+        <span className={barClassList.join(" ")}></span>
+        <span className={barClassList.join(" ")}></span>
+        <span className={barClassList.join(" ")}></span>
+      </div>
     </div>
   );
 };

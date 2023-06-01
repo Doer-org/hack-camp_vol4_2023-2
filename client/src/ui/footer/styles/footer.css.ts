@@ -9,5 +9,5 @@ export const footerStyle = style({
   bottom: 0,
   left: 0,
   boxSizing: "border-box",
-  zIndex: 1,
+  zIndex: 2,
 });

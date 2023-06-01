@@ -3,6 +3,7 @@ import { style, styleVariants } from "@vanilla-extract/css";
 export const wrapperStyle = style({
   borderRadius: "50%",
   cursor: "pointer",
+  flexShrink: "0",
 });
 
 export const imageStyle = style({
