@@ -13,8 +13,19 @@ export default function Page() {
 
   const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const result = await searchArtist(e.target.value);
+
     if (result.type === "error") return;
-    setArtists(result);
+
+    const resultArtists = result.value.artists.items;
+    setArtists(
+      resultArtists.map((a) => {
+        return {
+          id: a.id,
+          name: a.name,
+          image: a.images ? a.images[0].url : "",
+        };
+      })
+    );
   };
 
   return (
