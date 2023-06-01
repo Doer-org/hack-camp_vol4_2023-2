@@ -10,35 +10,31 @@ const user = {
 
 export default function Page() {
   return (
-    <>
-      <div className={styles.containerStyle}>
-        <div className={styles.contentStyle}>
-          <div className={styles.noticeStyle}>
-            <NoticeCard user={user} action="本プロフィールの内容を変更" />
-          </div>
-          <div className={styles.noticeStyle}>
-            <NoticeCard user={user} action="本プロフィールの内容を変更" />
-          </div>
-          <div className={styles.noticeStyle}>
-            <NoticeCard user={user} action="本プロフィールの内容を変更" />
-          </div>
-          <div className={styles.noticeStyle}>
-            <NoticeCard user={user} action="本プロフィールの内容を変更" />
-          </div>
-          <div className={styles.noticeStyle}>
-            <NoticeCard user={user} action="本プロフィールの内容を変更" />
-          </div>
-          <div className={styles.noticeStyle}>
-            <NoticeCard user={user} action="本プロフィールの内容を変更" />
-          </div>
-          <div className={styles.noticeStyle}>
-            <NoticeCard user={user} action="本プロフィールの内容を変更" />
-          </div>
-          <div className={styles.noticeStyle}>
-            <NoticeCard user={user} action="本プロフィールの内容を変更" />
-          </div>
-        </div>
+    <div className={styles.contentStyle}>
+      <div className={styles.noticeStyle}>
+        <NoticeCard user={user} action="本プロフィールの内容を変更" />
       </div>
-    </>
+      <div className={styles.noticeStyle}>
+        <NoticeCard user={user} action="本プロフィールの内容を変更" />
+      </div>
+      <div className={styles.noticeStyle}>
+        <NoticeCard user={user} action="本プロフィールの内容を変更" />
+      </div>
+      <div className={styles.noticeStyle}>
+        <NoticeCard user={user} action="本プロフィールの内容を変更" />
+      </div>
+      <div className={styles.noticeStyle}>
+        <NoticeCard user={user} action="本プロフィールの内容を変更" />
+      </div>
+      <div className={styles.noticeStyle}>
+        <NoticeCard user={user} action="本プロフィールの内容を変更" />
+      </div>
+      <div className={styles.noticeStyle}>
+        <NoticeCard user={user} action="本プロフィールの内容を変更" />
+      </div>
+      <div className={styles.noticeStyle}>
+        <NoticeCard user={user} action="本プロフィールの内容を変更" />
+      </div>
+    </div>
   );
 }

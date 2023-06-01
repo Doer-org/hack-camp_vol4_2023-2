@@ -1,20 +1,33 @@
-import React from "react";
+"use client";
+import React, { useState } from "react";
 import { Logo, Hamburger } from "@/ui";
-import { CommonHeader } from "../_ui";
+import { CommonHeader, NavSide } from "../_ui";
+import * as styles from "./_styles/timeline.css";
 
 export default function TimelineLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const [open, setOpen] = useState<boolean>(false);
+
+  const handleClick = () => {
+    setOpen((prev) => !prev);
+  };
+
+  const navClassList = [styles.navStyle, open && styles.navOpenStyle];
+
   return (
     <>
       <CommonHeader
         title="タイムライン"
         left={<Logo />}
-        right={<Hamburger />}
+        right={<Hamburger onClick={handleClick} />}
       />
-      {children}
+      <div className={navClassList.join(" ")}>
+        <NavSide />
+      </div>
+      <div className={styles.containerStyle}>{children}</div>
     </>
   );
 }
