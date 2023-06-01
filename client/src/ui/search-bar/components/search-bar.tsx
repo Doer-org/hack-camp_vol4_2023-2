@@ -1,12 +1,12 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import * as styles from "../styles/search-bar.css";
 
 type Props = {
   contentType: "music" | "book" | "artist" | "author";
 };
 
-const _SearchBar = ({ contentType }: Props) => {
+const _SearchBar = ({ contentType = "music" }: Props) => {
   // placeholderに入れるワード
   const words = {
     music: "曲",

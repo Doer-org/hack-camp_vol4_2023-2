@@ -25,8 +25,10 @@ const meta: Meta<typeof SearchBar> = {
 export default meta;
 type Story = StoryObj<typeof SearchBar>;
 
-export const Music: Story = {
-  render: () => {
-    return <SearchBar contentType="music" />;
+export const Default: Story = {
+  argTypes: {
+    contentType: {
+      options: ["music", "book", "artist", "author"],
+    },
   },
 };
