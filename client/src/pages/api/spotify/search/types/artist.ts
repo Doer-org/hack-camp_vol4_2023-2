@@ -4,7 +4,7 @@ type Image = {
   width: number | null;
 };
 
-export type ArtistResponse = {
+type ArtistItem = {
   external_urls: {
     spotify: string;
   };
@@ -20,4 +20,16 @@ export type ArtistResponse = {
   popularity: number;
   type: "user" | "episode" | "playlist" | "show" | "track" | "album" | "artist";
   uri: string;
+};
+
+export type ArtistsResponse = {
+  artists: {
+    href: string;
+    items: ArtistItem[];
+    limit: number;
+    next: string | null;
+    offset: number;
+    previous: string | null;
+    total: number;
+  };
 };
