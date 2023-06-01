@@ -2,7 +2,7 @@ import { style } from "@vanilla-extract/css";
 
 export const contentStyle = style({
   display: "flex",
-  alignContent: "center",
+  alignItems: "center",
   justifyContent: "space-around",
   gap: "12px",
 });
