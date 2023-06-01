@@ -19,6 +19,9 @@ export const getAccessToken = async () => {
       "Content-Type": "application/x-www-form-urlencoded",
     },
     body: `grant_type=refresh_token&refresh_token=${process.env.NEXT_PUBLIC_SPOTIFY_API_REFRESH_TOKEN}`,
+    next: {
+      revalidate: 3590,
+    },
   }).then(async (res) => {
     const data = await res.json();
     if (!res.ok) return { err: data };
