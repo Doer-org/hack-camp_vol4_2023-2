@@ -3,16 +3,19 @@ import React, { useState, useEffect, useRef } from "react";
 import * as styles from "../styles/ranking.css";
 
 type Props = {
-  rank?: number;
-  image: string;
   contentType: "music" | "book" | "person";
+  image: string;
+  rank?: number;
   onClick?: () => void;
 };
 
-const _Ranking = ({ image, rank, contentType, ...props }: Props) => {
+const _Ranking = ({ contentType, image, rank, ...props }: Props) => {
+  // active状態の管理
   const [active, setActive] = useState<boolean>(false);
+  // componentを参照
   const componentRef = useRef<HTMLDivElement>(null);
 
+  // component外部をクリックした場合、activeをfalseに
   const handleOutsideClick = (e: MouseEvent) => {
     if (
       componentRef.current &&
@@ -22,6 +25,7 @@ const _Ranking = ({ image, rank, contentType, ...props }: Props) => {
     }
   };
 
+  // windowのクリックイベントの処理
   useEffect(() => {
     const handleWindowClick = (e: MouseEvent) => {
       handleOutsideClick(e);
