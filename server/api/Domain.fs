@@ -43,7 +43,7 @@ module Profile =
 
     module Ramen =
         type FavoriteRamenya =
-            { ramenya_id: string
+            { rank: int
               user_id: UserID
               ramenya: string
               timestamp: DateTimeOffset }
@@ -106,7 +106,9 @@ module Query =
 
     type GetProfile = User.Account -> ValidateAccount -> CommandResult<Profile>
 
-    type GetReaction = User.Account -> ValidateAccount -> CommandResult<Profile.Reaction list>
+    type GetUserLog = User.Account -> ValidateAccount -> CommandResult<User.Log option>
+
+    type GetReaction = UserID -> CommandResult<Profile.Reaction list>
 
     type GetBookmark = User.Account -> ValidateAccount -> CommandResult<User list>
 
@@ -153,14 +155,10 @@ let updateFollowUser
             else
                 unfollow args.follow)
 
-let updateReaction (update: Update<Profile.Reaction>) (profileChangeLogger) : Command.UpdateReaction =
+let updateReaction (update: Update<Profile.Reaction>) : Command.UpdateReaction =
     fun account valid reaction log ->
         validAccount valid account (fun _ ->
             let r = update reaction
-
-            if Result.isOk r then
-                profileChangeLogger log
-
             r)
 
 let updateFavoriteMusic (update: Update<Profile.Music.FavoriteMusic>) : Command.UpdateFavoriteMusic =
@@ -169,8 +167,18 @@ let updateFavoriteMusic (update: Update<Profile.Music.FavoriteMusic>) : Command.
 let updateFavoriteArtist (update: Update<Profile.Music.FavoriteArtist>) : Command.UpdateFavoriteArtist =
     fun account valid artist -> validAccount valid account (fun _ -> update artist)
 
-let updateFavoriteRamen (update: Update<Profile.Ramen.FavoriteRamenya>) : Command.UpdateFavoriteRamenya =
-    fun account valid ramen -> validAccount valid account (fun _ -> update ramen)
+let updateFavoriteRamen
+    (update: Update<Profile.Ramen.FavoriteRamenya>)
+    (profileChangeLogger: unit -> unit)
+    : Command.UpdateFavoriteRamenya =
+    fun account valid ramen ->
+        validAccount valid account (fun _ ->
+
+            let r = update ramen
+            profileChangeLogger ()
+            r
+
+        )
 
 let getAllTimeline (query: Query<unit, Profile.ChangeLog list>) : Query.GetAllTimeline = query
 
@@ -190,8 +198,10 @@ let getFollowingUsersTimeline (query: Query<UserID, Profile.ChangeLog list>) : Q
 let getProfile (query: Query<UserID, Profile>) : Query.GetProfile =
     fun account valid -> validAccount valid account (fun _ -> query account.user_id)
 
-let getReaction (query: Query<UserID, Profile.Reaction list>) : Query.GetReaction =
+let getLog (query: Query<UserID, User.Log option>) : Query.GetUserLog =
     fun account valid -> validAccount valid account (fun _ -> query account.user_id)
+
+let getReaction (query: Query<UserID, Profile.Reaction list>) : Query.GetReaction = query
 
 let getBookmarkUsers (query: Query<UserID, User list>) : Query.GetBookmark =
     fun account valid -> validAccount valid account (fun _ -> query account.user_id)

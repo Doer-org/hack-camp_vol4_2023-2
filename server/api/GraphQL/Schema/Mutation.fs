@@ -13,10 +13,7 @@ module private MutationCommand =
     let updateRamenProfile = "updateRamenProfile"
 
 
-let private accountValidation store = fun _ -> true
-// Utils.accountValidation store
-
-let private createUser (sub: Domain.sub option) (store: Store.IStore) =
+let private createUser (isTest: bool) (sub: Domain.sub option) (store: Store.IStore) =
     let args = {| user_name = "user_name" |}
 
     Define.Field(
@@ -29,7 +26,11 @@ let private createUser (sub: Domain.sub option) (store: Store.IStore) =
                 sub
                 |> function
                     | Some sub -> sub
-                    | None -> System.Guid.NewGuid() |> string //failwith "no sub"
+                    | None ->
+                        if isTest then
+                            System.Guid.NewGuid() |> string
+                        else
+                            failwith "no sub"
 
             let user: User =
                 { user_id = System.Guid.NewGuid() |> string
@@ -43,7 +44,7 @@ let private createUser (sub: Domain.sub option) (store: Store.IStore) =
                 | Ok user -> Some user
     )
 
-let private updateReaction (sub: Domain.sub option) (store: Store.IStore) =
+let private createReaction (isTest: bool) (sub: Domain.sub option) (store: Store.IStore) =
     let args =
         {| user_id_from = "user_id_from"
            user_id_to = "user_id_to"
@@ -60,11 +61,11 @@ let private updateReaction (sub: Domain.sub option) (store: Store.IStore) =
             let sub =
                 sub
                 |> function
+                    | None -> if isTest then null else failwith "no sub"
                     | Some sub -> sub
-                    | None -> null //failwith "no sub"
 
             let reaction: Profile.Reaction =
-                { reaction_id = System.Guid().ToString()
+                { reaction_id = System.Guid.NewGuid() |> string
                   user_id_from = ctx.Arg args.user_id_from
                   user_id_to = ctx.Arg args.user_id_to
                   kind = ctx.Arg args.kind
@@ -82,53 +83,71 @@ let private updateReaction (sub: Domain.sub option) (store: Store.IStore) =
             let result =
                 Domain.updateReaction
                     (store.updateReaction)
-                    (fun _ -> ())
                     account
-                    (accountValidation store)
+                    (Utils.accountValidation isTest store)
                     reaction
                     changeLog
 
             result
             |> function
-                | Error _ -> None
+                | Error e -> failwith e
                 | Ok r -> Some r
     )
 
-let private updateRamenProfile (sub: Domain.sub option) (store: Store.IStore) =
+let private updateRamenProfile (isTest: bool) (sub: Domain.sub option) (store: Store.IStore) =
     let args =
         {| user_id = "user_id"
-           best_ramenya = "best_ramenya" |}
+           ramenya = "ramenya"
+           rank = "rank" |}
 
     Define.Field(
         MutationCommand.updateRamenProfile,
         Nullable ProfileRamenFavoriteRamenyaType,
         "update ramen profile",
-        [ Define.Input(args.user_id, String); Define.Input(args.best_ramenya, String) ],
+        [ Define.Input(args.user_id, String)
+          Define.Input(args.ramenya, String)
+          Define.Input(args.rank, Int) ],
         fun ctx _ ->
 
             let sub =
                 sub
                 |> function
+                    | None -> if isTest then null else failwith "no sub"
                     | Some sub -> sub
-                    | None -> null //failwith "no sub"
 
             let ramen: Profile.Ramen.FavoriteRamenya =
-                { ramenya_id = System.Guid() |> string
+                { rank = ctx.Arg args.rank
                   user_id = ctx.Arg args.user_id
-                  ramenya = ctx.Arg args.best_ramenya
+                  ramenya = ctx.Arg args.ramenya
                   timestamp = DateTimeOffset.Now }
 
             let account: User.Account = { sub = sub; user_id = ramen.user_id }
 
             ramen
-            |> Domain.updateFavoriteRamen store.updateRamenProfile account (accountValidation store)
+            |> Domain.updateFavoriteRamen
+                store.updateRamenProfile
+                (fun _ ->
+                    let log: Domain.Profile.ChangeLog =
+                        { user_id = ramen.user_id
+                          summary = "update ramen profile"
+                          timestamp = DateTimeOffset.Now }
+
+                    store.createChangeLog log
+                    |> function
+                        | Error e -> printfn "%A" e
+                        | Ok _ -> ())
+                account
+                (Utils.accountValidation isTest store)
             |> function
-                | Error _ -> None
+                | Error e -> failwith e
                 | Ok follow -> Some follow
     )
 
-let Mutation (sub: Domain.sub option) (store: Store.IStore) =
+let Mutation (isTest: bool) (sub: Domain.sub option) (store: Store.IStore) =
     Define.Object<Root>(
         name = "Mutation",
-        fields = [ createUser sub store; updateReaction sub store; updateRamenProfile sub store ]
+        fields =
+            [ createUser isTest sub store
+              createReaction isTest sub store
+              updateRamenProfile isTest sub store ]
     )

@@ -65,9 +65,19 @@
 
                     member _.updateReaction(reaction: Domain.Profile.Reaction) =
                         let conn = dbFactory.CreateConnection()
-                        Database.Reaction.update conn reaction
+                        Database.Reaction.create conn reaction
 
-                    member _.updateRamenProfile(ramenya: Domain.Profile.Ramen.FavoriteRamenya) = Error "未実装"
+                    member _.updateRamenProfile(ramenya: Domain.Profile.Ramen.FavoriteRamenya) =
+                        let conn = dbFactory.CreateConnection()
+                        Database.FavoriteRamenya.update conn ramenya
+
+                    member _.updateLog(log: Domain.User.Log) =
+                        let conn = dbFactory.CreateConnection()
+                        Database.Log.update conn log
+
+                    member _.createChangeLog(log: Domain.Profile.ChangeLog) =
+                        let conn = dbFactory.CreateConnection()
+                        Database.ProfileChangeLog.create conn log
 
                     member _.getUser(user_id: string) =
                         let conn = dbFactory.CreateConnection()
@@ -105,21 +115,15 @@
 
                     member _.getAllTimeline() =
                         let conn = dbFactory.CreateConnection()
-                        //Database.ProfileChangeLog.
-                        Error "未実装"
+                        Database.ProfileChangeLog.getAll conn
 
                     member _.getProfile(user_id: Domain.UserID) =
                         let conn = dbFactory.CreateConnection()
-                        //Database.
-                        Error "未実装"
+                        Error "未実装" // TODO: 未実装
 
-                    member _.getReaction(user_id: Domain.UserID) =
+                    member _.getReaction(user_id_to: Domain.UserID) =
                         let conn = dbFactory.CreateConnection()
-                        Database.Reaction.getByUserID conn user_id
-
-                    // member _.getBookmarkUsers(user_id: Domain.UserID) =
-                    //     let conn = dbFactory.CreateConnection()
-                    //     Database.Reaction.getByUserID conn user_id
+                        Database.Reaction.getByUserID conn user_id_to
 
                     member _.getRamenProfile(user_id: Domain.UserID) =
                         let conn = dbFactory.CreateConnection()
@@ -156,7 +160,9 @@
                 [ get "/" (Response.ofPlainText $"Hello F# World! {env.ENVIRONMENT}")
                   post
                       "/graphql"
-                      (GraphQL.Handler.handleGraphQL (env.AUTH0_JWKS, env.AUTH0_AUDIENCE, env.AUTH0_AUDIENCE))
+                      (GraphQL.Handler.handleGraphQL
+                          (env.ENVIRONMENT = "test")
+                          (env.AUTH0_JWKS, env.AUTH0_AUDIENCE, env.AUTH0_AUDIENCE))
                   get "/users" (validate [] Rest.Handlers.Users.index)
                   get "/users/{id}" (validate [] Rest.Handlers.Users.read)
                   post "/users" (validate [] Rest.Handlers.Users.create) ]

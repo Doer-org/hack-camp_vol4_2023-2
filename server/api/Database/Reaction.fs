@@ -27,6 +27,26 @@ let update (conn: IDbConnection) (reaction: Reaction) : Result<Reaction, string>
     with e ->
         Error e.Message
 
+let create (conn: IDbConnection) (reaction: Reaction) : Result<Reaction, string> =
+    try
+        use cmd = conn.CreateCommand()
+
+        cmd.CommandText <-
+            "
+            INSERT INTO Reaction (reaction_id, user_id_from, user_id_to, kind, timestamp)
+            VALUES (@reaction_id, @user_id_from, @user_id_to, @kind, @timestamp);"
+
+        cmd.AddParameter("reaction_id", reaction.reaction_id)
+        cmd.AddParameter("user_id_from", reaction.user_id_from)
+        cmd.AddParameter("user_id_to", reaction.user_id_to)
+        cmd.AddParameter("kind", reaction.kind)
+        cmd.AddParameter("timestamp", reaction.timestamp)
+        cmd.Execute()
+        Ok reaction
+
+    with e ->
+        Error e.Message
+
 let getByUserID (conn: IDbConnection) (user_id: string) : Result<Reaction list, string> =
     try
         use cmd = conn.CreateCommand()

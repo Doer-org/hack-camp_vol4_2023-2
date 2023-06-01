@@ -5,14 +5,17 @@ open System.Data
 open Domain.User
 open Database
 
-let create (conn: IDbConnection) (log: Log) : Result<Log, string> =
+let update (conn: IDbConnection) (log: Log) : Result<Log, string> =
     try
         use cmd = conn.CreateCommand()
 
         cmd.CommandText <-
             "
             INSERT INTO Log (user_id, timeline_last_access)
-            VALUES (@user_id, @timeline_last_access);"
+            VALUES (@user_id, @timeline_last_access)
+            ON DUPLICATE KEY UPDATE
+                `timeline_last_access` = VALUES(`timeline_last_access`),
+                `user_id` = VALUES(`user_id`);"
 
         cmd.AddParameter("user_id", log.user_id)
         cmd.AddParameter("timeline_last_access", log.timeline_last_access)

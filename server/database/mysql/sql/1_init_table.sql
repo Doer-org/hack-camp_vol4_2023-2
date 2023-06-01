@@ -39,7 +39,7 @@ CREATE TABLE `ProfileChangeLog` (
   `user_id`   varchar(255) COLLATE utf8mb4_bin NOT NULL,
   `summary`   varchar(255) COLLATE utf8mb4_bin NOT NULL,
   `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`user_id`)
+  PRIMARY KEY (`user_id`, `timestamp`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 INSERT INTO ProfileChangeLog (user_id, summary) VALUES ('abc', 'summary1');

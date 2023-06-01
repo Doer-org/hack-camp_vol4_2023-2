@@ -11,13 +11,15 @@ let update (conn: IDbConnection) (ramenya: FavoriteRamenya) : Result<FavoriteRam
 
         cmd.CommandText <-
             "
-            UPDATE FavoriteRamenya
-            SET ramenya = @ramenya
-            WHERE user_id = @user_id
-            AND ramenya_id = @ramenya_id;"
+            INSERT INTO FavoriteRamenya (`user_id`, `rank_n`, `ramenya`)
+            VALUES (@user_id, @rank_n, @ramenya)
+            ON DUPLICATE KEY UPDATE
+                `user_id` = VALUES(`user_id`),
+                `rank_n` = VALUES(`rank_n`),
+                `ramenya` = VALUES(`ramenya`);"
 
         cmd.AddParameter("user_id", ramenya.user_id)
-        cmd.AddParameter("ramenya_id", ramenya.ramenya_id)
+        cmd.AddParameter("rank_n", ramenya.rank)
         cmd.AddParameter("ramenya", ramenya.ramenya)
         cmd.Execute()
         Ok ramenya
@@ -37,9 +39,9 @@ let getByUserID (conn: IDbConnection) (user_id: string) : Result<FavoriteRamenya
         cmd.AddParameter("user_id", user_id)
 
         cmd.Query(fun rd ->
-            { ramenya_id = rd.GetOrdinal("ramenya_id") |> rd.GetString
-              user_id = rd.GetOrdinal("user_id") |> rd.GetString
+            { user_id = rd.GetOrdinal("user_id") |> rd.GetString
               ramenya = rd.GetOrdinal("ramenya") |> rd.GetString
+              rank = rd.GetOrdinal("rank_n") |> rd.GetInt32
               timestamp =
                 rd.GetOrdinal("timestamp")
                 |> rd.GetDateTime

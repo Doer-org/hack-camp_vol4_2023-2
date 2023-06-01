@@ -88,7 +88,8 @@ and ProfileRamenFavoriteRamenyaType =
         fieldsFn =
             fun () ->
                 [ Define.Field("user_id", String, (fun _ favorite_ramenya -> favorite_ramenya.user_id))
-                  Define.Field("best_ramenya", String, (fun _ favorite_ramenya -> favorite_ramenya.ramenya))
+                  Define.Field("ramenya", String, (fun _ favorite_ramenya -> favorite_ramenya.ramenya))
+                  Define.Field("rank", Int, (fun _ favorite_ramenya -> favorite_ramenya.rank))
                   Define.Field(
                       "timestamp",
                       String,

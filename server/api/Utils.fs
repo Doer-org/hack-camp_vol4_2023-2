@@ -2,10 +2,11 @@
 
 
 
-let accountValidation (store: Store.IStore) =
+let accountValidation (isTest: bool) (store: Store.IStore) =
 
-    //fun _ -> true
-
-    store.getAccount >> Result.isOk
+    if isTest then
+        fun _ -> true
+    else
+        store.getAccount >> Result.isOk
 
 let checkSub (store: Store.IStore) = store.getAccountBySub >> Result.isOk

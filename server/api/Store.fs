@@ -9,6 +9,8 @@ type IStore =
     abstract member unfollowUser: User.Follow -> Result<User.Follow, string>
     abstract member updateReaction: Profile.Reaction -> Result<Profile.Reaction, string>
     abstract member updateRamenProfile: Profile.Ramen.FavoriteRamenya -> Result<Profile.Ramen.FavoriteRamenya, string>
+    abstract member updateLog: User.Log -> Result<User.Log, string>
+    abstract member createChangeLog: Profile.ChangeLog -> Result<Profile.ChangeLog, string>
 
     abstract member getUser: string -> Result<User option, string>
     abstract member getLog: UserID -> Result<User.Log option, string>
@@ -21,5 +23,5 @@ type IStore =
     abstract member getAllTimeline: unit -> Result<Profile.ChangeLog list, string>
     abstract member getProfile: UserID -> Result<Profile, string>
     abstract member getReaction: UserID -> Result<Profile.Reaction list, string>
-    // abstract member getBookmarkUsers: UserID -> Result<User list, string>
+    // abstract member getBookmark: UserID -> Result<User list, string>
     abstract member getRamenProfile: UserID -> Result<Profile.Ramen.FavoriteRamenya list, string>

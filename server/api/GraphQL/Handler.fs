@@ -46,7 +46,7 @@ let private json =
 
 let private removeWhitespacesAndLineBreaks (str: string) = str.Trim().Replace("\r\n", " ")
 
-let private handleGraphQLQuery (sub: Domain.sub option) (store: Store.IStore) (body: string) =
+let private handleGraphQLQuery isTest (sub: Domain.sub option) (store: Store.IStore) (body: string) =
     task {
         let data = body |> deserialize
 
@@ -72,7 +72,7 @@ let private handleGraphQLQuery (sub: Domain.sub option) (store: Store.IStore) (b
                     | :? Map<string, obj> as x -> Some x
                     | _ -> failwith "failed to parse variables.")
 
-        let executor = Util.executor sub store
+        let executor = Util.executor isTest sub store
         let root: Schema.Types.Root = { RequestId = System.Guid.NewGuid() |> string }
 
         let! resp =
@@ -96,7 +96,7 @@ open JWT.Algorithms
 open JWT.Builder
 open JWT.Serializers
 
-let handleGraphQL (auth0_jwks: string, auth0_domain: string, auth0_audience: string) : HttpHandler =
+let handleGraphQL isTest (auth0_jwks: string, auth0_domain: string, auth0_audience: string) : HttpHandler =
 
     let jwtHeaderDecoder = JwtBuilder.Create().DecodeHeader<JwtHeader>
 
@@ -144,7 +144,7 @@ let handleGraphQL (auth0_jwks: string, auth0_domain: string, auth0_audience: str
             fun ctx ->
                 task {
                     let! body = Request.getBodyString ctx
-                    let! resp = handleGraphQLQuery sub store body
+                    let! resp = handleGraphQLQuery isTest sub store body
                     return Response.ofPlainText $"{resp}" ctx
                 }
 

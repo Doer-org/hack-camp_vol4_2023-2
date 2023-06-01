@@ -46,3 +46,24 @@ let getByUserID (conn: IDbConnection) (user_id: string) : Result<ChangeLog list,
 
     with e ->
         Error e.Message
+
+let getAll (conn: IDbConnection) : Result<ChangeLog list, string> =
+    try
+        use cmd = conn.CreateCommand()
+
+        cmd.CommandText <-
+            "
+            SELECT * FROM ProfileChangeLog;"
+
+        cmd.Query(fun rd ->
+            { user_id = rd.GetOrdinal("user_id") |> rd.GetString
+              summary = rd.GetOrdinal("summary") |> rd.GetString
+              timestamp =
+                rd.GetOrdinal("timestamp")
+                |> rd.GetDateTime
+                |> fun t -> DateTimeOffset(t, TimeSpan.Zero) })
+        |> Seq.toList
+        |> Ok
+
+    with e ->
+        Error e.Message
