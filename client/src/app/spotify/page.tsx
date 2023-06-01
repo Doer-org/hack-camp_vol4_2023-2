@@ -14,6 +14,8 @@ export default function Page() {
   const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const result = await searchArtist(e.target.value);
 
+    if (!result) return;
+
     if (result.type === "error") return;
 
     const resultArtists = result.value.artists.items;
