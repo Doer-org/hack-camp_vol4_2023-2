@@ -39,3 +39,7 @@ export const noticeStyle = style({
     },
   },
 });
+
+export const labelStyle = style({
+  marginTop: "36px",
+});
