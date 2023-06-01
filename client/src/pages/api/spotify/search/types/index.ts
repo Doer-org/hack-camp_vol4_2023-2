@@ -1,1 +1,1 @@
-export * from "./artist";
+export type { ArtistsResponse } from "./artist";
