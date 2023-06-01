@@ -1,10 +1,15 @@
 import { style } from "@vanilla-extract/css";
 
-export const frameStyle = style({});
+export const frameStyle = style({
+  background: "#fff",
+  height: "100%",
+  width: "100%",
+});
 
 export const innerStyle = style({
   padding: "10px 24px",
   textAlign: "right",
+  marginBlock: "unset",
 });
 
 export const itemStyle = style({
