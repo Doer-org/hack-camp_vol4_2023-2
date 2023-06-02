@@ -1,6 +1,9 @@
-import { spotifyApiClient } from "../client";
+import { env } from "@/utils";
+import { ResponseError, Result, Token, spotifyApiClient } from "../client";
 
-export const readArtist = async (id: string) =>
-  await spotifyApiClient.get(
-    `${process.env.NEXT_PUBLIC_SPOTIFY_API_BASE_URL}/artists/${id}`
-  );
+const { spotifyApiBaseURL } = env();
+
+export const readArtist = async (
+  id: string,
+  token: Result<Token, ResponseError>
+) => await spotifyApiClient.get(`${spotifyApiBaseURL}/artists/${id}`, token);

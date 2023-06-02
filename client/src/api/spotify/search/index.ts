@@ -1,12 +1,25 @@
-import { spotifyApiClient } from "../client";
+import { env } from "@/utils";
+import { ResponseError, Result, Token, spotifyApiClient } from "../client";
 import { ArtistsResponse, TracksResponse } from "./types";
 
-export const searchArtist = async (q: string) =>
-  await spotifyApiClient.get<ArtistsResponse>(
-    `${process.env.NEXT_PUBLIC_SPOTIFY_API_BASE_URL}/search?q=${q}&type=artist&limit=10`
-  );
+const { spotifyApiBaseURL } = env();
 
-export const searchTrack = async (q: string) =>
-  await spotifyApiClient.get<TracksResponse>(
-    `${process.env.NEXT_PUBLIC_SPOTIFY_API_BASE_URL}/search?q=${q}&type=track&limit=10`
+export const searchArtist = async (
+  q: string,
+  token: Result<Token, ResponseError>
+) => {
+  return await spotifyApiClient.get<ArtistsResponse>(
+    `${spotifyApiBaseURL}/search?q=${q}&type=artist&limit=10`,
+    token
   );
+};
+
+export const searchTrack = async (
+  q: string,
+  token: Result<Token, ResponseError>
+) => {
+  return await spotifyApiClient.get<TracksResponse>(
+    `${spotifyApiBaseURL}/search?q=${q}&type=track&limit=10`,
+    token
+  );
+};
