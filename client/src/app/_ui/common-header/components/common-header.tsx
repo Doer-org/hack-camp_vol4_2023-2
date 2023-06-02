@@ -3,7 +3,7 @@ import { Header } from "@/ui";
 import * as styles from "../styles/common-header.css";
 
 type Props = {
-  title: string;
+  title?: string;
   left: React.ReactNode;
   right: React.ReactNode;
 };
