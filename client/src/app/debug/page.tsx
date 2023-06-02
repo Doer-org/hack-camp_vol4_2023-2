@@ -1,8 +1,8 @@
 import { env } from "@/utils/env";
 import Link from "next/link";
-import { SnsButton } from "./_ui/sns-button";
+import { DebugButton, DebugGraphQLButton } from "./_ui";
 
-export default function Home() {
+const Page = () => {
   const { clientURL } = env();
   const linkStyle = {
     padding: "0.5rem",
@@ -29,19 +29,29 @@ export default function Home() {
           </Link>
         </li>
         <li>
-          <Link href="./profile" prefetch={false} style={linkStyle}>
+          <Link href="./debug/profile" prefetch={false} style={linkStyle}>
             Your Profile
           </Link>
         </li>
         <li>
-          <SnsButton
+          <DebugButton
             color="black"
-            icon="github"
-            label="GitHubでログイン"
-            url="#"
+            label="Health Check Button"
+            url={`${clientURL}/api/health`}
           />
+        </li>
+        <li>
+          <DebugButton
+            color="black"
+            label="Get Profile"
+            url={`${clientURL}/api/auth/me`}
+          />
+        </li>
+        <li>
+          <DebugGraphQLButton color="black" label="try graphql" />
         </li>
       </ul>
     </main>
   );
-}
+};
+export default Page;
