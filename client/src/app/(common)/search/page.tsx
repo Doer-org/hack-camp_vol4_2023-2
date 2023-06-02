@@ -40,7 +40,11 @@ export default function Page() {
 
   return (
     <>
-      <RecomCard contentType="person" contentName="アーティスト" />
+      <RecomCard
+        contentType="person"
+        contentName="アーティスト"
+        manageActive={true}
+      />
       <div className={styles.formWrapperStyle}>
         <SearchBar contentType="artist" onChange={handleChange} />
       </div>
