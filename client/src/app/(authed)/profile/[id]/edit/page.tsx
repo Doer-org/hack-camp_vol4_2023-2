@@ -15,9 +15,16 @@ type Artist = {
 const Page = () => {
   const [canSearch, setCanSearch] = useState<boolean>(false);
   const [artists, setArtists] = useState<Artist[]>([]);
-  const [firstId, setFirstId] = useState<string | undefined>();
+  const [firstId, setFirstId] = useState<string>();
+  const [secondId, setSecondId] = useState<string>();
+  const [thirdId, setthirdId] = useState<string>();
+  const [forcusedRank, setForcusedRank] = useState<
+    "first" | "second" | "third"
+  >();
 
   const [firstImage, setFirstImage] = useState<string>();
+  const [secondImage, setSecondImage] = useState<string>();
+  const [thirdImage, setThirdImage] = useState<string>();
 
   const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const token = await getAccessToken();
@@ -41,11 +48,30 @@ const Page = () => {
 
   const handleFirstClick = () => {
     setCanSearch(true);
+    setForcusedRank("first");
+  };
+  const handleSecondClick = () => {
+    setCanSearch(true);
+    setForcusedRank("second");
+  };
+  const handleThirdClick = () => {
+    setCanSearch(true);
+    setForcusedRank("third");
   };
 
   const handleArtistClick = (id: string, image: string) => {
-    setFirstId(id);
-    setFirstImage(image);
+    console.log(forcusedRank);
+    if (forcusedRank === "first") {
+      setFirstId(id);
+      setFirstImage(image);
+    } else if (forcusedRank === "second") {
+      setSecondId(id);
+      setSecondImage(image);
+    } else if (forcusedRank === "third") {
+      setthirdId(id);
+      setThirdImage(image);
+    }
+    return;
   };
 
   return (
@@ -70,7 +96,11 @@ const Page = () => {
                 contentType="person"
                 contentName="アーティスト"
                 firstImage={firstImage}
+                secondImage={secondImage}
+                thirdImage={thirdImage}
                 firstOnClick={handleFirstClick}
+                secondOnClick={handleSecondClick}
+                thirdOnClick={handleThirdClick}
               />
             </div>
             {canSearch && (
