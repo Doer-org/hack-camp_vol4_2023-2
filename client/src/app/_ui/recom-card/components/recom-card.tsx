@@ -9,6 +9,7 @@ type Props = {
   firstImage?: string;
   secondImage?: string;
   thirdImage?: string;
+  firstOnClick?: () => void;
   manageActive?: boolean;
 };
 
@@ -18,6 +19,7 @@ const _RecomCard = ({
   firstImage,
   secondImage,
   thirdImage,
+  firstOnClick,
   manageActive,
 }: Props) => {
   return (
@@ -29,6 +31,7 @@ const _RecomCard = ({
           image={firstImage}
           rank={1}
           manageActive={manageActive}
+          onClick={firstOnClick}
         />
         <Ranking
           contentType={contentType}
