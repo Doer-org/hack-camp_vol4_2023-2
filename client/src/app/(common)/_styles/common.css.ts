@@ -3,8 +3,6 @@ import { style } from "@vanilla-extract/css";
 export const containerStyle = style({
   paddingTop: "78px",
   paddingBottom: "56px",
-  background: "#f9f8f4",
-  minHeight: "100vh",
 });
 
 export const contentStyle = style({
