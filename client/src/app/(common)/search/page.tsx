@@ -32,7 +32,7 @@ export default function Page() {
         return {
           id: a.id,
           name: a.name,
-          image: a.images ? a.images[0].url : "",
+          image: a.images ? a.images[0]?.url : "",
         };
       })
     );
