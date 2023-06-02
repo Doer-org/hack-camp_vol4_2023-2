@@ -68,6 +68,8 @@ export type Query = {
   getReaction: Array<Profile_Reaction>;
   /** get following users timeline */
   getTimeline: Array<Profile_Change_Log>;
+  /** getUserByToken */
+  getUserByToken: Maybe<User>;
   /** get all users */
   getUsers: Array<User>;
   /** get user */
@@ -217,6 +219,17 @@ export type UpdateRamenProfileMutation = {
     ramenya: string;
     rank: number;
     timestamp: string;
+  } | null;
+};
+
+export type GetUserByTokenQueryVariables = Exact<{ [key: string]: never }>;
+
+export type GetUserByTokenQuery = {
+  __typename?: "Query";
+  getUserByToken: {
+    __typename?: "user";
+    user_id: string;
+    user_name: string;
   } | null;
 };
 
@@ -527,6 +540,32 @@ export const UpdateRamenProfileDocument = {
   UpdateRamenProfileMutation,
   UpdateRamenProfileMutationVariables
 >;
+export const GetUserByTokenDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "getUserByToken" },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "getUserByToken" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "user_id" } },
+                { kind: "Field", name: { kind: "Name", value: "user_name" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<GetUserByTokenQuery, GetUserByTokenQueryVariables>;
 export const GetUsersDocument = {
   kind: "Document",
   definitions: [

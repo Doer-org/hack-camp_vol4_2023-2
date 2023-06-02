@@ -7,6 +7,7 @@ open FSharp.Data.GraphQL.Types
 open Domain
 
 module private QueryCommand =
+    let getUserByToken = "getUserByToken"
     let getUser = "user"
     let getUsers = "getUsers"
     let getFollows = "getFollows"
@@ -18,6 +19,33 @@ module private QueryCommand =
     let getBookmark = "getBookmar"
     let getRamenProfile = "getRamenProfile"
     let getLog = "getLog"
+
+let private getUserByToken (token: Domain.Token option) (store: Store.IStore) =
+    Define.Field(
+        QueryCommand.getUserByToken,
+        Nullable UserType,
+        "getUserByToken",
+        fun _ _ ->
+            printfn "getUserByToken %A" token
+
+            let sub =
+                token
+                |> function
+                    | None -> failwith "no sub"
+                    | Some token -> token.sub
+
+            let account =
+                store.getAccountBySub sub
+                |> function
+                    | Error e -> failwith e
+                    | Ok account -> account
+
+            let ret = store.getUser account.user_id
+
+            match ret with
+            | Error e -> failwith e
+            | Ok user -> user
+    )
 
 let private getUser (store: Store.IStore) =
     let args = {| user_id = "user_id" |}
@@ -243,7 +271,8 @@ let Query (isTest: bool) (token: Domain.Token option) (store: Store.IStore) =
     Define.Object<Root>(
         name = "Query",
         fields =
-            [ getUser store
+            [ getUserByToken token store
+              getUser store
               getAllUsers store
               getFollows store
               getFollowers store

@@ -1,3 +1,10 @@
+query getUserByToken {
+  getUserByToken {
+    user_id
+    user_name
+  }
+}
+
 query getUsers {
   getUsers {
     user_id

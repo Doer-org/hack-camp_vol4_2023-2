@@ -162,7 +162,7 @@
                       "/graphql"
                       (GraphQL.Handler.handleGraphQL
                           (env.ENVIRONMENT = "test")
-                          (env.AUTH0_JWKS, env.AUTH0_AUDIENCE, env.AUTH0_AUDIENCE))
+                          (env.AUTH0_JWKS, env.AUTH0_DOMAIN, env.AUTH0_AUDIENCE))
                   get "/users" (validate [] Rest.Handlers.Users.index)
                   get "/users/{id}" (validate [] Rest.Handlers.Users.read)
                   post "/users" (validate [] Rest.Handlers.Users.create) ]
