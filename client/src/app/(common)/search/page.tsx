@@ -1,10 +1,11 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { searchArtist } from "@/api/spotify/search";
 import { SearchBar } from "@/ui/search-bar/components";
 import { SearchResult } from "@/ui";
 import { RecomCard } from "@/app/_ui";
 import * as styles from "./_styles/search.css";
+import { getAccessToken } from "@/api/spotify";
 
 type Artist = {
   id: string;
@@ -14,6 +15,9 @@ type Artist = {
 
 export default function Page() {
   const [artists, setArtists] = useState<Artist[]>([]);
+  useEffect(() => {
+    getAccessToken();
+  }, []);
 
   const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const result = await searchArtist(e.target.value);
