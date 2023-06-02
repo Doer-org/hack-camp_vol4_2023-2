@@ -26,8 +26,6 @@ let private getUserByToken (token: Domain.Token option) (store: Store.IStore) =
         Nullable UserType,
         "getUserByToken",
         fun _ _ ->
-            printfn "getUserByToken %A" token
-
             let sub =
                 token
                 |> function
