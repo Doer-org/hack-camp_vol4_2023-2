@@ -1,8 +1,8 @@
-import { useEnv } from "@/utils/env";
+import { env } from "@/utils/env";
 import { DebugButton } from "../_ui";
 
 const Page = () => {
-  const { serverURL } = useEnv();
+  const { serverURL } = env();
   return (
     <main className="">
       <div>login successful</div>

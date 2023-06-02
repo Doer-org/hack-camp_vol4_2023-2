@@ -1,10 +1,10 @@
-import { useEnv } from "@/utils/env";
+import { env } from "@/utils/env";
 import Link from "next/link";
 import { DebugButton } from "./_ui";
 import { SnsButton } from "./_ui/sns-button";
 
 export default function Home() {
-  const { clientURL } = useEnv();
+  const { clientURL } = env();
   const linkStyle = {
     padding: "0.5rem",
     fontSize: "1.5rem",
