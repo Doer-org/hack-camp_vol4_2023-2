@@ -19,7 +19,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={styles.resetStyle}>
-        {children}
+        <div className={styles.baseStyle}>{children}</div>
         <NavFooter user={me} />
       </body>
     </html>
