@@ -1,6 +1,59 @@
+query getUserByToken {
+  getUserByToken {
+    user_id
+    user_name
+  }
+}
+
 query getUsers {
   getUsers {
     user_id
     user_name
+  }
+}
+
+query getUser($user_id: String!) {
+  user(user_id: $user_id) {
+    user_id
+    user_name
+  }
+}
+
+query getFollows($user_id: String!) {
+  getFollows(user_id: $user_id) {
+    user_id
+    user_name
+  }
+}
+
+query getFollowers($user_id: String!) {
+  getFollowers(user_id: $user_id) {
+    user_id
+    user_name
+  }
+}
+
+query getTimeline($user_id: String!) {
+  getTimeline(user_id: $user_id) {
+    user_id
+    summary
+    timestamp
+  }
+}
+
+query getReaction($user_id: String!) {
+  getReaction(user_id: $user_id) {
+    user_id_from
+    user_id_to
+    kind
+    timestamp
+  }
+}
+
+query getRamenProfile($user_id: String!) {
+  getRamenProfile(user_id: $user_id) {
+    user_id
+    rank
+    ramenya
   }
 }

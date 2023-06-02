@@ -1,0 +1,32 @@
+mutation createUser {
+  createUser {
+    user_name
+    user_id
+  }
+}
+
+mutation updateReaction(
+  $user_id_from: String!
+  $user_id_to: String!
+  $kind: String!
+) {
+  updateReaction(
+    user_id_from: $user_id_from
+    user_id_to: $user_id_to
+    kind: $kind
+  ) {
+    user_id_from
+    user_id_to
+    kind
+    timestamp
+  }
+}
+
+mutation updateRamenProfile($user_id: String!, $ramenya: String!, $rank: Int!) {
+  updateRamenProfile(user_id: $user_id, ramenya: $ramenya, rank: $rank) {
+    user_id
+    ramenya
+    rank
+    timestamp
+  }
+}
