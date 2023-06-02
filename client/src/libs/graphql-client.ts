@@ -4,4 +4,5 @@ const { serverURL } = env();
 export const graphqlClient = new ApolloClient({
   uri: `${serverURL}/graphql`,
   cache: new InMemoryCache(),
+  credentials: "include",
 });
