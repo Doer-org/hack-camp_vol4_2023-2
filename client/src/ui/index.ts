@@ -11,3 +11,5 @@ export * from "./label";
 export * from "./like";
 export * from "./logo";
 export * from "./popover";
+export * from "./search-result";
+export * from "./search-bar";

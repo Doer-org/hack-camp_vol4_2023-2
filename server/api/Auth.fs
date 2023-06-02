@@ -7,7 +7,6 @@ open JWT.Algorithms
 open JWT.Builder
 open JWT.Serializers
 open Falco
-open Env
 
 type Permission =
     | ReadResource
@@ -35,7 +34,7 @@ module Permission =
             | _ -> None
 
 let validate
-    (env: IEnv)
+    (auth0_jwks: string, auth0_domain: string, auth0_audience: string)
     (permissions: Permission list)
     (handleInvalid: HttpHandler)
     (handleValid: HttpHandler)
@@ -58,7 +57,7 @@ let validate
 
     let publicKeys =
         let jwksJson =
-            env.AUTH0_JWKS
+            auth0_jwks
             |> serializer.Deserialize<{| keys: {| kid: string; x5c: string[] |}[] |}>
 
         let kid2cert = jwksJson.keys |> Seq.map (fun key -> key.kid, key.x5c[0]) |> dict
@@ -116,11 +115,11 @@ let validate
 
                         permissions |> List.forall tokenPermissions.Contains
 
-                    let issIsCorrect = $@"https://{env.AUTH0_DOMAIN}/" = payload.iss
+                    let issIsCorrect = $@"https://{auth0_domain}/" = payload.iss
 
                     let audIsCorrect =
                         let tokenAudience = payload.aud |> Set.ofArray
-                        tokenAudience.Contains env.AUTH0_AUDIENCE
+                        tokenAudience.Contains auth0_audience
 
                     if issIsCorrect && audIsCorrect && hasAllRequiredPermissions then
                         handleValid
