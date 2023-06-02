@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import { Logo, Hamburger } from "@/ui";
 import { CommonHeader, NavMenu } from "@/app/_ui";
 import * as styles from "../_styles/common.css";
-import { useSelectedLayoutSegment } from "next/navigation";
 
 export default function CommmonLayout({
   children,
