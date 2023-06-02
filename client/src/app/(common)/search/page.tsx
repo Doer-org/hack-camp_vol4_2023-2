@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { searchArtist } from "@/api/spotify/search";
 import { SearchBar } from "@/ui/search-bar/components";
 import { SearchResult } from "@/ui";
+import * as styles from "./_styles/search.css";
 
 type Artist = {
   id: string;
@@ -35,16 +36,19 @@ export default function Page() {
   return (
     <>
       <SearchBar contentType="music" onChange={handleChange} />
-      {artists?.map((artist) => {
-        return (
-          <SearchResult
-            key={artist.id}
-            image={artist.image}
-            text={artist.name}
-            contentType="music"
-          />
-        );
-      })}
+      <div className={styles.resultListStyle}>
+        {artists?.map((artist) => {
+          return (
+            <div key={artist.id} className={styles.artistStyle}>
+              <SearchResult
+                image={artist.image}
+                text={artist.name}
+                contentType="music"
+              />
+            </div>
+          );
+        })}
+      </div>
     </>
   );
 }
