@@ -18,6 +18,7 @@ export default function CommmonLayout({
 
   const navClassList = [styles.navStyle, open && styles.navOpenStyle];
 
+  // TODO: ここの処理, 要検討
   const segment = useSelectedLayoutSegment();
   const segmentMap = new Map([
     ["timeline", "タイムライン"],
