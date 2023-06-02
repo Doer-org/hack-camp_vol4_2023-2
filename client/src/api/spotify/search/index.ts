@@ -1,5 +1,5 @@
 import { spotifyApiClient } from "../client";
-import { ArtistsResponse } from "./types";
+import { ArtistsResponse, TracksResponse } from "./types";
 
 export const searchArtist = async (q: string) =>
   await spotifyApiClient.get<ArtistsResponse>(
@@ -7,6 +7,6 @@ export const searchArtist = async (q: string) =>
   );
 
 export const searchTrack = async (q: string) =>
-  await spotifyApiClient.get(
+  await spotifyApiClient.get<TracksResponse>(
     `${process.env.NEXT_PUBLIC_SPOTIFY_API_BASE_URL}/search?q=${q}&type=track&limit=10`
   );
