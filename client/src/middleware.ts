@@ -5,7 +5,7 @@ import {
 import { NextRequest, NextResponse } from "next/server";
 
 export const config = {
-  matcher: ["/profile/:path*"],
+  matcher: ["/profile/:path*", "/timeline/:path*", "/notification/:path*"],
 };
 
 export default withMiddlewareAuthRequired(async function middleware(
