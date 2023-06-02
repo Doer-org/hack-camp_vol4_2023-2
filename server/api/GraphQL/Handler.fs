@@ -223,7 +223,7 @@ let handleGraphQL isTest (auth0_jwks: string, auth0_domain: string, auth0_audien
             match accessToken, idToken with
             | Ok at, Ok it ->
                 let token: Domain.Token =
-                    { sub = at.iss
+                    { sub = at.sub
                       permissions = at.permissions
                       name = it.nickname
                       picture = it.picture }
