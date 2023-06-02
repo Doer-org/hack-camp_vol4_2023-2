@@ -1,6 +1,6 @@
 import { env } from "@/utils/env";
 import Link from "next/link";
-import { DebugButton } from "./_ui";
+import { DebugButton, DebugGraphQLButton } from "./_ui";
 import { SnsButton } from "./_ui/sns-button";
 
 export default function Home() {
@@ -47,6 +47,9 @@ export default function Home() {
             label="Get Profile"
             url={`${clientURL}/api/auth/me`}
           />
+        </li>
+        <li>
+          <DebugGraphQLButton color="black" label="try graphql" />
         </li>
         <li>
           <SnsButton
