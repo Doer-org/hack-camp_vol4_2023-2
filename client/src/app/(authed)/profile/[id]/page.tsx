@@ -1,7 +1,13 @@
-import React, { useState } from "react";
+"use client";
+import React from "react";
 import * as styles from "../_styles/profile.css";
 import { Button, Like } from "@/ui";
 import { RecomCard, ProfileHeader } from "@/app/_ui";
+import Link from "next/link";
+
+type Props = {
+  params: { id: string };
+};
 
 const user = {
   name: "Aoki",
@@ -11,21 +17,20 @@ const user = {
   follower: 20,
 };
 
-const Page = () => {
-  const [isEdit, setIsEdit] = useState<boolean>(false);
-
-  const handleEditClick = () => {
-    setIsEdit(true);
-  };
-
+const Page = ({ params }: Props) => {
   return (
     <>
       {user.me ? (
         <ProfileHeader
           user={user}
           right={
-            <Button color="black" onClick={handleEditClick}>
-              編集
+            <Button color="black">
+              <Link
+                href={`/profile/${params.id}/edit`}
+                className={styles.linkStyle}
+              >
+                編集
+              </Link>
             </Button>
           }
         />
