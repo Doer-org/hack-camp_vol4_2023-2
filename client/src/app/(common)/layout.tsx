@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { Logo, Hamburger } from "@/ui";
 import { CommonHeader, NavMenu } from "../_ui";
 import * as styles from "./_styles/common.css";
+import { useSelectedLayoutSegment } from "next/navigation";
 
 export default function CommmonLayout({
   children,
@@ -17,10 +18,17 @@ export default function CommmonLayout({
 
   const navClassList = [styles.navStyle, open && styles.navOpenStyle];
 
+  // FIXME: ここの処理, 要検討
+  const segment = useSelectedLayoutSegment();
+  const segmentMap = new Map([
+    ["timeline", "タイムライン"],
+    ["search", "おすすめのアーティスト"],
+  ]);
+
   return (
     <>
       <CommonHeader
-        title="タイムライン"
+        title={segment ? segmentMap.get(segment) : ""}
         left={<Logo />}
         right={<Hamburger onClick={handleClick} />}
       />
