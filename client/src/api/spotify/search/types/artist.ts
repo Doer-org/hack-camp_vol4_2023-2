@@ -1,31 +1,30 @@
-type Image = {
-  height: number | null;
-  url: string;
-  width: number | null;
-};
+import { Image } from "./image";
 
-type ArtistItem = {
+export type SimplifiedArtist = {
   external_urls: {
     spotify: string;
   };
+  href: string;
+  id: string;
+  name: string;
+  type: "user" | "episode" | "playlist" | "show" | "track" | "album" | "artist";
+  uri: string;
+};
+
+export type Artist = SimplifiedArtist & {
   followers: {
     href: string | null;
     total: number;
   };
   genres: string[];
-  href: string;
-  id: string;
   images: Image[];
-  name: string;
   popularity: number;
-  type: "user" | "episode" | "playlist" | "show" | "track" | "album" | "artist";
-  uri: string;
 };
 
 export type ArtistsResponse = {
   artists: {
     href: string;
-    items: ArtistItem[];
+    items: Artist[];
     limit: number;
     next: string | null;
     offset: number;
