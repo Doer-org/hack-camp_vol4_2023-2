@@ -1,9 +1,8 @@
 "use client";
 import React, { useState } from "react";
 import { Logo, Hamburger } from "@/ui";
-import { CommonHeader, NavMenu } from "../_ui";
-import * as styles from "./_styles/common.css";
-import { useSelectedLayoutSegment } from "next/navigation";
+import { CommonHeader, NavMenu } from "@/app/_ui";
+import * as styles from "../_styles/common.css";
 
 export default function CommmonLayout({
   children,
@@ -18,17 +17,10 @@ export default function CommmonLayout({
 
   const navClassList = [styles.navStyle, open && styles.navOpenStyle];
 
-  // FIXME: ここの処理, 要検討
-  const segment = useSelectedLayoutSegment();
-  const segmentMap = new Map([
-    ["timeline", "タイムライン"],
-    ["search", "おすすめのアーティスト"],
-  ]);
-
   return (
     <>
       <CommonHeader
-        title={segment ? segmentMap.get(segment) : ""}
+        title="おすすめのアーティスト"
         left={<Logo />}
         right={<Hamburger onClick={handleClick} />}
       />
