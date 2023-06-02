@@ -17,5 +17,6 @@ export const leftStyle = style({
 export const titleStyle = style({
   fontSize: "16px",
   fontWeight: "700",
+  color: "#0B002A",
   margin: 0,
 });

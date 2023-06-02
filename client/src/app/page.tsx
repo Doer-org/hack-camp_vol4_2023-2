@@ -1,47 +1,47 @@
 import { env } from "@/utils/env";
-import Link from "next/link";
-import { SnsButton } from "./_ui/sns-button";
+import { TopHeader } from "./_ui";
+import * as styles from "./_styles/top.css";
+import { Button, Logo } from "@/ui";
 
 export default function Home() {
   const { clientURL } = env();
-  const linkStyle = {
-    padding: "0.5rem",
-    fontSize: "1.5rem",
-    fontWeight: "bold",
-  };
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <ul
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          gap: "1rem",
-        }}
-      >
-        <li>
-          <Link href="/api/auth/login" prefetch={false} style={linkStyle}>
-            Login
-          </Link>
-        </li>
-        <li>
-          <Link href="/api/auth/logout" prefetch={false} style={linkStyle}>
-            Logout
-          </Link>
-        </li>
-        <li>
-          <Link href="./profile" prefetch={false} style={linkStyle}>
-            Your Profile
-          </Link>
-        </li>
-        <li>
-          <SnsButton
-            color="black"
-            icon="github"
-            label="GitHubでログイン"
-            url="#"
-          />
-        </li>
-      </ul>
-    </main>
+    <>
+      <TopHeader />
+      <main className={styles.wrapperStyle}>
+        <div className={styles.contentStyle}>
+          <div className={styles.catchphraseArea}>
+            <div className={styles.logo}>
+              <Logo size="large" />
+            </div>
+            <h2 className={styles.catchphrase}>
+              友達の趣味を
+              <br />
+              一目で知る
+            </h2>
+          </div>
+          <p className={styles.description}>
+            「トモシル」は、
+            <span className={styles.textPink}>&quot;友&quot;</span>
+            達の好きなものを、
+            <br />
+            簡単に<span className={styles.textPink}>&quot;知る&quot;</span>
+            ことができるサービスです。
+            <br />
+            友人の新たな一面が見つかるかもしれません。
+          </p>
+          <div className={styles.centering}>
+            <Button color="pink">始める</Button>
+          </div>
+        </div>
+        <div className={styles.contentStyle}>
+          <h3 className={styles.sectionTitle}>
+            あなただけのオリジナルの
+            <br />
+            プロフィールを作成
+          </h3>
+        </div>
+      </main>
+    </>
   );
 }
