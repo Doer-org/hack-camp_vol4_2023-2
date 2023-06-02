@@ -1,4 +1,5 @@
-import { Card, Ranking } from "@/ui";
+import { Card } from "@/ui";
+import { Ranking } from "@/ui/ranking/components";
 import React from "react";
 import * as styles from "../styles/recom-card.css";
 
