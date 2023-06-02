@@ -1,5 +1,5 @@
 import React from "react";
-import { NoticeCard } from "../_ui";
+import { NoticeCard } from "../../_ui";
 import * as styles from "./_styles/timeline.css";
 import { Label } from "@/ui";
 
@@ -11,7 +11,7 @@ const user = {
 
 export default function Page() {
   return (
-    <div className={styles.contentStyle}>
+    <div>
       <div className={styles.noticeStyle}>
         <NoticeCard user={user} action="本プロフィールの内容を変更" />
       </div>
