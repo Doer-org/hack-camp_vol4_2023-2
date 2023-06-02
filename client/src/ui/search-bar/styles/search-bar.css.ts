@@ -2,7 +2,7 @@ import { style } from "@vanilla-extract/css";
 
 export const wrapperStyle = style({
   width: "100%",
-  padding: "0 24px",
+  // padding: "0 24px",
   boxSizing: "border-box",
   display: "flex",
 });
