@@ -2,9 +2,9 @@
 import React, { useState } from "react";
 import { Logo, Hamburger } from "@/ui";
 import { CommonHeader, NavMenu } from "../_ui";
-import * as styles from "./_styles/timeline.css";
+import * as styles from "./_styles/common.css";
 
-export default function TimelineLayout({
+export default function CommmonLayout({
   children,
 }: {
   children: React.ReactNode;
@@ -27,7 +27,9 @@ export default function TimelineLayout({
       <div className={navClassList.join(" ")}>
         <NavMenu />
       </div>
-      <div className={styles.containerStyle}>{children}</div>
+      <div className={styles.containerStyle}>
+        <div className={styles.contentStyle}>{children}</div>
+      </div>
     </>
   );
 }
