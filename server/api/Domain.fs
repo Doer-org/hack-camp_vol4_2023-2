@@ -5,6 +5,12 @@ open System
 type sub = string
 type UserID = string
 
+type Token =
+    { sub: sub
+      permissions: string[]
+      name: string
+      picture: string }
+
 type User =
     { user_id: UserID
       user_name: string

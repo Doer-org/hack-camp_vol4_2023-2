@@ -13,19 +13,18 @@ module private MutationCommand =
     let updateRamenProfile = "updateRamenProfile"
 
 
-let private createUser (isTest: bool) (sub: Domain.sub option) (store: Store.IStore) =
+let private createUser (isTest: bool) (token: Domain.Token option) (store: Store.IStore) =
     let args = {| user_name = "user_name" |}
 
     Define.Field(
         MutationCommand.createUser,
         Nullable UserType,
         "create user",
-        [ Define.Input(args.user_name, String) ],
-        fun ctx _ ->
+        fun _ _ ->
             let sub =
-                sub
+                token
                 |> function
-                    | Some sub -> sub
+                    | Some token -> token.sub
                     | None ->
                         if isTest then
                             System.Guid.NewGuid() |> string
@@ -33,9 +32,20 @@ let private createUser (isTest: bool) (sub: Domain.sub option) (store: Store.ISt
                             failwith "no sub"
 
             let user: User =
-                { user_id = System.Guid.NewGuid() |> string
-                  user_name = ctx.Arg args.user_name
-                  image_url = "" }
+                let id = System.Guid.NewGuid() |> string
+
+                match token with
+                | None ->
+                    if not isTest then
+                        failwith "token empty (check env)"
+                    else
+                        { user_id = id
+                          user_name = $"token empty (created:{DateTimeOffset.Now})"
+                          image_url = "" }
+                | Some token ->
+                    { user_id = id
+                      user_name = token.name
+                      image_url = token.picture }
 
             user
             |> Domain.createUser (Utils.checkSub store) (store.createAccount) (store.createUser) sub
@@ -44,7 +54,7 @@ let private createUser (isTest: bool) (sub: Domain.sub option) (store: Store.ISt
                 | Ok user -> Some user
     )
 
-let private createReaction (isTest: bool) (sub: Domain.sub option) (store: Store.IStore) =
+let private createReaction (isTest: bool) (token: Domain.Token option) (store: Store.IStore) =
     let args =
         {| user_id_from = "user_id_from"
            user_id_to = "user_id_to"
@@ -59,10 +69,10 @@ let private createReaction (isTest: bool) (sub: Domain.sub option) (store: Store
           Define.Input(args.kind, String) ],
         fun ctx _ ->
             let sub =
-                sub
+                token
                 |> function
                     | None -> if isTest then null else failwith "no sub"
-                    | Some sub -> sub
+                    | Some token -> token.sub
 
             let reaction: Profile.Reaction =
                 { reaction_id = System.Guid.NewGuid() |> string
@@ -94,7 +104,7 @@ let private createReaction (isTest: bool) (sub: Domain.sub option) (store: Store
                 | Ok r -> Some r
     )
 
-let private updateRamenProfile (isTest: bool) (sub: Domain.sub option) (store: Store.IStore) =
+let private updateRamenProfile (isTest: bool) (token: Domain.Token option) (store: Store.IStore) =
     let args =
         {| user_id = "user_id"
            ramenya = "ramenya"
@@ -110,10 +120,10 @@ let private updateRamenProfile (isTest: bool) (sub: Domain.sub option) (store: S
         fun ctx _ ->
 
             let sub =
-                sub
+                token
                 |> function
                     | None -> if isTest then null else failwith "no sub"
-                    | Some sub -> sub
+                    | Some token -> token.sub
 
             let ramen: Profile.Ramen.FavoriteRamenya =
                 { rank = ctx.Arg args.rank
@@ -143,11 +153,11 @@ let private updateRamenProfile (isTest: bool) (sub: Domain.sub option) (store: S
                 | Ok follow -> Some follow
     )
 
-let Mutation (isTest: bool) (sub: Domain.sub option) (store: Store.IStore) =
+let Mutation (isTest: bool) (token: Domain.Token option) (store: Store.IStore) =
     Define.Object<Root>(
         name = "Mutation",
         fields =
-            [ createUser isTest sub store
-              createReaction isTest sub store
-              updateRamenProfile isTest sub store ]
+            [ createUser isTest token store
+              createReaction isTest token store
+              updateRamenProfile isTest token store ]
     )

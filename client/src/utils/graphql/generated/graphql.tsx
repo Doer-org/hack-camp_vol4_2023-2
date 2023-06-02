@@ -40,10 +40,6 @@ export type Mutation = {
   updateReaction: Maybe<Profile_Reaction>;
 };
 
-export type MutationCreateUserArgs = {
-  user_name: Scalars["String"]["input"];
-};
-
 export type MutationUpdateRamenProfileArgs = {
   ramenya: Scalars["String"]["input"];
   rank: Scalars["Int"]["input"];

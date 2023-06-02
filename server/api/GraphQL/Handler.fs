@@ -46,7 +46,7 @@ let private json =
 
 let private removeWhitespacesAndLineBreaks (str: string) = str.Trim().Replace("\r\n", " ")
 
-let private handleGraphQLQuery isTest (sub: Domain.sub option) (store: Store.IStore) (body: string) =
+let private handleGraphQLQuery isTest (token: Domain.Token option) (store: Store.IStore) (body: string) =
     task {
         let data = body |> deserialize
 
@@ -72,7 +72,7 @@ let private handleGraphQLQuery isTest (sub: Domain.sub option) (store: Store.ISt
                     | :? Map<string, obj> as x -> Some x
                     | _ -> failwith "failed to parse variables.")
 
-        let executor = Util.executor isTest sub store
+        let executor = Util.executor isTest token store
         let root: Schema.Types.Root = { RequestId = System.Guid.NewGuid() |> string }
 
         let! resp =
@@ -138,9 +138,71 @@ let handleGraphQL isTest (auth0_jwks: string, auth0_domain: string, auth0_audien
             let urlEncoder = new JwtBase64UrlEncoder()
             JwtDecoder(serializer, jwtValidator, urlEncoder, algorithm))
 
+    let accessTokenValidator (permissions: string list, auth0_domain, auth0_audience) json =
+        try
+            json
+            |> serializer.Deserialize<{| iss: string
+                                         sub: string
+                                         aud: string[]
+                                         permissions: string[] |}>
+            |> fun payload ->
+                let hasAllRequiredPermissions =
+                    let tokenPermissions = payload.permissions |> Set.ofArray
+
+                    permissions |> List.forall tokenPermissions.Contains
+
+                let issIsCorrect = $@"https://{auth0_domain}/" = payload.iss
+
+                let audIsCorrect =
+                    let tokenAudience = payload.aud |> Set.ofArray
+                    tokenAudience.Contains auth0_audience
+
+                if issIsCorrect && audIsCorrect && hasAllRequiredPermissions then
+                    Ok payload
+                else
+                    Error "invalid access token payload"
+        with _ ->
+            Error "invalid access token"
+
+    let idTokenValidator json =
+        try
+            json
+            |> serializer.Deserialize<{| iss: string
+                                         sub: string
+                                         picture: string
+                                         nickname: string |}>
+            |> fun payload ->
+                let issIsCorrect = $@"https://{auth0_domain}/" = payload.iss
+
+                if issIsCorrect then
+                    Ok payload
+                else
+                    Error "invalid id token payload"
+        with _ ->
+            Error "invalid id token"
+
+    let validateToken (jwtSerializer: string -> Result<'T, string>) tokenKey =
+        fun ctx ->
+            let cookie = Request.getCookie ctx
+            let token = cookie.Get tokenKey
+
+            try
+                let accessTokenHeader = jwtHeaderDecoder token
+                let decorder = jwtDecoder (accessTokenHeader.KeyId)
+
+                decorder
+                |> Result.map (fun decorder -> decorder.Decode(token))
+                |> Result.map jwtSerializer
+                |> Result.defaultWith (fun _ -> Error "token解析に失敗")
+            with
+            | :? Exceptions.InvalidTokenPartsException as e -> Error e.Message
+            | :? ArgumentOutOfRangeException as e -> Error e.Message
+            | :? ArgumentException as e -> Error e.Message
+            | e -> Error e.Message
+
     fun ctx ->
 
-        let baseHandler (sub: Domain.sub option) (store: Store.IStore) : HttpHandler =
+        let baseHandler (store: Store.IStore) (sub: Domain.Token option) : HttpHandler =
             fun ctx ->
                 task {
                     let! body = Request.getBodyString ctx
@@ -148,42 +210,37 @@ let handleGraphQL isTest (auth0_jwks: string, auth0_domain: string, auth0_audien
                     return Response.ofPlainText $"{resp}" ctx
                 }
 
+        let accessTokenHandler =
+            validateToken (accessTokenValidator ([], auth0_domain, auth0_audience)) "accessToken"
+
+        let idTokenHandler = validateToken idTokenValidator "idToken"
+
+        let getToken ctx =
+
+            let accessToken = accessTokenHandler ctx
+            let idToken = idTokenHandler ctx
+
+            match accessToken, idToken with
+            | Ok at, Ok it ->
+                let token: Domain.Token =
+                    { sub = at.iss
+                      permissions = at.permissions
+                      name = it.nickname
+                      picture = it.picture }
+
+                Ok token
+            | _, _ -> Error "invalid token"
+
         task {
             let store = ctx.GetService<Store.IStore>()
-            let cookie = Request.getCookie ctx
-            let accessToken = cookie.Get("accessToken")
 
-            let tokenPayload =
-                try
-                    let accessTokenHeader = jwtHeaderDecoder accessToken
-                    let decorder = jwtDecoder (accessTokenHeader.KeyId)
-                    decorder |> Result.map (fun decorder -> decorder.Decode(accessToken))
-                with
-                | :? Exceptions.InvalidTokenPartsException as e -> Error e.Message
-                | :? ArgumentOutOfRangeException as e -> Error e.Message
-                | :? ArgumentException as e -> Error e.Message
-                | e -> Error e.Message
+            let token =
+                getToken ctx
+                |> function
+                    | Error _ -> None
+                    | Ok token -> Some token
 
-            let handler: HttpHandler =
-                match tokenPayload with
-                | Error _ -> baseHandler None store
-                | Ok tokenPayload ->
-                    let payload =
-                        tokenPayload
-                        |> serializer.Deserialize<{| iss: string
-                                                     aud: string[]
-                                                     sub: string |}>
-
-                    let issIsCorrect = $@"https://{auth0_domain}/" = payload.iss
-
-                    let audIsCorrect =
-                        let tokenAudience = payload.aud |> Set.ofArray
-                        tokenAudience.Contains auth0_audience
-
-                    if issIsCorrect && audIsCorrect then
-                        baseHandler (Some payload.sub) store
-                    else
-                        baseHandler None store
+            let handler = baseHandler store token
 
             return handler ctx
         }
