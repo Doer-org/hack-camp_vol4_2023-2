@@ -14,7 +14,7 @@ test("GetUsersDocument", async () => {
     .query({
       query: schema.GetUsersDocument,
     })
-    .catch((e) => {
+    .catch(() => {
       return null;
     });
   const success = result ? true : false;
@@ -40,7 +40,7 @@ test("getFollows", async () => {
       query: schema.GetFollowsDocument,
       variables: { user_id: "abc" },
     })
-    .catch((e) => {
+    .catch(() => {
       return null;
     });
   const success = result ? true : false;
@@ -53,7 +53,7 @@ test("getFollowers", async () => {
       query: schema.GetFollowersDocument,
       variables: { user_id: "abc" },
     })
-    .catch((e) => {
+    .catch(() => {
       return null;
     });
   const success = result ? true : false;
@@ -66,7 +66,7 @@ test("getTimeLine", async () => {
       query: schema.GetTimelineDocument,
       variables: { user_id: "abc" },
     })
-    .catch((e) => {
+    .catch(() => {
       return null;
     });
   const success = result ? true : false;
@@ -79,7 +79,7 @@ test("getReaction", async () => {
       query: schema.GetReactionDocument,
       variables: { user_id: "abc" },
     })
-    .catch((e) => {
+    .catch(() => {
       return null;
     });
   const success = result ? true : false;
@@ -92,7 +92,7 @@ test("getRamenProfile", async () => {
       query: schema.GetRamenProfileDocument,
       variables: { user_id: "abc" },
     })
-    .catch((e) => {
+    .catch(() => {
       return null;
     });
   const success = result ? true : false;
@@ -104,7 +104,7 @@ test("createUser", async () => {
     .mutate({
       mutation: schema.CreateUserDocument,
     })
-    .catch((e) => {
+    .catch(() => {
       return null;
     });
   const success = result ? true : false;
@@ -117,7 +117,7 @@ test("updateReaction", async () => {
       mutation: schema.UpdateReactionDocument,
       variables: { user_id_from: "abc", user_id_to: "cdf", kind: "like" },
     })
-    .catch((e) => {
+    .catch(() => {
       return null;
     });
   const success = result ? true : false;
@@ -130,7 +130,7 @@ test("updateRamenProfile", async () => {
       mutation: schema.UpdateRamenProfileDocument,
       variables: { user_id: "abc", ramenya: "test", rank: 1 },
     })
-    .catch((e) => {
+    .catch(() => {
       return null;
     });
   const success = result ? true : false;
