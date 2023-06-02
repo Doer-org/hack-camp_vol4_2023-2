@@ -11,7 +11,8 @@
     "format": "prettier --write **/*.{js,ts,jsx,tsx,md,json}",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "prepare": "cd .. && husky install client/.husky"
+    "prepare": "cd .. && husky install client/.husky",
+    "graphql:codegen": "graphql-codegen --config codegen.yaml"
   },
   "lint-staged": {
     "*.{js,ts,jsx,tsx}": [
@@ -22,6 +23,7 @@
     ]
   },
   "dependencies": {
+    "@apollo/client": "^3.7.15",
     "@auth0/nextjs-auth0": "^2.6.0",
     "@radix-ui/colors": "^0.1.8",
     "@radix-ui/react-popover": "^1.0.5",
@@ -58,6 +60,10 @@
     "eslint-plugin-react": "^7.32.2",
     "eslint-plugin-storybook": "^0.6.12",
     "eslint-plugin-unused-imports": "^2.0.0",
+    "@graphql-codegen/cli": "^4.0.1",
+    "@graphql-codegen/typed-document-node": "^5.0.0",
+    "@graphql-codegen/typescript-operations": "^4.0.0",
+    "@graphql-typed-document-node/core": "^3.2.0",
     "husky": "^8.0.0",
     "lint-staged": "^13.2.2",
     "mini-css-extract-plugin": "^2.7.6",
