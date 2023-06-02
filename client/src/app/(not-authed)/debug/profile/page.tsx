@@ -1,16 +1,25 @@
-import { env } from "@/utils/env";
-import { DebugButton } from "../_ui";
+import {
+  CreateReactionButton,
+  GetMyTimelineButton,
+  Token2UserInfoButton,
+  UpdateFavoriteRamenya,
+} from "../_ui";
 
 const Page = () => {
-  const { serverURL } = env();
   return (
-    <main className="">
+    <main
+      className=""
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        gap: "1rem",
+      }}
+    >
       <div>login successful</div>
-      <DebugButton
-        color="black"
-        label="Health Check Button"
-        url={`${serverURL}/users/abc`}
-      />
+      <Token2UserInfoButton />
+      <CreateReactionButton />
+      <UpdateFavoriteRamenya />
+      <GetMyTimelineButton />
     </main>
   );
 };

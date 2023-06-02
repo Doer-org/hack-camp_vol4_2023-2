@@ -1,6 +1,6 @@
 import { env } from "@/utils/env";
 import Link from "next/link";
-import { DebugButton, DebugGraphQLButton } from "./_ui";
+import { DebugButton } from "./_ui";
 
 const Page = () => {
   const { clientURL } = env();
@@ -46,9 +46,6 @@ const Page = () => {
             label="Get Profile"
             url={`${clientURL}/api/auth/me`}
           />
-        </li>
-        <li>
-          <DebugGraphQLButton color="black" label="try graphql" />
         </li>
       </ul>
     </main>
