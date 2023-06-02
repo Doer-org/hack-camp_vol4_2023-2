@@ -7,17 +7,19 @@ const { spotifyApiBaseURL } = env();
 export const searchArtist = async (
   q: string,
   token: Result<Token, ResponseError>
-) =>
-  await spotifyApiClient.get<ArtistsResponse>(
+) => {
+  return await spotifyApiClient.get<ArtistsResponse>(
     `${spotifyApiBaseURL}/search?q=${q}&type=artist&limit=10`,
     token
   );
+};
 
 export const searchTrack = async (
   q: string,
   token: Result<Token, ResponseError>
-) =>
-  await spotifyApiClient.get<TracksResponse>(
+) => {
+  return await spotifyApiClient.get<TracksResponse>(
     `${spotifyApiBaseURL}/search?q=${q}&type=track&limit=10`,
     token
   );
+};
