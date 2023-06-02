@@ -29,3 +29,9 @@ export const Small: Story = {
     return <Logo />;
   },
 };
+
+export const Large: Story = {
+  render: () => {
+    return <Logo size="large" />;
+  },
+};
