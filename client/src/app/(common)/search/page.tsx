@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { searchArtist } from "@/api/spotify/search";
 import { SearchBar } from "@/ui/search-bar/components";
 import { SearchResult } from "@/ui";
+import { RecomCard } from "@/app/_ui";
 import * as styles from "./_styles/search.css";
 
 type Artist = {
@@ -35,7 +36,10 @@ export default function Page() {
 
   return (
     <>
-      <SearchBar contentType="music" onChange={handleChange} />
+      <RecomCard contentType="person" contentName="アーティスト" />
+      <div className={styles.formWrapperStyle}>
+        <SearchBar contentType="music" onChange={handleChange} />
+      </div>
       <div className={styles.resultListStyle}>
         {artists?.map((artist) => {
           return (
