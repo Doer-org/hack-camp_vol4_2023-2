@@ -25,12 +25,12 @@ const _NavFooter = ({ user }: Props) => {
     <Footer>
       <nav className={styles.contentStyle}>
         <div className={styles.itemStyle} onClick={handleTimelineClick}>
-          <Link href="#" className={styles.linkStyle} prefetch={false}>
+          <Link href="/timeline" className={styles.linkStyle} prefetch={false}>
             <HomeIcon fill={active === "timeline"} />
           </Link>
         </div>
         <div className={styles.itemStyle} onClick={handleProfileClick}>
-          <Link href="#" className={styles.linkStyle} prefetch={false}>
+          <Link href="/profile" className={styles.linkStyle} prefetch={false}>
             <div
               className={
                 active === "profile"
@@ -43,7 +43,11 @@ const _NavFooter = ({ user }: Props) => {
           </Link>
         </div>
         <div className={styles.itemStyle} onClick={handleNoticeClick}>
-          <Link href="#" className={styles.linkStyle} prefetch={false}>
+          <Link
+            href="/notification"
+            className={styles.linkStyle}
+            prefetch={false}
+          >
             <BellIcon fill={active === "notice"} />
           </Link>
         </div>

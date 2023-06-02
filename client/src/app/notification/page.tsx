@@ -1,7 +1,7 @@
 const Page = () => {
   return (
     <main className="">
-      <div>Profile Page</div>
+      <div>Notification</div>
     </main>
   );
 };
