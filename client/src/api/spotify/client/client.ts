@@ -1,3 +1,4 @@
+import { env } from "@/utils";
 import { Result } from "./types";
 
 export type ResponseError = {
@@ -6,19 +7,18 @@ export type ResponseError = {
 };
 
 export const getAccessToken = async () => {
+  const { spotifyClientID, spotifyClientSecret, spotifyRefreshToken } = env();
   const { data, err } = await fetch("https://accounts.spotify.com/api/token", {
     method: "POST",
     headers: {
       Authorization:
         "Basic " +
-        Buffer.from(
-          process.env.NEXT_PUBLIC_SPOTIFY_API_CLIENT_ID +
-            ":" +
-            process.env.NEXT_PUBLIC_SPOTIFY_API_CLIENT_SECRET
-        ).toString("base64"),
+        Buffer.from(spotifyClientID + ":" + spotifyClientSecret).toString(
+          "base64"
+        ),
       "Content-Type": "application/x-www-form-urlencoded",
     },
-    body: `grant_type=refresh_token&refresh_token=${process.env.NEXT_PUBLIC_SPOTIFY_API_REFRESH_TOKEN}`,
+    body: `grant_type=refresh_token&refresh_token=${spotifyRefreshToken}`,
     next: {
       revalidate: 3590,
     },
