@@ -11,5 +11,5 @@ export const itemListStyle = style({
   display: "flex",
   justifyContent: "center",
   gap: "12px",
-  marginTop: "8px",
+  marginTop: "30px",
 });

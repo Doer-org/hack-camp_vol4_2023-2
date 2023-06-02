@@ -1,30 +1,46 @@
-import { Card } from "@/ui";
+import { Card, Ranking } from "@/ui";
 import React from "react";
 import * as styles from "../styles/recom-card.css";
 
-const _RecomCard = () => {
+type Props = {
+  contentType: "music" | "book" | "person";
+  contentName: string;
+  firstImage?: string;
+  secondImage?: string;
+  thirdImage?: string;
+  manageActive?: boolean;
+};
+
+const _RecomCard = ({
+  contentType,
+  contentName,
+  firstImage,
+  secondImage,
+  thirdImage,
+  manageActive,
+}: Props) => {
   return (
     <Card>
-      <p className={styles.titleStyle}>おすすめの曲</p>
+      <p className={styles.titleStyle}>おすすめの{contentName}　ベスト3</p>
       <div className={styles.itemListStyle}>
-        <div
-          style={{
-            width: "90px",
-            height: "90px",
-          }}
-        ></div>
-        <div
-          style={{
-            width: "90px",
-            height: "90px",
-          }}
-        ></div>
-        <div
-          style={{
-            width: "90px",
-            height: "90px",
-          }}
-        ></div>
+        <Ranking
+          contentType={contentType}
+          image={firstImage}
+          rank={1}
+          manageActive={manageActive}
+        />
+        <Ranking
+          contentType={contentType}
+          image={secondImage}
+          rank={2}
+          manageActive={manageActive}
+        />
+        <Ranking
+          contentType={contentType}
+          image={thirdImage}
+          rank={3}
+          manageActive={manageActive}
+        />
       </div>
     </Card>
   );
