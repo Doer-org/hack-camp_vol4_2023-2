@@ -1,33 +1,15 @@
-import { env } from "@/utils";
 import { Result } from "./types";
+import { env } from "@/utils";
+
+export type Token = {
+  access_token: string;
+  token_type: string;
+  expires_in: number;
+};
 
 export type ResponseError = {
   status: number;
   message: string;
-};
-
-export const getAccessToken = async () => {
-  const { spotifyClientID, spotifyClientSecret, spotifyRefreshToken } = env();
-  const { data, err } = await fetch("https://accounts.spotify.com/api/token", {
-    method: "POST",
-    headers: {
-      Authorization:
-        "Basic " +
-        Buffer.from(spotifyClientID + ":" + spotifyClientSecret).toString(
-          "base64"
-        ),
-      "Content-Type": "application/x-www-form-urlencoded",
-    },
-    body: `grant_type=refresh_token&refresh_token=${spotifyRefreshToken}`,
-    next: {
-      revalidate: 3590,
-    },
-  }).then(async (res) => {
-    const data = await res.json();
-    if (!res.ok) return { err: data };
-    return { data };
-  });
-  return { data, err };
 };
 
 const resp2result = async <T>(
@@ -46,15 +28,34 @@ const resp2result = async <T>(
   return { type: "ok", value: data };
 };
 
+export const getAccessToken = async <T = Token>() => {
+  const { spotifyClientID, spotifyClientSecret, spotifyRefreshToken } = env();
+  const resp = await fetch("https://accounts.spotify.com/api/token", {
+    method: "POST",
+    headers: {
+      Authorization:
+        "Basic " +
+        Buffer.from(spotifyClientID + ":" + spotifyClientSecret).toString(
+          "base64"
+        ),
+      "Content-Type": "application/x-www-form-urlencoded",
+    },
+    body: `grant_type=refresh_token&refresh_token=${spotifyRefreshToken}`,
+    next: {
+      revalidate: 3590,
+    },
+  });
+  return await resp2result<T>(resp);
+};
+
 export const spotifyApiClient = {
-  get: async <T>(url: string) => {
-    const { data, err } = await getAccessToken();
-    if (err) return;
+  get: async <T>(url: string, token: Result<Token, ResponseError>) => {
+    if (token.type === "error") return;
     const resp = await fetch(url, {
       cache: "no-store",
       method: "GET",
       headers: {
-        Authorization: `${data.token_type} ${data.access_token}`,
+        Authorization: `${token.value.token_type} ${token.value.access_token}`,
       },
     });
     return await resp2result<T>(resp);
