@@ -2,8 +2,7 @@ import React from "react";
 import * as styles from "../styles/logo.css";
 
 type Props = {
-  // 現状smallのみ
-  size?: "small";
+  size?: "small" | "large";
   onClick?: () => void;
 };
 

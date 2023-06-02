@@ -12,4 +12,5 @@ export const imageStyle = style({
 
 export const size = styleVariants({
   small: { width: "42px", height: "42px" },
+  large: { width: "84px", height: "84px" },
 });
