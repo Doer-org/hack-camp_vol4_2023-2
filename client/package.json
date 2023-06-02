@@ -12,6 +12,7 @@
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "prepare": "cd .. && husky install client/.husky",
+    "test": "vitest",
     "graphql:codegen": "graphql-codegen --config codegen.yaml"
   },
   "lint-staged": {
@@ -45,6 +46,11 @@
     "yarn": "pnpm only"
   },
   "devDependencies": {
+    "@graphql-codegen/cli": "^4.0.1",
+    "@graphql-codegen/typed-document-node": "^5.0.0",
+    "@graphql-codegen/typescript-operations": "^4.0.0",
+    "@graphql-typed-document-node/core": "^3.2.0",
+    "@next/env": "^13.4.4",
     "@storybook/addon-essentials": "7.0.8",
     "@storybook/addon-interactions": "7.0.8",
     "@storybook/addon-links": "7.0.8",
@@ -60,15 +66,12 @@
     "eslint-plugin-react": "^7.32.2",
     "eslint-plugin-storybook": "^0.6.12",
     "eslint-plugin-unused-imports": "^2.0.0",
-    "@graphql-codegen/cli": "^4.0.1",
-    "@graphql-codegen/typed-document-node": "^5.0.0",
-    "@graphql-codegen/typescript-operations": "^4.0.0",
-    "@graphql-typed-document-node/core": "^3.2.0",
     "husky": "^8.0.0",
     "lint-staged": "^13.2.2",
     "mini-css-extract-plugin": "^2.7.6",
     "prettier": "^2.8.8",
     "storybook": "7.0.8",
-    "tsconfig-paths-webpack-plugin": "^4.0.1"
+    "tsconfig-paths-webpack-plugin": "^4.0.1",
+    "vitest": "^0.31.4"
   }
 }
