@@ -85,7 +85,7 @@ let private getFollowers (store: Store.IStore) =
                 | Ok followers -> followers
     )
 
-let private getTimeline (isTest: bool) (sub: Domain.sub option) (store: Store.IStore) =
+let private getTimeline (isTest: bool) (token: Domain.Token option) (store: Store.IStore) =
     let args = {| user_id = "user_id" |}
 
     Define.Field(
@@ -97,10 +97,10 @@ let private getTimeline (isTest: bool) (sub: Domain.sub option) (store: Store.IS
             let user_id = ctx.Arg args.user_id
 
             let sub =
-                sub
+                token
                 |> function
                     | None -> if isTest then null else failwith "no sub"
-                    | Some sub -> sub
+                    | Some token -> token.sub
 
             let account: User.Account = { sub = sub; user_id = user_id }
 
@@ -162,7 +162,7 @@ let private getReaction (store: Store.IStore) =
                 | Ok reactions -> reactions
     )
 
-let rec getProfile (isTest: bool) (sub: Domain.sub option) (store: Store.IStore) =
+let rec getProfile (isTest: bool) (token: Domain.Token option) (store: Store.IStore) =
     let args = {| user_id = "user_id" |}
 
     Define.Field(
@@ -174,10 +174,10 @@ let rec getProfile (isTest: bool) (sub: Domain.sub option) (store: Store.IStore)
             let user_id = ctx.Arg args.user_id
 
             let sub =
-                sub
+                token
                 |> function
                     | None -> if isTest then null else failwith "no sub"
-                    | Some sub -> sub
+                    | Some(token: Token) -> token.sub
 
             let account: User.Account = { sub = sub; user_id = user_id }
 
@@ -239,7 +239,7 @@ let getLog (isTest: bool) (sub: Domain.sub option) (store: Store.IStore) =
     )
 
 
-let Query (isTest: bool) (sub: Domain.sub option) (store: Store.IStore) =
+let Query (isTest: bool) (token: Domain.Token option) (store: Store.IStore) =
     Define.Object<Root>(
         name = "Query",
         fields =
@@ -247,7 +247,7 @@ let Query (isTest: bool) (sub: Domain.sub option) (store: Store.IStore) =
               getAllUsers store
               getFollows store
               getFollowers store
-              getTimeline isTest sub store
+              getTimeline isTest token store
               getReaction store
               getAllTimeline store
 
@@ -266,6 +266,6 @@ let Query (isTest: bool) (sub: Domain.sub option) (store: Store.IStore) =
               //            | Error _ -> []
               //            | Ok users -> users
               //)
-              getProfile isTest sub store
+              getProfile isTest token store
               getRamenProfile store ]
     )
