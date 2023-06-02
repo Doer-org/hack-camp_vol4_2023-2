@@ -12,9 +12,10 @@ type User = {
 
 type Props = {
   user: User;
+  right?: React.ReactNode;
 };
 
-const _ProfileHeader = ({ user }: Props) => {
+const _ProfileHeader = ({ user, right }: Props) => {
   return (
     <Header>
       <div className={styles.headStyle}>
@@ -22,13 +23,7 @@ const _ProfileHeader = ({ user }: Props) => {
           <Avator size="medium" image={user.icon} />
           <span>{user.name}</span>
         </div>
-        {user.me ? (
-          <Button size="small" color="black">
-            編集
-          </Button>
-        ) : (
-          <Logo />
-        )}
+        {right}
       </div>
       <div className={styles.followWrapperStyle}>
         <span className={styles.followStyle}>

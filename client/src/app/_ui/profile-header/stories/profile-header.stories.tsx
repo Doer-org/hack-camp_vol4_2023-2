@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
 import { ProfileHeader } from "../components";
+import { Button } from "@/ui";
 
 const meta: Meta<typeof ProfileHeader> = {
   title: "Hack/Header/ProfileHeader",
@@ -31,6 +32,7 @@ export const Me: Story = {
       following: 2,
       follower: 4,
     },
+    right: <Button color="black">編集</Button>,
   },
 };
 
