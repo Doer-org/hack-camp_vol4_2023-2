@@ -38,7 +38,7 @@ export default function Page() {
     <>
       <RecomCard contentType="person" contentName="アーティスト" />
       <div className={styles.formWrapperStyle}>
-        <SearchBar contentType="music" onChange={handleChange} />
+        <SearchBar contentType="artist" onChange={handleChange} />
       </div>
       <div className={styles.resultListStyle}>
         {artists?.map((artist) => {

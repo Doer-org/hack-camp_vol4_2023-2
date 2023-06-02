@@ -21,7 +21,7 @@ export default function CommmonLayout({
   const segment = useSelectedLayoutSegment();
   const segmentMap = new Map([
     ["timeline", "タイムライン"],
-    ["search", "おすすめの曲"],
+    ["search", "おすすめのアーティスト"],
   ]);
 
   return (
