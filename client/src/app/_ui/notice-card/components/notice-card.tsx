@@ -5,17 +5,19 @@ import { User } from "@/utils";
 
 type Props = {
   user: User | null;
-  action: string;
+  profileType?: string;
+  action?: string;
 };
 
-const _NoticeCard = ({ user, action }: Props) => {
+const _NoticeCard = ({ user, profileType, action }: Props) => {
   return (
     <Card>
       <div className={styles.contentStyle}>
         <Avator image={""} size="small" />
         <p className={styles.actionStyle}>
           <span className={styles.userNameStyle}>{user?.user_name}</span>
-          さんが{action}しました！
+          さんがあなたの{profileType}プロフィールに{action || "リアクション"}
+          しました
         </p>
       </div>
     </Card>

@@ -4,40 +4,48 @@ import { Arrow, Logo, Card, Avator, Like } from "@/ui";
 import { CommonHeader } from "@/app/_ui";
 import * as commonStyles from "../../_styles/common.css";
 import * as styles from "../_styles/bookmark.css";
-import { getUsers } from "@/api";
-import { User } from "@/utils";
+import { getUser, getReaction } from "@/api";
 
 type Props = {
   params: { id: string };
 };
 
-const debugUser: User = {
-  user_id: "1",
-  user_name: "Aoki",
-};
-
 const Page = ({ params }: Props) => {
-  const [profileDOM, setProfileDOM] = useState<React.ReactNode[]>();
+  const [bookmarkDOM, setBookmarkDOM] = useState<React.ReactNode[]>();
 
   useEffect(() => {
     (async () => {
-      const users = await getUsers(); // いいねしたプロフィールだけを取り出してきたい
-      const pDOM: React.ReactNode[] = [];
-      users?.forEach(async (u) => {
-        pDOM.push(
-          <Card>
-            <div className={styles.cardStyle}>
-              <div className={styles.cardUserStyle}>
-                <Avator size="small" image="" />
-                <div>
-                  <span>{u?.user_name}</span>さんの音楽プロフィール
-                </div>
-              </div>
-              <Like num={24} liked={true} />
-            </div>
-          </Card>
+      const reactions = await getReaction(params.id);
+      const bookmarks = reactions?.filter((r) => r.user_id_from === params.id);
+      const bDOM: React.ReactNode[] = [];
+      bookmarks?.forEach(async (b) => {
+        const user = await getUser(b.user_id_to);
+        const tmpReactions = await getReaction(user?.user_id || "abc");
+        const tmpBookmarks = reactions?.filter(
+          (r) => r.user_id_to === user?.user_id
         );
-        setProfileDOM(pDOM);
+        bDOM.push(
+          <div
+            key={b.user_id_to + b.timestamp}
+            className={styles.cardWrapperStyle}
+          >
+            <Card>
+              <div className={styles.cardInnerStyle}>
+                <div className={styles.cardUserStyle}>
+                  <Avator size="small" image="" />
+                  <div>
+                    <span className={styles.cardUserNameStyle}>
+                      {user?.user_name}
+                    </span>
+                    さんの音楽プロフィール
+                  </div>
+                </div>
+                <Like num={tmpBookmarks?.length || 0} liked={true} />
+              </div>
+            </Card>
+          </div>
+        );
+        setBookmarkDOM(bDOM);
       });
     })();
   }, []);
@@ -55,23 +63,7 @@ const Page = ({ params }: Props) => {
           commonStyles.headerAvoidStyle["common"],
         ].join(" ")}
       >
-        <div className={commonStyles.contentStyle}>
-          <Card>
-            <div className={styles.cardStyle}>
-              <div className={styles.cardUserStyle}>
-                <Avator size="small" image="" />
-                <div>
-                  <span className={styles.cardUserNameStyle}>
-                    {debugUser?.user_name}
-                  </span>
-                  さんの音楽プロフィール
-                </div>
-              </div>
-              <Like num={24} liked={true} />
-            </div>
-          </Card>
-          {profileDOM}
-        </div>
+        <div className={commonStyles.contentStyle}>{bookmarkDOM}</div>
       </div>
     </>
   );

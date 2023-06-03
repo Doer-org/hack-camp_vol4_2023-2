@@ -4,7 +4,7 @@ import { Arrow, Logo, Card, Avator } from "@/ui";
 import { CommonHeader } from "@/app/_ui";
 import * as commonStyles from "../../../_styles/common.css";
 import * as styles from "../_styles/follower.css";
-import { getFollows, getUser } from "@/api";
+import { getFollowers, getUser } from "@/api";
 import { User } from "@/utils";
 import { FollowButton } from "../../../_ui";
 
@@ -18,30 +18,32 @@ const debugUser: User = {
 };
 
 const Page = ({ params }: Props) => {
-  const [followDOM, setFollowDOM] = useState<React.ReactNode[]>();
+  const [followerDOM, setFollowerDOM] = useState<React.ReactNode[]>();
 
   useEffect(() => {
     (async () => {
-      const follows = await getFollows(params.id);
+      const followers = await getFollowers(params.id);
       const fDOM: React.ReactNode[] = [];
-      follows?.forEach(async (f) => {
+      followers?.forEach(async (f) => {
         const user = await getUser(f.user_id);
         const following = true; // me は user をフォローしているかどうか
         const followed = false; // me は user にフォローされているかどうか
         fDOM.push(
-          <Card>
-            <div className={styles.cardStyle}>
-              <div className={styles.cardUserStyle}>
-                <Avator size="small" image="" />
-                <span className={styles.cardUserNameStyle}>
-                  {user?.user_name}
-                </span>
+          <div className={styles.cardWrapperStyle}>
+            <Card>
+              <div className={styles.cardStyle}>
+                <div className={styles.cardUserStyle}>
+                  <Avator size="small" image="" />
+                  <span className={styles.cardUserNameStyle}>
+                    {user?.user_name}
+                  </span>
+                </div>
+                <FollowButton following={following} followed={followed} />
               </div>
-              <FollowButton following={following} followed={followed} />
-            </div>
-          </Card>
+            </Card>
+          </div>
         );
-        setFollowDOM(fDOM);
+        setFollowerDOM(fDOM);
       });
     })();
   }, []);
@@ -55,20 +57,7 @@ const Page = ({ params }: Props) => {
           commonStyles.headerAvoidStyle["common"],
         ].join(" ")}
       >
-        <div className={commonStyles.contentStyle}>
-          <Card>
-            <div className={styles.cardStyle}>
-              <div className={styles.cardUserStyle}>
-                <Avator size="small" image="" />
-                <span className={styles.cardUserNameStyle}>
-                  {debugUser?.user_name}
-                </span>
-              </div>
-              <FollowButton following={false} followed={true} />
-            </div>
-          </Card>
-          {followDOM}
-        </div>
+        <div className={commonStyles.contentStyle}>{followerDOM}</div>
       </div>
     </>
   );
