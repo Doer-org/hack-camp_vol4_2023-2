@@ -6,6 +6,8 @@ import { CommonHeader, RecomCard } from "@/app/_ui";
 import { Arrow, Button, Like, SearchResult } from "@/ui";
 import { SearchBar } from "@/ui/search-bar/components";
 import { getAccessToken, searchArtist } from "@/api/spotify";
+import { updateFavoriteArtist } from "@/api";
+import { useRouter } from "next/navigation";
 
 type Artist = {
   id: string;
@@ -13,12 +15,16 @@ type Artist = {
   image: string;
 };
 
-const Page = () => {
+type Props = {
+  params: { id: string };
+};
+
+const Page = ({ params }: Props) => {
   const [canSearch, setCanSearch] = useState<boolean>(false);
   const [artists, setArtists] = useState<Artist[]>([]);
-  const [firstId, setFirstId] = useState<string>();
-  const [secondId, setSecondId] = useState<string>();
-  const [thirdId, setthirdId] = useState<string>();
+  const [firstId, setFirstId] = useState<string>("0");
+  const [secondId, setSecondId] = useState<string>("0");
+  const [thirdId, setthirdId] = useState<string>("0");
   const [forcusedRank, setForcusedRank] = useState<
     "first" | "second" | "third"
   >();
@@ -75,12 +81,24 @@ const Page = () => {
     return;
   };
 
+  const router = useRouter();
+  const handleUpdateClick = () => {
+    updateFavoriteArtist(params.id, firstId, 1);
+    updateFavoriteArtist(params.id, secondId, 2);
+    updateFavoriteArtist(params.id, thirdId, 3);
+    router.push(`/profile/${params.id}`);
+  };
+
   return (
     <>
       <CommonHeader
         left={<Arrow />}
         title="編集"
-        right={<Button color="black">更新</Button>}
+        right={
+          <Button color="black" onClick={handleUpdateClick}>
+            更新
+          </Button>
+        }
       />
       <div
         className={[
