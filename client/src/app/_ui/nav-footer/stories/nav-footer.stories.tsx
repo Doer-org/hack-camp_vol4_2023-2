@@ -25,8 +25,9 @@ type Story = StoryObj<typeof NavFooter>;
 export const Aoki: Story = {
   args: {
     user: {
-      id: 1,
-      icon: "https://avatars.githubusercontent.com/u/55625375?v=4",
+      user_id: "1",
+      user_name: "AOKI",
+      image_url: "https://avatars.githubusercontent.com/u/55625375?v=4",
     },
   },
 };
