@@ -15,6 +15,9 @@ export default withMiddlewareAuthRequired(async function middleware(
   const session = await getSession(req, res);
   const accessToken = session?.accessToken;
   const idToken = session?.idToken;
+  console.log("session", session);
+  console.log("accessToken", accessToken);
+  console.log("idToken", idToken);
   if (accessToken)
     res.cookies.set("accessToken", accessToken, {
       sameSite: "lax",
