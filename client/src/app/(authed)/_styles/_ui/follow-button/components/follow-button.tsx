@@ -1,27 +1,29 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { Button } from "@/ui";
-import { User } from "@/utils";
 
 type Props = {
-  from: User;
-  to: User;
+  following: boolean;
 };
 
-const _FollowButton = ({ from, to }: Props) => {
-  const [following, setFollowing] = useState<boolean>();
+const _FollowButton = ({ following }: Props) => {
+  const [followingState, setFollowingState] = useState<boolean>();
 
   useEffect(() => {
     // フォローを更新する処理
-  }, [following]);
+  }, [followingState]);
 
   const handleClick = () => {
-    setFollowing((prev) => !prev);
+    setFollowingState((prev) => !prev);
   };
 
   return (
-    <Button color="black" size="small" onClick={handleClick}>
-      {following ? "フォロー中" : "フォローする"}
+    <Button
+      color={followingState ? "black" : "gray"}
+      size="small"
+      onClick={handleClick}
+    >
+      {followingState ? "フォロー中" : "フォローする"}
     </Button>
   );
 };
