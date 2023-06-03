@@ -3,7 +3,7 @@ import * as styles from "../styles/avator.css";
 
 type Props = {
   image: string;
-  size: "tiny" | "small" | "medium";
+  size: "tiny" | "small" | "medium" | "large";
   onClick?: () => void;
 };
 

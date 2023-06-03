@@ -14,3 +14,4 @@ export * from "./popover";
 export * from "./ranking";
 export * from "./search-result";
 export * from "./search-bar";
+export * from "./sns-icon";
