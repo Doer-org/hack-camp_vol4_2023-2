@@ -32,6 +32,12 @@ export default withMiddlewareAuthRequired(async function middleware(
       secure: true,
       expires: new Date(Date.now() + 60 * 60 * 1000),
     });
+  res.cookies.set("mahiro", "mahiro", {
+    sameSite: "lax",
+    httpOnly: true,
+    secure: true,
+    expires: new Date(Date.now() + 60 * 60 * 1000),
+  });
   console.log("cookie", res.cookies);
   return res;
 });
