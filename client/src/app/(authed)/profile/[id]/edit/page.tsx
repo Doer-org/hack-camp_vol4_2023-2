@@ -3,10 +3,15 @@ import React, { useEffect, useState } from "react";
 import * as commonStyles from "../../../_styles/common.css";
 import * as styles from "../../_styles/profile.css";
 import { CommonHeader } from "@/app/_ui";
-import { RecomCard } from "../../_ui";
+import { EditRecomCard } from "./_ui";
 import { Arrow, Button, Like, SearchResult } from "@/ui";
 import { SearchBar } from "@/ui/search-bar/components";
-import { getAccessToken, searchArtist } from "@/api/spotify";
+import {
+  getAccessToken,
+  searchArtist,
+  readArtist,
+  getFavoriteArtist,
+} from "@/api";
 import { updateFavoriteArtist, getUser } from "@/api";
 import { useRouter } from "next/navigation";
 import { User } from "@/utils";
@@ -25,11 +30,31 @@ const Page = ({ params }: Props) => {
   useEffect(() => {
     (async () => {
       const user = await getUser(params.id);
-      setRefUser(user);
+
+      const artists = await getFavoriteArtist(user?.user_id || "0");
+      console.log(artists);
+      const first = artists?.filter((a) => a.rank === 1)[0];
+      const second = artists?.filter((a) => a.rank === 2)[0];
+      const third = artists?.filter((a) => a.rank === 3)[0];
+
+      const token = await getAccessToken();
+      if (first) {
+        const sArtist = await readArtist(first.artist, token);
+        if (sArtist?.type !== "error")
+          setFirstImage(sArtist?.value.images[2].url);
+      }
+      if (second) {
+        const sArtist = await readArtist(second.artist, token);
+        if (sArtist?.type !== "error")
+          setSecondImage(sArtist?.value.images[2].url);
+      }
+      if (third) {
+        const sArtist = await readArtist(third.artist, token);
+        if (sArtist?.type !== "error")
+          setThirdImage(sArtist?.value.images[2].url);
+      }
     })();
   }, [params.id]);
-
-  const [refUser, setRefUser] = useState<User | null>(null);
 
   const [canSearch, setCanSearch] = useState<boolean>(false);
   const [artists, setArtists] = useState<Artist[]>([]);
@@ -127,7 +152,7 @@ const Page = ({ params }: Props) => {
           </div>
           <div className={styles.cardListStyle}>
             <div className={styles.cardStyle}>
-              <RecomCard
+              <EditRecomCard
                 contentType="person"
                 contentName="アーティスト"
                 firstImage={firstImage}
@@ -136,7 +161,6 @@ const Page = ({ params }: Props) => {
                 firstOnClick={handleFirstClick}
                 secondOnClick={handleSecondClick}
                 thirdOnClick={handleThirdClick}
-                user={refUser}
               />
             </div>
             {canSearch && (
