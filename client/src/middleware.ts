@@ -15,11 +15,15 @@ export default withMiddlewareAuthRequired(async function middleware(
   const session = await getSession(req, res);
   const accessToken = session?.accessToken;
   const idToken = session?.idToken;
+  const domain = new URL(
+    process.env.NEXT_PUBLIC_CLIENT_URL || "http://localhost:3000"
+  ).hostname;
   if (accessToken)
     res.cookies.set("accessToken", accessToken, {
       sameSite: "lax",
       httpOnly: true,
       secure: true,
+      domain: domain,
       expires: new Date(Date.now() + 60 * 60 * 1000),
     });
   if (idToken)
@@ -27,6 +31,7 @@ export default withMiddlewareAuthRequired(async function middleware(
       sameSite: "lax",
       httpOnly: true,
       secure: true,
+      domain: domain,
       expires: new Date(Date.now() + 60 * 60 * 1000),
     });
   return res;
