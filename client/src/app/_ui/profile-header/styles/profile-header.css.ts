@@ -15,7 +15,7 @@ export const profileStyle = style({
 });
 
 export const followWrapperStyle = style({
-  marginTop: "18px",
+  marginTop: "12px",
 });
 
 export const followStyle = style({
