@@ -32,7 +32,6 @@ const Page = ({ params }: Props) => {
       const user = await getUser(params.id);
 
       const artists = await getFavoriteArtist(user?.user_id || "0");
-      console.log(artists);
       const first = artists?.filter((a) => a.rank === 1)[0];
       const second = artists?.filter((a) => a.rank === 2)[0];
       const third = artists?.filter((a) => a.rank === 3)[0];
@@ -40,18 +39,21 @@ const Page = ({ params }: Props) => {
       const token = await getAccessToken();
       if (first) {
         const sArtist = await readArtist(first.artist, token);
-        if (sArtist?.type !== "error")
+        if (sArtist?.type !== "error") {
           setFirstImage(sArtist?.value.images[2].url);
+        }
       }
       if (second) {
         const sArtist = await readArtist(second.artist, token);
-        if (sArtist?.type !== "error")
+        if (sArtist?.type !== "error") {
           setSecondImage(sArtist?.value.images[2].url);
+        }
       }
       if (third) {
         const sArtist = await readArtist(third.artist, token);
-        if (sArtist?.type !== "error")
+        if (sArtist?.type !== "error") {
           setThirdImage(sArtist?.value.images[2].url);
+        }
       }
     })();
   }, [params.id]);
