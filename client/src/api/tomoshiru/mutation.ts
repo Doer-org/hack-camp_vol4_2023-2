@@ -1,8 +1,21 @@
 import { graphqlClient } from "@/libs/graphql-client";
 import * as schema from "@/utils/graphql";
+import { fetchAuthInfo } from "../auth";
+
+const client = async () => {
+  const me = await fetchAuthInfo();
+  return graphqlClient({
+    accessToken: me.token,
+    sub: me.me.sub,
+    nickname: me.me.nickname,
+    picture: me.me.picture,
+  });
+};
 
 export const createUser = async () => {
-  const data = await graphqlClient
+  const data = await (
+    await client()
+  )
     .mutate({
       mutation: schema.CreateUserDocument,
     })
@@ -15,7 +28,9 @@ export const updateReaction = async (
   user_id_to: string,
   kind: "like"
 ) => {
-  const data = await graphqlClient
+  const data = await (
+    await client()
+  )
     .mutate({
       mutation: schema.UpdateReactionDocument,
       variables: {
@@ -33,7 +48,9 @@ export const updateRamenProfile = async (
   ramenya: string,
   rank: number
 ) => {
-  const data = await graphqlClient
+  const data = await (
+    await client()
+  )
     .mutate({
       mutation: schema.UpdateRamenProfileDocument,
       variables: { user_id: user_id, ramenya: ramenya, rank: rank },
@@ -43,7 +60,9 @@ export const updateRamenProfile = async (
 };
 
 export const postTimeLine = async (user_id: string, summary: string) => {
-  const data = await graphqlClient
+  const data = await (
+    await client()
+  )
     .mutate({
       mutation: schema.PostTimeLineDocument,
       variables: { user_id: user_id, summary: summary },
@@ -57,7 +76,9 @@ export const updateFavoriteMusic = async (
   music: string,
   rank: number
 ) => {
-  const data = await graphqlClient
+  const data = await (
+    await client()
+  )
     .mutate({
       mutation: schema.UpdateFavoriteMusicDocument,
       variables: { user_id: user_id, music: music, rank: rank },
@@ -71,7 +92,9 @@ export const updateFavoriteArtist = async (
   artist: string,
   rank: number
 ) => {
-  const data = await graphqlClient
+  const data = await (
+    await client()
+  )
     .mutate({
       mutation: schema.UpdateFavoriteArtistDocument,
       variables: { user_id: user_id, artist: artist, rank: rank },
@@ -85,7 +108,9 @@ export const updateFollow = async (
   user_id_to: string,
   isFollow: boolean
 ) => {
-  const data = await graphqlClient
+  const data = await (
+    await client()
+  )
     .mutate({
       mutation: schema.UpdateFollowDocument,
       variables: {

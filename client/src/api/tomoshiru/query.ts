@@ -1,8 +1,21 @@
 import { graphqlClient } from "@/libs/graphql-client";
 import * as schema from "@/utils/graphql";
+import { fetchAuthInfo } from "../auth";
+
+const client = async () => {
+  const me = await fetchAuthInfo();
+  return graphqlClient({
+    accessToken: me.token,
+    sub: me.me.sub,
+    nickname: me.me.nickname,
+    picture: me.me.picture,
+  });
+};
 
 export const getUserByToken = async () => {
-  const data = await graphqlClient
+  const data = await (
+    await client()
+  )
     .query({
       query: schema.GetUserByTokenDocument,
     })
@@ -11,7 +24,9 @@ export const getUserByToken = async () => {
 };
 
 export const getUsers = async () => {
-  const data = await graphqlClient
+  const data = await (
+    await client()
+  )
     .query({
       query: schema.GetUsersDocument,
     })
@@ -20,7 +35,9 @@ export const getUsers = async () => {
 };
 
 export const getUser = async (user_id: string) => {
-  const data = await graphqlClient
+  const data = await (
+    await client()
+  )
     .query({
       query: schema.GetUserDocument,
       variables: { user_id },
@@ -30,7 +47,9 @@ export const getUser = async (user_id: string) => {
 };
 
 export const getFollows = async (user_id: string) => {
-  const data = await graphqlClient
+  const data = await (
+    await client()
+  )
     .query({
       query: schema.GetFollowsDocument,
       variables: { user_id },
@@ -40,7 +59,9 @@ export const getFollows = async (user_id: string) => {
 };
 
 export const getFollowers = async (user_id: string) => {
-  const data = await graphqlClient
+  const data = await (
+    await client()
+  )
     .query({
       query: schema.GetFollowersDocument,
       variables: { user_id },
@@ -50,7 +71,9 @@ export const getFollowers = async (user_id: string) => {
 };
 
 export const getTimeLine = async (user_id: string) => {
-  const data = await graphqlClient
+  const data = await (
+    await client()
+  )
     .query({
       query: schema.GetTimelineDocument,
       variables: { user_id },
@@ -60,7 +83,9 @@ export const getTimeLine = async (user_id: string) => {
 };
 
 export const getReaction = async (user_id: string) => {
-  const data = await graphqlClient
+  const data = await (
+    await client()
+  )
     .query({
       query: schema.GetReactionDocument,
       variables: { user_id },
@@ -70,7 +95,9 @@ export const getReaction = async (user_id: string) => {
 };
 
 export const getRamenProfile = async (user_id: string) => {
-  const data = await graphqlClient
+  const data = await (
+    await client()
+  )
     .query({
       query: schema.GetRamenProfileDocument,
       variables: { user_id },
@@ -80,7 +107,9 @@ export const getRamenProfile = async (user_id: string) => {
 };
 
 export const getLastAccess = async (user_id: string) => {
-  const data = await graphqlClient
+  const data = await (
+    await client()
+  )
     .query({
       query: schema.GetLastAccessDocument,
       variables: { user_id },
@@ -90,7 +119,9 @@ export const getLastAccess = async (user_id: string) => {
 };
 
 export const getFavoriteMusic = async (user_id: string) => {
-  const data = await graphqlClient
+  const data = await (
+    await client()
+  )
     .query({
       query: schema.GetFavoriteMusicDocument,
       variables: { user_id },
@@ -100,7 +131,9 @@ export const getFavoriteMusic = async (user_id: string) => {
 };
 
 export const getFavoriteArtist = async (user_id: string) => {
-  const data = await graphqlClient
+  const data = await (
+    await client()
+  )
     .query({
       query: schema.GetFavoriteArtistDocument,
       variables: { user_id },
