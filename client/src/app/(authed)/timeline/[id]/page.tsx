@@ -11,11 +11,6 @@ type Props = {
   params: { id: string };
 };
 
-const debugUser: User = {
-  user_id: "1",
-  user_name: "Aoki",
-};
-
 const Page = ({ params }: Props) => {
   const [timelineDOM, setTimelineDOM] = useState<React.ReactNode[]>();
 
