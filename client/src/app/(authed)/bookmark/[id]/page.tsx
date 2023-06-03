@@ -25,17 +25,22 @@ const Page = ({ params }: Props) => {
       const pDOM: React.ReactNode[] = [];
       users?.forEach(async (u) => {
         pDOM.push(
-          <Card>
-            <div className={styles.cardStyle}>
-              <div className={styles.cardUserStyle}>
-                <Avator size="small" image="" />
-                <div>
-                  <span>{u?.user_name}</span>さんの音楽プロフィール
+          <div key={u.user_id} className={styles.cardWrapperStyle}>
+            <Card>
+              <div className={styles.cardInnerStyle}>
+                <div className={styles.cardUserStyle}>
+                  <Avator size="small" image="" />
+                  <div>
+                    <span className={styles.cardUserNameStyle}>
+                      {u?.user_name}
+                    </span>
+                    さんの音楽プロフィール
+                  </div>
                 </div>
+                <Like num={24} liked={true} />
               </div>
-              <Like num={24} liked={true} />
-            </div>
-          </Card>
+            </Card>
+          </div>
         );
         setProfileDOM(pDOM);
       });
@@ -55,23 +60,7 @@ const Page = ({ params }: Props) => {
           commonStyles.headerAvoidStyle["common"],
         ].join(" ")}
       >
-        <div className={commonStyles.contentStyle}>
-          <Card>
-            <div className={styles.cardStyle}>
-              <div className={styles.cardUserStyle}>
-                <Avator size="small" image="" />
-                <div>
-                  <span className={styles.cardUserNameStyle}>
-                    {debugUser?.user_name}
-                  </span>
-                  さんの音楽プロフィール
-                </div>
-              </div>
-              <Like num={24} liked={true} />
-            </div>
-          </Card>
-          {profileDOM}
-        </div>
+        <div className={commonStyles.contentStyle}>{profileDOM}</div>
       </div>
     </>
   );
