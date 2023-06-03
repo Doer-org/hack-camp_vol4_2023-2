@@ -41,7 +41,12 @@ const Page = ({ params }: Props) => {
           right={<Button color="black">フォロー中</Button>}
         />
       )}
-      <div className={commonStyles.containerStyle}>
+      <div
+        className={[
+          commonStyles.containerStyle,
+          commonStyles.headerAvoidStyle["profile"],
+        ].join(" ")}
+      >
         <div className={commonStyles.contentStyle}>
           <div className={styles.headStyle}>
             <div className={styles.categoriesStyle}>

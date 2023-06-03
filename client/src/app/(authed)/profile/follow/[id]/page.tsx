@@ -47,7 +47,12 @@ const Page = ({ params }: Props) => {
   return (
     <>
       <CommonHeader title="フォロー" left={<Arrow />} right={<Logo />} />
-      <div className={commonStyles.containerStyle}>
+      <div
+        className={[
+          commonStyles.containerStyle,
+          commonStyles.headerAvoidStyle["common"],
+        ].join(" ")}
+      >
         <div className={commonStyles.contentStyle}>
           <Card>
             <div className={styles.cardStyle}>

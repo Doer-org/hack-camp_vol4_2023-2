@@ -1,8 +1,12 @@
-import { style } from "@vanilla-extract/css";
+import { style, styleVariants } from "@vanilla-extract/css";
 
 export const containerStyle = style({
-  paddingTop: "78px",
   paddingBottom: "56px",
+});
+
+export const headerAvoidStyle = styleVariants({
+  common: { paddingTop: "78px" },
+  profile: { paddingTop: "112px" },
 });
 
 export const contentStyle = style({
