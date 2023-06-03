@@ -1,9 +1,9 @@
 "use client";
 import { Card } from "@/ui";
 import { Ranking } from "@/ui/ranking/components";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import * as styles from "../styles/recom-card.css";
-import { getFavoriteArtist } from "@/api";
+import { getAccessToken, getFavoriteArtist, readArtist } from "@/api";
 import { User } from "@/utils";
 
 type Props = {
@@ -31,12 +31,30 @@ const _RecomCard = ({
   manageActive,
   user,
 }: Props) => {
+  const [fImage, setFImage] = useState<string | undefined>(firstImage);
+  const [sImage, setSImage] = useState<string | undefined>(secondImage);
+  const [tImage, setTImage] = useState<string | undefined>(thirdImage);
+
   useEffect(() => {
     (async () => {
       const artists = await getFavoriteArtist(user?.user_id || "0");
       const first = artists?.filter((a) => a.rank === 1)[0];
       const second = artists?.filter((a) => a.rank === 2)[0];
       const third = artists?.filter((a) => a.rank === 3)[0];
+
+      const token = await getAccessToken();
+      if (first) {
+        const sArtist = await readArtist(first.artist, token);
+        if (sArtist?.type !== "error") setFImage(sArtist?.value.images[2].url);
+      }
+      if (second) {
+        const sArtist = await readArtist(second.artist, token);
+        if (sArtist?.type !== "error") setSImage(sArtist?.value.images[2].url);
+      }
+      if (third) {
+        const sArtist = await readArtist(third.artist, token);
+        if (sArtist?.type !== "error") setTImage(sArtist?.value.images[2].url);
+      }
     })();
   }, []);
 
