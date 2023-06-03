@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { NoticeCard } from "@/app/_ui";
 import * as styles from "../_styles/notification.css";
 import { Label } from "@/ui";
-import { getTimeLine, getUser } from "@/api";
+import { getReaction, getUser } from "@/api";
 import { User } from "@/utils";
 
 type Props = {
@@ -15,31 +15,42 @@ const debugUser: User = {
   user_name: "Aoki",
 };
 
+const kind2ja = new Map([["like", "いいね！"]]);
+
 const Page = ({ params }: Props) => {
-  const [timelineDOM, setTimelineDOM] = useState<React.ReactNode[]>();
+  const [notificationDOM, setNotificationDOM] = useState<React.ReactNode[]>();
 
   useEffect(() => {
     (async () => {
-      const timeline = await getTimeLine(params.id);
-      const tlDOM: React.ReactNode[] = [];
-      timeline?.forEach(async (tl) => {
-        const user = await getUser(tl.user_id);
-        tlDOM.push(
-          <div className={styles.noticeStyle}>
-            <NoticeCard user={user} action={tl.summary} />
+      const reactions = await getReaction(params.id);
+      const notifications = reactions?.filter(
+        (r) => r.user_id_to === params.id
+      );
+      const nDOM: React.ReactNode[] = [];
+      notifications?.forEach(async (n) => {
+        const user = await getUser(n.user_id_from);
+        nDOM.push(
+          <div
+            key={n.user_id_from + n.timestamp}
+            className={styles.noticeStyle}
+          >
+            <NoticeCard user={user} action={kind2ja.get(n.kind)} />
           </div>
         );
       });
-      setTimelineDOM(tlDOM);
+      setNotificationDOM(nDOM);
     })();
   }, []);
 
   return (
     <div>
       <div className={styles.noticeStyle}>
-        <NoticeCard user={debugUser} action="本プロフィールの内容を変更" />
+        <NoticeCard user={debugUser} action="いいね！" />
       </div>
-      {timelineDOM}
+      <div className={styles.noticeStyle}>
+        <NoticeCard user={debugUser} action="いいね！" />
+      </div>
+      {notificationDOM}
     </div>
   );
 };
