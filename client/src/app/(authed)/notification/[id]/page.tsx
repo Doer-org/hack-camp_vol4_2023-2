@@ -10,11 +10,6 @@ type Props = {
   params: { id: string };
 };
 
-const debugUser: User = {
-  user_id: "1",
-  user_name: "Aoki",
-};
-
 const kind2ja = new Map([["like", "いいね！"]]);
 
 const Page = ({ params }: Props) => {
@@ -42,17 +37,7 @@ const Page = ({ params }: Props) => {
     })();
   }, []);
 
-  return (
-    <div>
-      <div className={styles.noticeStyle}>
-        <NoticeCard user={debugUser} action="いいね！" />
-      </div>
-      <div className={styles.noticeStyle}>
-        <NoticeCard user={debugUser} action="いいね！" />
-      </div>
-      {notificationDOM}
-    </div>
-  );
+  return <div>{notificationDOM}</div>;
 };
 
 export default Page;
