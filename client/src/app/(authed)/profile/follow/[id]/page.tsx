@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { Arrow, Logo, Card, Avator } from "@/ui";
 import { CommonHeader } from "@/app/_ui";
+import * as commonStyles from "../../../_styles/common.css";
 import * as styles from "../_styles/follow.css";
 import { getFollows, getUser } from "@/api";
 import { User } from "@/utils";
@@ -46,8 +47,8 @@ const Page = ({ params }: Props) => {
   return (
     <>
       <CommonHeader title="フォロー" left={<Arrow />} right={<Logo />} />
-      <div className={styles.containerStyle}>
-        <div className={styles.contentStyle}>
+      <div className={commonStyles.containerStyle}>
+        <div className={commonStyles.contentStyle}>
           <Card>
             <div className={styles.cardStyle}>
               <div className={styles.cardUserStyle}>
