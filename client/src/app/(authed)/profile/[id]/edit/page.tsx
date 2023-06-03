@@ -2,7 +2,8 @@
 import React, { useEffect, useState } from "react";
 import * as commonStyles from "../../../_styles/common.css";
 import * as styles from "../../_styles/profile.css";
-import { CommonHeader, RecomCard } from "@/app/_ui";
+import { CommonHeader } from "@/app/_ui";
+import { RecomCard } from "../../_ui";
 import { Arrow, Button, Like, SearchResult } from "@/ui";
 import { SearchBar } from "@/ui/search-bar/components";
 import { getAccessToken, searchArtist } from "@/api/spotify";

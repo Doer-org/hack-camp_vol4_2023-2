@@ -65,7 +65,7 @@ const _RecomCard = ({
         <div onClick={firstOnClick}>
           <Ranking
             contentType={contentType}
-            image={firstImage}
+            image={fImage}
             rank={1}
             manageActive={manageActive}
           />
@@ -73,7 +73,7 @@ const _RecomCard = ({
         <div onClick={secondOnClick}>
           <Ranking
             contentType={contentType}
-            image={secondImage}
+            image={sImage}
             rank={2}
             manageActive={manageActive}
           />
@@ -81,7 +81,7 @@ const _RecomCard = ({
         <div onClick={thirdOnClick}>
           <Ranking
             contentType={contentType}
-            image={thirdImage}
+            image={tImage}
             rank={3}
             manageActive={manageActive}
           />
