@@ -30,3 +30,48 @@ mutation updateRamenProfile($user_id: String!, $ramenya: String!, $rank: Int!) {
     timestamp
   }
 }
+
+mutation postTimeLine($user_id: String!, $summary: String!) {
+  postTimeLine(user_id: $user_id, summary: $summary) {
+    user_id
+    summary
+    timestamp
+  }
+}
+
+mutation updateFavoriteMusic($user_id: String!, $rank: Int!, $music: String!) {
+  updateFavoriteMusic(user_id: $user_id, rank: $rank, music: $music) {
+    user_id
+    rank
+    music
+    timestamp
+  }
+}
+
+mutation updateFavoriteArtist(
+  $user_id: String!
+  $rank: Int!
+  $artist: String!
+) {
+  updateFavoriteArtist(user_id: $user_id, rank: $rank, artist: $artist) {
+    user_id
+    rank
+    artist
+    timestamp
+  }
+}
+
+mutation updateFollow(
+  $user_id_from: String!
+  $user_id_to: String!
+  $isFollow: Boolean!
+) {
+  updateFollow(
+    user_id_from: $user_id_from
+    user_id_to: $user_id_to
+    isFollow: $isFollow
+  ) {
+    user_id_from
+    user_id_to
+  }
+}

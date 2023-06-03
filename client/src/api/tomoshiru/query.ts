@@ -78,3 +78,33 @@ export const getRamenProfile = async (user_id: string) => {
     .catch(() => null);
   return data?.data.getRamenProfile || null;
 };
+
+export const getLastAccess = async (user_id: string) => {
+  const data = await graphqlClient
+    .query({
+      query: schema.GetLastAccessDocument,
+      variables: { user_id },
+    })
+    .catch(() => null);
+  return data?.data.getLastAccess || null;
+};
+
+export const getFavoriteMusic = async (user_id: string) => {
+  const data = await graphqlClient
+    .query({
+      query: schema.GetFavoriteMusicDocument,
+      variables: { user_id },
+    })
+    .catch(() => null);
+  return data?.data.getFavoriteMusic || null;
+};
+
+export const getFavoriteArtist = async (user_id: string) => {
+  const data = await graphqlClient
+    .query({
+      query: schema.GetFavoriteArtistDocument,
+      variables: { user_id },
+    })
+    .catch(() => null);
+  return data?.data.getFavoriteArtist || null;
+};

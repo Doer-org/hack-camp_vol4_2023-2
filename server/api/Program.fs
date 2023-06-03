@@ -67,6 +67,14 @@
                         let conn = dbFactory.CreateConnection()
                         Database.Reaction.create conn reaction
 
+                    member _.updateFavoriteMusic(music: Domain.Profile.Music.FavoriteMusic) =
+                        let conn = dbFactory.CreateConnection()
+                        Database.FavoriteMusic.update conn music
+
+                    member _.updateFavoriteArtist(artist: Domain.Profile.Music.FavoriteArtist) =
+                        let conn = dbFactory.CreateConnection()
+                        Database.FavoriteArtist.update conn artist
+
                     member _.updateRamenProfile(ramenya: Domain.Profile.Ramen.FavoriteRamenya) =
                         let conn = dbFactory.CreateConnection()
                         Database.FavoriteRamenya.update conn ramenya
@@ -117,9 +125,9 @@
                         let conn = dbFactory.CreateConnection()
                         Database.ProfileChangeLog.getAll conn
 
-                    member _.getProfile(user_id: Domain.UserID) =
-                        let conn = dbFactory.CreateConnection()
-                        Error "未実装" // TODO: 未実装
+                    // member _.getProfile(user_id: Domain.UserID) =
+                    //     let conn = dbFactory.CreateConnection()
+                    //     Error "未実装" // TODO: 未実装
 
                     member _.getReaction(user_id_to: Domain.UserID) =
                         let conn = dbFactory.CreateConnection()
@@ -128,6 +136,14 @@
                     member _.getRamenProfile(user_id: Domain.UserID) =
                         let conn = dbFactory.CreateConnection()
                         Database.FavoriteRamenya.getByUserID conn user_id
+
+                    member _.getFavoriteMusicProfile(user_id: Domain.UserID) =
+                        let conn = dbFactory.CreateConnection()
+                        Database.FavoriteMusic.getByUserID conn user_id
+
+                    member _.getFavoriteArtistsProfile(user_id: Domain.UserID) =
+                        let conn = dbFactory.CreateConnection()
+                        Database.FavoriteArtist.getByUserID conn user_id
 
                 }
 

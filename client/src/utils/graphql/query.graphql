@@ -57,3 +57,26 @@ query getRamenProfile($user_id: String!) {
     ramenya
   }
 }
+
+query getLastAccess($user_id: String!) {
+  getLastAccess(user_id: $user_id) {
+    user_id
+    timeline_last_access
+  }
+}
+
+query getFavoriteMusic($user_id: String!) {
+  getFavoriteMusic(user_id: $user_id) {
+    user_id
+    rank
+    music
+  }
+}
+
+query getFavoriteArtist($user_id: String!) {
+  getFavoriteArtist(user_id: $user_id) {
+    user_id
+    rank
+    artist
+  }
+}

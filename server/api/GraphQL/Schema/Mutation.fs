@@ -10,6 +10,9 @@ module private MutationCommand =
     let createUser = "createUser"
     let updateFollow = "updateFollow"
     let updateReaction = "updateReaction"
+    let postTimeLine = "postTimeLine"
+    let updateFavoriteMusic = "updateFavoriteMusic"
+    let updateFavoriteArtist = "updateFavoriteArtist"
     let updateRamenProfile = "updateRamenProfile"
 
 
@@ -102,6 +105,156 @@ let private createReaction (isTest: bool) (token: Domain.Token option) (store: S
                 | Ok r -> Some r
     )
 
+let private updateFollow (isTest: bool) (token: Domain.Token option) (store: Store.IStore) =
+    let args =
+        {| user_id_from = "user_id_from"
+           user_id_to = "user_id_to"
+           isFollow = "isFollow" |}
+
+    Define.Field(
+        MutationCommand.updateFollow,
+        Nullable UserFollowType,
+        "update follow",
+        [ Define.Input(args.user_id_from, String)
+          Define.Input(args.user_id_to, String)
+          Define.Input(args.isFollow, Boolean) ],
+        fun ctx _ ->
+            let sub =
+                token
+                |> function
+                    | None -> if isTest then null else failwith "no sub"
+                    | Some token -> token.sub
+
+            let follow: User.Follow =
+                { user_id_from = ctx.Arg args.user_id_from
+                  user_id_to = ctx.Arg args.user_id_to }
+
+            let isFollow: bool = ctx.Arg args.isFollow
+
+            let account: User.Account =
+                { sub = sub
+                  user_id = follow.user_id_from }
+
+            let result =
+                Domain.updateFollowUser
+                    (store.followUser)
+                    (store.unfollowUser)
+                    account
+                    (Utils.accountValidation isTest store)
+                    {| follow = follow
+                       isFollow = isFollow |}
+
+            result
+            |> function
+                | Error e -> failwith e
+                | Ok follow -> Some follow
+    )
+
+let private postTimeLine (isTest: bool) (token: Domain.Token option) (store: Store.IStore) =
+    let args =
+        {| user_id = "user_id"
+           summary = "summary" |}
+
+    Define.Field(
+        MutationCommand.postTimeLine,
+        Nullable ProfileChangeLogType,
+        "post timeline",
+        [ Define.Input(args.user_id, String); Define.Input(args.summary, String) ],
+        fun ctx _ ->
+            let sub =
+                token
+                |> function
+                    | None -> if isTest then null else failwith "no sub"
+                    | Some token -> token.sub
+
+            let log: Profile.ChangeLog =
+                { user_id = ctx.Arg args.user_id
+                  summary = ctx.Arg args.summary
+                  timestamp = DateTimeOffset.Now }
+
+            let account: User.Account = { sub = sub; user_id = log.user_id }
+
+            let result =
+                Domain.postTimeLine (store.createChangeLog) account (Utils.accountValidation isTest store) log
+
+            result
+            |> function
+                | Error e -> failwith e
+                | Ok log -> Some log
+    )
+
+let private updateFavoriteArtist (isTest: bool) (token: Domain.Token option) (store: Store.IStore) =
+    let args =
+        {| user_id = "user_id"
+           rank = "rank"
+           artist = "artist" |}
+
+    Define.Field(
+        MutationCommand.updateFavoriteArtist,
+        Nullable ProfileMusicFavoriteArtistType,
+        "update favotrite artists",
+        [ Define.Input(args.user_id, String)
+          Define.Input(args.artist, String)
+          Define.Input(args.rank, Int) ],
+        fun ctx _ ->
+
+            let sub =
+                token
+                |> function
+                    | None -> if isTest then null else failwith "no sub"
+                    | Some token -> token.sub
+
+            let artist: Profile.Music.FavoriteArtist =
+                { artist = ctx.Arg args.artist
+                  user_id = ctx.Arg args.user_id
+                  rank = ctx.Arg args.rank
+                  timestamp = DateTimeOffset.Now }
+
+            let account: User.Account = { sub = sub; user_id = artist.user_id }
+
+            artist
+            |> Domain.updateFavoriteArtist store.updateFavoriteArtist account (Utils.accountValidation isTest store)
+            |> function
+                | Error e -> failwith e
+                | Ok follow -> Some follow
+    )
+
+let private updateFavoriteMusic (isTest: bool) (token: Domain.Token option) (store: Store.IStore) =
+    let args =
+        {| user_id = "user_id"
+           rank = "rank"
+           music = "music" |}
+
+    Define.Field(
+        MutationCommand.updateFavoriteMusic,
+        Nullable ProfileMusicFavoriteMusicType,
+        "update favorite music",
+        [ Define.Input(args.user_id, String)
+          Define.Input(args.music, String)
+          Define.Input(args.rank, Int) ],
+        fun ctx _ ->
+
+            let sub =
+                token
+                |> function
+                    | None -> if isTest then null else failwith "no sub"
+                    | Some token -> token.sub
+
+            let music: Profile.Music.FavoriteMusic =
+                { music = ctx.Arg args.music
+                  user_id = ctx.Arg args.user_id
+                  rank = ctx.Arg args.rank
+                  timestamp = DateTimeOffset.Now }
+
+            let account: User.Account = { sub = sub; user_id = music.user_id }
+
+            music
+            |> Domain.updateFavoriteMusic store.updateFavoriteMusic account (Utils.accountValidation isTest store)
+            |> function
+                | Error e -> failwith e
+                | Ok follow -> Some follow
+    )
+
 let private updateRamenProfile (isTest: bool) (token: Domain.Token option) (store: Store.IStore) =
     let args =
         {| user_id = "user_id"
@@ -132,20 +285,17 @@ let private updateRamenProfile (isTest: bool) (token: Domain.Token option) (stor
             let account: User.Account = { sub = sub; user_id = ramen.user_id }
 
             ramen
-            |> Domain.updateFavoriteRamen
-                store.updateRamenProfile
-                (fun _ ->
-                    let log: Domain.Profile.ChangeLog =
-                        { user_id = ramen.user_id
-                          summary = "update ramen profile"
-                          timestamp = DateTimeOffset.Now }
+            |> Domain.updateFavoriteRamen store.updateRamenProfile account (Utils.accountValidation isTest store)
+            // (fun _ ->
+            //     let log: Domain.Profile.ChangeLog =
+            //         { user_id = ramen.user_id
+            //           summary = "update ramen profile"
+            //           timestamp = DateTimeOffset.Now }
 
-                    store.createChangeLog log
-                    |> function
-                        | Error e -> printfn "%A" e
-                        | Ok _ -> ())
-                account
-                (Utils.accountValidation isTest store)
+            //     store.createChangeLog log
+            //     |> function
+            //         | Error e -> printfn "%A" e
+            //         | Ok _ -> ())
             |> function
                 | Error e -> failwith e
                 | Ok follow -> Some follow
@@ -157,5 +307,9 @@ let Mutation (isTest: bool) (token: Domain.Token option) (store: Store.IStore) =
         fields =
             [ createUser isTest token store
               createReaction isTest token store
+              postTimeLine isTest token store
+              updateFollow isTest token store
+              updateFavoriteMusic isTest token store
+              updateFavoriteArtist isTest token store
               updateRamenProfile isTest token store ]
     )

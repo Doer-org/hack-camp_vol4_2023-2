@@ -5,17 +5,21 @@ open System.Data
 open Domain.Profile.Music
 open Database
 
-let create (conn: IDbConnection) (favoriteMusic: FavoriteMusic) : Result<FavoriteMusic, string> =
+let update (conn: IDbConnection) (favoriteMusic: FavoriteMusic) : Result<FavoriteMusic, string> =
     try
         use cmd = conn.CreateCommand()
 
         cmd.CommandText <-
             "
-            INSERT INTO FavoriteMusic (user_id, rank, music)
-            VALUES (@user_id, @rank, @music);"
+            INSERT INTO FavoriteMusic (`user_id`, `rank_n`, `music`)
+            VALUES (@user_id, @rank_n, @music)
+            ON DUPLICATE KEY UPDATE
+                `user_id` = VALUES(`user_id`),
+                `rank_n` = VALUES(`rank_n`),
+                `music` = VALUES(`music`);"
 
         cmd.AddParameter("user_id", favoriteMusic.user_id)
-        cmd.AddParameter("rank", favoriteMusic.rank)
+        cmd.AddParameter("rank_n", favoriteMusic.rank)
         cmd.AddParameter("music", favoriteMusic.music)
         cmd.Execute()
         Ok favoriteMusic
@@ -35,9 +39,9 @@ let getByUserID (conn: IDbConnection) (user_id: string) : Result<FavoriteMusic l
         cmd.AddParameter("user_id", user_id)
 
         cmd.Query(fun rd ->
-            { user_id = rd.GetString(0)
-              rank = rd.GetInt32(1)
-              music = rd.GetString(2)
+            { user_id = rd.GetOrdinal("user_id") |> rd.GetString
+              rank = rd.GetOrdinal("rank_n") |> rd.GetInt32
+              music = rd.GetOrdinal("music") |> rd.GetString
               timestamp =
                 rd.GetOrdinal("timestamp")
                 |> rd.GetDateTime

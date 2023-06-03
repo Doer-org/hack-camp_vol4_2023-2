@@ -41,3 +41,59 @@ export const updateRamenProfile = async (
     .catch(() => null);
   return data?.data?.updateRamenProfile || null;
 };
+
+export const postTimeLine = async (user_id: string, summary: string) => {
+  const data = await graphqlClient
+    .mutate({
+      mutation: schema.PostTimeLineDocument,
+      variables: { user_id: user_id, summary: summary },
+    })
+    .catch(() => null);
+  return data?.data?.postTimeLine || null;
+};
+
+export const updateFavoriteMusic = async (
+  user_id: string,
+  music: string,
+  rank: number
+) => {
+  const data = await graphqlClient
+    .mutate({
+      mutation: schema.UpdateFavoriteMusicDocument,
+      variables: { user_id: user_id, music: music, rank: rank },
+    })
+    .catch(() => null);
+  return data?.data?.updateFavoriteMusic || null;
+};
+
+export const updateFavoriteArtist = async (
+  user_id: string,
+  artist: string,
+  rank: number
+) => {
+  const data = await graphqlClient
+    .mutate({
+      mutation: schema.UpdateFavoriteArtistDocument,
+      variables: { user_id: user_id, artist: artist, rank: rank },
+    })
+    .catch(() => null);
+  return data?.data?.updateFavoriteArtist || null;
+};
+
+export const updateFollow = async (
+  user_id_from: string,
+  user_id_to: string,
+  isFollow: boolean
+) => {
+  const data = await graphqlClient
+    .mutate({
+      mutation: schema.UpdateFollowDocument,
+      variables: {
+        user_id_from: user_id_from,
+        user_id_to: user_id_to,
+        isFollow: isFollow,
+      },
+    })
+    .catch(() => null);
+  return data?.data?.updateFollow || null;
+};

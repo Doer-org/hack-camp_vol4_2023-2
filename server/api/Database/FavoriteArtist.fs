@@ -5,17 +5,21 @@ open System.Data
 open Domain.Profile.Music
 open Database
 
-let create (conn: IDbConnection) (favoriteArtist: FavoriteArtist) : Result<FavoriteArtist, string> =
+let update (conn: IDbConnection) (favoriteArtist: FavoriteArtist) : Result<FavoriteArtist, string> =
     try
         use cmd = conn.CreateCommand()
 
         cmd.CommandText <-
             "
-            INSERT INTO FavoriteArtist (user_id, rank, artist)
-            VALUES (@user_id, @rank, @artist);"
+            INSERT INTO FavoriteArtist (`user_id`, `rank_n`, `artist`)
+            VALUES (@user_id, @rank_n, @artist)
+            ON DUPLICATE KEY UPDATE
+                `user_id` = VALUES(`user_id`),
+                `rank_n` = VALUES(`rank_n`),
+                `artist` = VALUES(`artist`);"
 
         cmd.AddParameter("user_id", favoriteArtist.user_id)
-        cmd.AddParameter("rank", favoriteArtist.rank)
+        cmd.AddParameter("rank_n", favoriteArtist.rank)
         cmd.AddParameter("artist", favoriteArtist.artist)
         cmd.Execute()
         Ok favoriteArtist
@@ -36,7 +40,7 @@ let getByUserID (conn: IDbConnection) (user_id: string) : Result<FavoriteArtist 
 
         cmd.Query(fun rd ->
             { user_id = rd.GetOrdinal("user_id") |> rd.GetString
-              rank = rd.GetOrdinal("rank") |> rd.GetInt32
+              rank = rd.GetOrdinal("rank_n") |> rd.GetInt32
               artist = rd.GetOrdinal("artist") |> rd.GetString
               timestamp =
                 "timestamp"

@@ -86,6 +86,8 @@ module Command =
                   isFollow: bool |}
             -> CommandResult<User.Follow>
 
+    type PostTimeLine = User.Account -> ValidateAccount -> Profile.ChangeLog -> CommandResult<Profile.ChangeLog>
+
     type UpdateReaction =
         User.Account -> ValidateAccount -> Profile.Reaction -> Profile.ChangeLog -> CommandResult<Profile.Reaction>
 
@@ -167,6 +169,9 @@ let updateReaction (update: Update<Profile.Reaction>) : Command.UpdateReaction =
             let r = update reaction
             r)
 
+let postTimeLine (update: Update<Profile.ChangeLog>) : Command.PostTimeLine =
+    fun account valid log -> validAccount valid account (fun _ -> update log)
+
 let updateFavoriteMusic (update: Update<Profile.Music.FavoriteMusic>) : Command.UpdateFavoriteMusic =
     fun account valid music -> validAccount valid account (fun _ -> update music)
 
@@ -175,13 +180,13 @@ let updateFavoriteArtist (update: Update<Profile.Music.FavoriteArtist>) : Comman
 
 let updateFavoriteRamen
     (update: Update<Profile.Ramen.FavoriteRamenya>)
-    (profileChangeLogger: unit -> unit)
+    // (profileChangeLogger: unit -> unit)
     : Command.UpdateFavoriteRamenya =
     fun account valid ramen ->
         validAccount valid account (fun _ ->
 
             let r = update ramen
-            profileChangeLogger ()
+            // profileChangeLogger ()
             r
 
         )

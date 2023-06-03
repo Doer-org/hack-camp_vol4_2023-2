@@ -34,10 +34,41 @@ export type Mutation = {
   __typename?: "Mutation";
   /** create user */
   createUser: Maybe<User>;
+  /** post timeline */
+  postTimeLine: Maybe<Profile_Change_Log>;
+  /** update favotrite artists */
+  updateFavoriteArtist: Maybe<Music_Favorite_Artist>;
+  /** update favorite music */
+  updateFavoriteMusic: Maybe<Music_Favorite_Music>;
+  /** update follow */
+  updateFollow: Maybe<User_Follow>;
   /** update ramen profile */
   updateRamenProfile: Maybe<Ramen_Favorite_Ramenya>;
   /** update reaction */
   updateReaction: Maybe<Profile_Reaction>;
+};
+
+export type MutationPostTimeLineArgs = {
+  summary: Scalars["String"]["input"];
+  user_id: Scalars["String"]["input"];
+};
+
+export type MutationUpdateFavoriteArtistArgs = {
+  artist: Scalars["String"]["input"];
+  rank: Scalars["Int"]["input"];
+  user_id: Scalars["String"]["input"];
+};
+
+export type MutationUpdateFavoriteMusicArgs = {
+  music: Scalars["String"]["input"];
+  rank: Scalars["Int"]["input"];
+  user_id: Scalars["String"]["input"];
+};
+
+export type MutationUpdateFollowArgs = {
+  isFollow: Scalars["Boolean"]["input"];
+  user_id_from: Scalars["String"]["input"];
+  user_id_to: Scalars["String"]["input"];
 };
 
 export type MutationUpdateRamenProfileArgs = {
@@ -56,12 +87,16 @@ export type Query = {
   __typename?: "Query";
   /** get all users timeline */
   getAllTimeline: Array<Profile_Change_Log>;
+  /** get favorite artists */
+  getFavoriteArtist: Array<Music_Favorite_Artist>;
+  /** get favorite music */
+  getFavoriteMusic: Array<Music_Favorite_Music>;
   /** get followers */
   getFollowers: Array<User>;
   /** get follows */
   getFollows: Array<User>;
-  /** get profile */
-  getProfile: Maybe<Profile>;
+  /** get last access */
+  getLastAccess: Maybe<User_Log>;
   /** get ramen profile */
   getRamenProfile: Array<Ramen_Favorite_Ramenya>;
   /** get reaction */
@@ -76,6 +111,14 @@ export type Query = {
   user: Maybe<User>;
 };
 
+export type QueryGetFavoriteArtistArgs = {
+  user_id: Scalars["String"]["input"];
+};
+
+export type QueryGetFavoriteMusicArgs = {
+  user_id: Scalars["String"]["input"];
+};
+
 export type QueryGetFollowersArgs = {
   user_id: Scalars["String"]["input"];
 };
@@ -84,7 +127,7 @@ export type QueryGetFollowsArgs = {
   user_id: Scalars["String"]["input"];
 };
 
-export type QueryGetProfileArgs = {
+export type QueryGetLastAccessArgs = {
   user_id: Scalars["String"]["input"];
 };
 
@@ -107,7 +150,7 @@ export type QueryUserArgs = {
 /** アーティスト */
 export type Music_Favorite_Artist = {
   __typename?: "music_favorite_artist";
-  artist_info: Scalars["String"]["output"];
+  artist: Scalars["String"]["output"];
   rank: Scalars["Int"]["output"];
   timestamp: Scalars["String"]["output"];
   user_id: Scalars["String"]["output"];
@@ -116,7 +159,7 @@ export type Music_Favorite_Artist = {
 /** 音楽 */
 export type Music_Favorite_Music = {
   __typename?: "music_favorite_music";
-  artist_info: Scalars["String"]["output"];
+  music: Scalars["String"]["output"];
   rank: Scalars["Int"]["output"];
   timestamp: Scalars["String"]["output"];
   user_id: Scalars["String"]["output"];
@@ -222,6 +265,70 @@ export type UpdateRamenProfileMutation = {
   } | null;
 };
 
+export type PostTimeLineMutationVariables = Exact<{
+  user_id: Scalars["String"]["input"];
+  summary: Scalars["String"]["input"];
+}>;
+
+export type PostTimeLineMutation = {
+  __typename?: "Mutation";
+  postTimeLine: {
+    __typename?: "profile_change_log";
+    user_id: string;
+    summary: string;
+    timestamp: string;
+  } | null;
+};
+
+export type UpdateFavoriteMusicMutationVariables = Exact<{
+  user_id: Scalars["String"]["input"];
+  rank: Scalars["Int"]["input"];
+  music: Scalars["String"]["input"];
+}>;
+
+export type UpdateFavoriteMusicMutation = {
+  __typename?: "Mutation";
+  updateFavoriteMusic: {
+    __typename?: "music_favorite_music";
+    user_id: string;
+    rank: number;
+    music: string;
+    timestamp: string;
+  } | null;
+};
+
+export type UpdateFavoriteArtistMutationVariables = Exact<{
+  user_id: Scalars["String"]["input"];
+  rank: Scalars["Int"]["input"];
+  artist: Scalars["String"]["input"];
+}>;
+
+export type UpdateFavoriteArtistMutation = {
+  __typename?: "Mutation";
+  updateFavoriteArtist: {
+    __typename?: "music_favorite_artist";
+    user_id: string;
+    rank: number;
+    artist: string;
+    timestamp: string;
+  } | null;
+};
+
+export type UpdateFollowMutationVariables = Exact<{
+  user_id_from: Scalars["String"]["input"];
+  user_id_to: Scalars["String"]["input"];
+  isFollow: Scalars["Boolean"]["input"];
+}>;
+
+export type UpdateFollowMutation = {
+  __typename?: "Mutation";
+  updateFollow: {
+    __typename?: "user_follow";
+    user_id_from: string;
+    user_id_to: string;
+  } | null;
+};
+
 export type GetUserByTokenQueryVariables = Exact<{ [key: string]: never }>;
 
 export type GetUserByTokenQuery = {
@@ -315,6 +422,47 @@ export type GetRamenProfileQuery = {
     user_id: string;
     rank: number;
     ramenya: string;
+  }>;
+};
+
+export type GetLastAccessQueryVariables = Exact<{
+  user_id: Scalars["String"]["input"];
+}>;
+
+export type GetLastAccessQuery = {
+  __typename?: "Query";
+  getLastAccess: {
+    __typename?: "user_log";
+    user_id: string;
+    timeline_last_access: string;
+  } | null;
+};
+
+export type GetFavoriteMusicQueryVariables = Exact<{
+  user_id: Scalars["String"]["input"];
+}>;
+
+export type GetFavoriteMusicQuery = {
+  __typename?: "Query";
+  getFavoriteMusic: Array<{
+    __typename?: "music_favorite_music";
+    user_id: string;
+    rank: number;
+    music: string;
+  }>;
+};
+
+export type GetFavoriteArtistQueryVariables = Exact<{
+  user_id: Scalars["String"]["input"];
+}>;
+
+export type GetFavoriteArtistQuery = {
+  __typename?: "Query";
+  getFavoriteArtist: Array<{
+    __typename?: "music_favorite_artist";
+    user_id: string;
+    rank: number;
+    artist: string;
   }>;
 };
 
@@ -539,6 +687,376 @@ export const UpdateRamenProfileDocument = {
 } as unknown as DocumentNode<
   UpdateRamenProfileMutation,
   UpdateRamenProfileMutationVariables
+>;
+export const PostTimeLineDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "postTimeLine" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "user_id" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "summary" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "postTimeLine" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "user_id" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "user_id" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "summary" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "summary" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "user_id" } },
+                { kind: "Field", name: { kind: "Name", value: "summary" } },
+                { kind: "Field", name: { kind: "Name", value: "timestamp" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  PostTimeLineMutation,
+  PostTimeLineMutationVariables
+>;
+export const UpdateFavoriteMusicDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "updateFavoriteMusic" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "user_id" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "rank" } },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "music" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "updateFavoriteMusic" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "user_id" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "user_id" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "rank" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "rank" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "music" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "music" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "user_id" } },
+                { kind: "Field", name: { kind: "Name", value: "rank" } },
+                { kind: "Field", name: { kind: "Name", value: "music" } },
+                { kind: "Field", name: { kind: "Name", value: "timestamp" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  UpdateFavoriteMusicMutation,
+  UpdateFavoriteMusicMutationVariables
+>;
+export const UpdateFavoriteArtistDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "updateFavoriteArtist" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "user_id" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "rank" } },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "artist" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "updateFavoriteArtist" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "user_id" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "user_id" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "rank" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "rank" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "artist" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "artist" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "user_id" } },
+                { kind: "Field", name: { kind: "Name", value: "rank" } },
+                { kind: "Field", name: { kind: "Name", value: "artist" } },
+                { kind: "Field", name: { kind: "Name", value: "timestamp" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  UpdateFavoriteArtistMutation,
+  UpdateFavoriteArtistMutationVariables
+>;
+export const UpdateFollowDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "updateFollow" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "user_id_from" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "user_id_to" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "isFollow" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "Boolean" },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "updateFollow" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "user_id_from" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "user_id_from" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "user_id_to" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "user_id_to" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "isFollow" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "isFollow" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "user_id_from" },
+                },
+                { kind: "Field", name: { kind: "Name", value: "user_id_to" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  UpdateFollowMutation,
+  UpdateFollowMutationVariables
 >;
 export const GetUserByTokenDocument = {
   kind: "Document",
@@ -913,4 +1431,171 @@ export const GetRamenProfileDocument = {
 } as unknown as DocumentNode<
   GetRamenProfileQuery,
   GetRamenProfileQueryVariables
+>;
+export const GetLastAccessDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "getLastAccess" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "user_id" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "getLastAccess" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "user_id" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "user_id" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "user_id" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "timeline_last_access" },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<GetLastAccessQuery, GetLastAccessQueryVariables>;
+export const GetFavoriteMusicDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "getFavoriteMusic" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "user_id" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "getFavoriteMusic" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "user_id" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "user_id" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "user_id" } },
+                { kind: "Field", name: { kind: "Name", value: "rank" } },
+                { kind: "Field", name: { kind: "Name", value: "music" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  GetFavoriteMusicQuery,
+  GetFavoriteMusicQueryVariables
+>;
+export const GetFavoriteArtistDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "getFavoriteArtist" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "user_id" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "getFavoriteArtist" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "user_id" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "user_id" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "user_id" } },
+                { kind: "Field", name: { kind: "Name", value: "rank" } },
+                { kind: "Field", name: { kind: "Name", value: "artist" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  GetFavoriteArtistQuery,
+  GetFavoriteArtistQueryVariables
 >;
