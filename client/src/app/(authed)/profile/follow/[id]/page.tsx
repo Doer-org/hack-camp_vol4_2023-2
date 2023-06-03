@@ -12,11 +12,6 @@ type Props = {
   params: { id: string };
 };
 
-const debugUser: User = {
-  user_id: "1",
-  user_name: "Aoki",
-};
-
 const Page = ({ params }: Props) => {
   const [followDOM, setFollowDOM] = useState<React.ReactNode[]>();
 
@@ -29,17 +24,19 @@ const Page = ({ params }: Props) => {
         const following = true; // me は user をフォローしているかどうか
         const followed = false; // me は user にフォローされているかどうか
         fDOM.push(
-          <Card>
-            <div className={styles.cardStyle}>
-              <div className={styles.cardUserStyle}>
-                <Avator size="small" image="" />
-                <span className={styles.cardUserNameStyle}>
-                  {user?.user_name}
-                </span>
+          <div className={styles.cardWrapperStyle}>
+            <Card>
+              <div className={styles.cardStyle}>
+                <div className={styles.cardUserStyle}>
+                  <Avator size="small" image="" />
+                  <span className={styles.cardUserNameStyle}>
+                    {user?.user_name}
+                  </span>
+                </div>
+                <FollowButton following={following} followed={followed} />
               </div>
-              <FollowButton following={following} followed={followed} />
-            </div>
-          </Card>
+            </Card>
+          </div>
         );
         setFollowDOM(fDOM);
       });
@@ -55,20 +52,7 @@ const Page = ({ params }: Props) => {
           commonStyles.headerAvoidStyle["common"],
         ].join(" ")}
       >
-        <div className={commonStyles.contentStyle}>
-          <Card>
-            <div className={styles.cardStyle}>
-              <div className={styles.cardUserStyle}>
-                <Avator size="small" image="" />
-                <span className={styles.cardUserNameStyle}>
-                  {debugUser?.user_name}
-                </span>
-              </div>
-              <FollowButton following={false} followed={true} />
-            </div>
-          </Card>
-          {followDOM}
-        </div>
+        <div className={commonStyles.contentStyle}>{followDOM}</div>
       </div>
     </>
   );
