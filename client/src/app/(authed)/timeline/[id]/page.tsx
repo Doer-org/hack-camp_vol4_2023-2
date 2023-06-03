@@ -24,7 +24,7 @@ const Page = ({ params }: Props) => {
           <div className={styles.cardWrapperStyle}>
             <Card>
               <div className={styles.cardInnerStyle}>
-                <Avator image={""} size="small" />
+                <Avator image={user?.image_url} size="small" />
                 <p className={styles.actionStyle}>
                   <span className={styles.userNameStyle}>
                     {user?.user_name}
@@ -40,33 +40,7 @@ const Page = ({ params }: Props) => {
     })();
   }, []);
 
-  return (
-    <div>
-      <div className={styles.cardWrapperStyle}>
-        <Card>
-          <div className={styles.cardInnerStyle}>
-            <Avator image={""} size="small" />
-            <p className={styles.actionStyle}>
-              <span className={styles.userNameStyle}>あ</span>
-              さんがあああ
-            </p>
-          </div>
-        </Card>
-      </div>
-      <div className={styles.cardWrapperStyle}>
-        <Card>
-          <div className={styles.cardInnerStyle}>
-            <Avator image={""} size="small" />
-            <p className={styles.actionStyle}>
-              <span className={styles.userNameStyle}>あ</span>
-              さんがあああ
-            </p>
-          </div>
-        </Card>
-      </div>
-      {timelineDOM}
-    </div>
-  );
+  return <div>{timelineDOM}</div>;
 };
 
 export default Page;
