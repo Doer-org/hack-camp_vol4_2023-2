@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import * as commonStyles from "../../../_styles/common.css";
 import * as styles from "../../_styles/profile.css";
 import { CommonHeader } from "@/app/_ui";
-import { EditRecomCard } from "./_ui";
+import { RecomCard } from "../../_ui";
 import { Arrow, Button, Like, SearchResult } from "@/ui";
 import { SearchBar } from "@/ui/search-bar/components";
 import {
@@ -14,7 +14,6 @@ import {
 } from "@/api";
 import { updateFavoriteArtist, getUser } from "@/api";
 import { useRouter } from "next/navigation";
-import { User } from "@/utils";
 
 type Artist = {
   id: string;
@@ -157,7 +156,7 @@ const Page = ({ params }: Props) => {
           </div>
           <div className={styles.cardListStyle}>
             <div className={styles.cardStyle}>
-              <EditRecomCard
+              <RecomCard
                 contentType="person"
                 contentName="アーティスト"
                 firstImage={firstImage}
