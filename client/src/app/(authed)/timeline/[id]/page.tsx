@@ -4,9 +4,15 @@ import { NoticeCard } from "@/app/_ui";
 import * as styles from "../_styles/timeline.css";
 import { Label } from "@/ui";
 import { getTimeLine, getUser } from "@/api";
+import { User } from "@/utils";
 
 type Props = {
   params: { id: string };
+};
+
+const debugUser: User = {
+  user_id: "1",
+  user_name: "Aoki",
 };
 
 const Page = ({ params }: Props) => {
@@ -31,7 +37,7 @@ const Page = ({ params }: Props) => {
   return (
     <div>
       <div className={styles.noticeStyle}>
-        <NoticeCard user={null} action="本プロフィールの内容を変更" />
+        <NoticeCard user={debugUser} action="本プロフィールの内容を変更" />
       </div>
       {timelineDOM}
     </div>
