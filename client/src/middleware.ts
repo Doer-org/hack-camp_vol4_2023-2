@@ -15,16 +15,13 @@ export default withMiddlewareAuthRequired(async function middleware(
   const session = await getSession(req, res);
   const accessToken = session?.accessToken;
   const idToken = session?.idToken;
-  console.log("session", session);
-  console.log("accessToken", accessToken);
-  console.log("idToken", idToken);
-  // if (accessToken)
-  //   res.cookies.set("accessToken", accessToken, {
-  //     sameSite: "lax",
-  //     httpOnly: true,
-  //     secure: true,
-  //     expires: new Date(Date.now() + 60 * 60 * 1000),
-  //   });
+  if (accessToken)
+    res.cookies.set("accessToken", accessToken, {
+      sameSite: "lax",
+      httpOnly: true,
+      secure: true,
+      expires: new Date(Date.now() + 60 * 60 * 1000),
+    });
   if (idToken)
     res.cookies.set("idToken", idToken, {
       sameSite: "lax",
@@ -32,12 +29,5 @@ export default withMiddlewareAuthRequired(async function middleware(
       secure: true,
       expires: new Date(Date.now() + 60 * 60 * 1000),
     });
-  res.cookies.set("mahiro", "mahiro", {
-    sameSite: "lax",
-    httpOnly: true,
-    secure: true,
-    expires: new Date(Date.now() + 60 * 60 * 1000),
-  });
-  console.log("cookie", res.cookies);
   return res;
 });
