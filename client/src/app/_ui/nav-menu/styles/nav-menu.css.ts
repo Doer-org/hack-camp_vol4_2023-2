@@ -7,7 +7,7 @@ export const frameStyle = style({
 });
 
 export const innerStyle = style({
-  padding: "10px 24px",
+  padding: "12px 24px",
   textAlign: "right",
   marginBlock: "unset",
 });
@@ -19,7 +19,7 @@ export const itemStyle = style({
   fontWeight: "400",
   selectors: {
     "&:not(:first-child)": {
-      marginTop: "20px",
+      marginTop: "24px",
     },
   },
 });
