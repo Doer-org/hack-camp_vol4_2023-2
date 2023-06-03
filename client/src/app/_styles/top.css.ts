@@ -54,6 +54,10 @@ export const centering = style({
   justifyContent: "center",
 });
 
+export const linkStyle = style({
+  textDecoration: "none",
+});
+
 export const textPink = style({
   color: "#FF7987",
   fontWeight: "700",

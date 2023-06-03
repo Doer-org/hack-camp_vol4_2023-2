@@ -20,3 +20,7 @@ export const titleStyle = style({
   color: "#0B002A",
   margin: 0,
 });
+
+export const linkStyle = style({
+  textDecoration: "none",
+});

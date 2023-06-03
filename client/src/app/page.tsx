@@ -2,6 +2,7 @@ import { env } from "@/utils/env";
 import { MemberCard, TopHeader } from "./_ui";
 import * as styles from "./_styles/top.css";
 import { Button, Logo, SnsIcon } from "@/ui";
+import Link from "next/link";
 
 export default function Home() {
   const { clientURL } = env();
@@ -31,7 +32,13 @@ export default function Home() {
             友人の新たな一面が見つかるかもしれません。
           </p>
           <div className={styles.centering}>
-            <Button color="pink">始める</Button>
+            <Link
+              href="/timeline"
+              className={styles.linkStyle}
+              prefetch={false}
+            >
+              <Button color="pink">始める</Button>
+            </Link>
           </div>
         </section>
         <section className={[styles.contentStyle, styles.bgBeige].join(" ")}>
@@ -82,7 +89,7 @@ export default function Home() {
             <img
               className={styles.introductionImage}
               src="assets/timeline.png"
-              alt="プロフィールページ"
+              alt="タイムラインページ"
             />
             <p className={styles.introductionText}>
               フォローしたユーザーのプロフィールが更新されたときは、タイムラインから確認することができます。
@@ -99,7 +106,6 @@ export default function Home() {
               name="Aoki"
               role="Backend/ Infra"
               github="RyushiAok"
-              twitter=""
             />
             <MemberCard
               icon="https://avatars.githubusercontent.com/u/134787738?s=60&v=4"
@@ -120,7 +126,6 @@ export default function Home() {
               name="Saki"
               role="Frontend"
               github="Saki-299"
-              twitter=""
             />
             <MemberCard
               icon="https://avatars.githubusercontent.com/u/113420384?v=4"
