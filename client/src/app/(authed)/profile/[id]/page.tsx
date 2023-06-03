@@ -64,10 +64,14 @@ const Page = ({ params }: Props) => {
           </div>
           <div className={styles.cardListStyle}>
             <div className={styles.cardStyle}>
-              <RecomCard contentType="music" contentName="曲" />
+              <RecomCard user={refUser} contentType="music" contentName="曲" />
             </div>
             <div className={styles.cardStyle}>
-              <RecomCard contentType="person" contentName="アーティスト" />
+              <RecomCard
+                user={refUser}
+                contentType="person"
+                contentName="アーティスト"
+              />
             </div>
           </div>
         </div>

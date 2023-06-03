@@ -1,13 +1,14 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import * as commonStyles from "../../../_styles/common.css";
 import * as styles from "../../_styles/profile.css";
 import { CommonHeader, RecomCard } from "@/app/_ui";
 import { Arrow, Button, Like, SearchResult } from "@/ui";
 import { SearchBar } from "@/ui/search-bar/components";
 import { getAccessToken, searchArtist } from "@/api/spotify";
-import { updateFavoriteArtist } from "@/api";
+import { updateFavoriteArtist, getUser } from "@/api";
 import { useRouter } from "next/navigation";
+import { User } from "@/utils";
 
 type Artist = {
   id: string;
@@ -20,6 +21,15 @@ type Props = {
 };
 
 const Page = ({ params }: Props) => {
+  useEffect(() => {
+    (async () => {
+      const user = await getUser(params.id);
+      setRefUser(user);
+    })();
+  }, [params.id]);
+
+  const [refUser, setRefUser] = useState<User | null>(null);
+
   const [canSearch, setCanSearch] = useState<boolean>(false);
   const [artists, setArtists] = useState<Artist[]>([]);
   const [firstId, setFirstId] = useState<string>("0");
@@ -125,6 +135,7 @@ const Page = ({ params }: Props) => {
                 firstOnClick={handleFirstClick}
                 secondOnClick={handleSecondClick}
                 thirdOnClick={handleThirdClick}
+                user={refUser}
               />
             </div>
             {canSearch && (
