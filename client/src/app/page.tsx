@@ -16,7 +16,7 @@ export default function Home() {
             </div>
             <h2 className={styles.catchphrase}>
               友達の趣味を
-              <br />
+              <br className={styles.brNone} />
               一目で知る
             </h2>
           </div>
@@ -24,7 +24,7 @@ export default function Home() {
             「トモシル」は、
             <span className={styles.textPink}>&quot;友&quot;</span>
             達の好きなものを、
-            <br />
+            <br className={styles.brNone} />
             簡単に<span className={styles.textPink}>&quot;知る&quot;</span>
             ことができるサービスです。
             <br />
@@ -106,7 +106,7 @@ export default function Home() {
               name="Ayano"
               role="Backend/ Frontend"
               github="mashumarrow"
-              twitter=""
+              twitter="A61935791"
             />
             <MemberCard
               icon="https://avatars.githubusercontent.com/u/86759515?v=4"
@@ -117,7 +117,7 @@ export default function Home() {
             />
             <MemberCard
               icon="https://avatars.githubusercontent.com/u/134147341?s=60&v=4"
-              name="さき"
+              name="Saki"
               role="Frontend"
               github="Saki-299"
               twitter=""

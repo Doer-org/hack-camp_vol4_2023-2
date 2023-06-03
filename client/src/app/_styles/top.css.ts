@@ -9,28 +9,42 @@ export const wrapperStyle = style({
 
 export const contentStyle = style({
   padding: "84px 24px",
+  textAlign: "center",
 });
 
 export const catchphraseArea = style({
+  display: "inline-block",
   position: "relative",
+  margin: "0 auto",
 });
 
 export const logo = style({
   position: "absolute",
   top: "-32px",
-  left: "15px",
+  left: "-48px",
+});
+
+export const brNone = style({
+  "@media": {
+    "screen and (min-width:656px)": {
+      display: "none",
+    },
+  },
 });
 
 export const catchphrase = style({
+  display: "inline-block",
   margin: "0 0 44px",
   fontSize: "36px",
   fontWeight: "700",
   textAlign: "center",
   color: "#0B002A",
+  position: "relative",
 });
 
 export const description = style({
-  margin: "0 0 52px",
+  maxWidth: "608px",
+  margin: "0 auto 52px",
   fontSize: "16px",
   textAlign: "center",
 });
@@ -62,10 +76,12 @@ export const sectionTitle = style({
 
 export const introduction = style({
   display: "flex",
+  maxWidth: "486px",
   justifyContent: "center",
   alignItems: "center",
   gap: "24px",
   padding: "0 24px",
+  margin: "0 auto",
 });
 
 export const introductionImage = style({
@@ -75,13 +91,20 @@ export const introductionImage = style({
 export const introductionText = style({
   margin: "0",
   fontSize: "14px",
+  textAlign: "left",
 });
 
 export const creators = style({
   display: "flex",
+  maxWidth: "486px",
   flexWrap: "wrap",
-  justifyContent: "center",
   gap: "24px",
+  margin: "0 auto",
+  "@media": {
+    "screen and (max-width: 534px)": {
+      width: "316px",
+    },
+  },
 });
 
 export const doer = style({
@@ -100,9 +123,10 @@ export const doerCatchphrase = style({
 });
 
 export const doerDescription = style({
+  maxWidth: "608px",
   fontSize: "14px",
   fontWeight: 400,
-  margin: "0 0 24px",
+  margin: "0 auto 24px",
 });
 
 export const doerSns = style({
