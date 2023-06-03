@@ -18,13 +18,13 @@ export default withMiddlewareAuthRequired(async function middleware(
   console.log("session", session);
   console.log("accessToken", accessToken);
   console.log("idToken", idToken);
-  if (accessToken)
-    res.cookies.set("accessToken", accessToken, {
-      sameSite: "lax",
-      httpOnly: true,
-      secure: true,
-      expires: new Date(Date.now() + 60 * 60 * 1000),
-    });
+  // if (accessToken)
+  //   res.cookies.set("accessToken", accessToken, {
+  //     sameSite: "lax",
+  //     httpOnly: true,
+  //     secure: true,
+  //     expires: new Date(Date.now() + 60 * 60 * 1000),
+  //   });
   if (idToken)
     res.cookies.set("idToken", idToken, {
       sameSite: "lax",
