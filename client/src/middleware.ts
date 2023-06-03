@@ -22,11 +22,16 @@ export default withMiddlewareAuthRequired(async function middleware(
     res.cookies.set("accessToken", accessToken, {
       sameSite: "lax",
       httpOnly: true,
+      secure: true,
+      expires: new Date(Date.now() + 60 * 60 * 1000),
     });
   if (idToken)
     res.cookies.set("idToken", idToken, {
       sameSite: "lax",
       httpOnly: true,
+      secure: true,
+      expires: new Date(Date.now() + 60 * 60 * 1000),
     });
+  console.log("cookie", res.cookies);
   return res;
 });
