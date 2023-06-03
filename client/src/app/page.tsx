@@ -1,3 +1,4 @@
+"use client";
 import { env } from "@/utils/env";
 import { TopHeader } from "./_ui";
 import * as styles from "./_styles/top.css";

@@ -1,3 +1,4 @@
+"use client";
 import { env } from "@/utils/env";
 import Link from "next/link";
 import { DebugButton } from "./_ui";
