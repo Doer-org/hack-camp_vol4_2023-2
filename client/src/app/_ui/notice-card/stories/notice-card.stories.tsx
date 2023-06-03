@@ -30,8 +30,8 @@ type Story = StoryObj<typeof NoticeCard>;
 export const Aoki: Story = {
   args: {
     user: {
-      name: "Aoki",
-      icon: "https://avatars.githubusercontent.com/u/55625375?v=4",
+      user_id: "1",
+      user_name: "Aoki",
     },
     action: "本プロフィールの内容を変更",
   },
