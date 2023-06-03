@@ -127,6 +127,7 @@ const Page = ({ params }: Props) => {
     updateFavoriteArtist(params.id, secondId, 2);
     updateFavoriteArtist(params.id, thirdId, 3);
     router.push(`/profile/${params.id}`);
+    router.refresh();
   };
 
   return (
