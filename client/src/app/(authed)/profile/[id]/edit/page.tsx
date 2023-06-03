@@ -62,7 +62,7 @@ const Page = ({ params }: Props) => {
   const [artists, setArtists] = useState<Artist[]>([]);
   const [firstId, setFirstId] = useState<string>("0");
   const [secondId, setSecondId] = useState<string>("0");
-  const [thirdId, setthirdId] = useState<string>("0");
+  const [thirdId, setThirdId] = useState<string>("0");
   const [forcusedRank, setForcusedRank] = useState<
     "first" | "second" | "third"
   >();
@@ -113,7 +113,7 @@ const Page = ({ params }: Props) => {
       setSecondId(id);
       setSecondImage(image);
     } else if (forcusedRank === "third") {
-      setthirdId(id);
+      setThirdId(id);
       setThirdImage(image);
     }
     return;
