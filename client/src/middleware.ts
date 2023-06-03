@@ -34,5 +34,9 @@ export default withMiddlewareAuthRequired(async function middleware(
       domain: domain,
       expires: new Date(Date.now() + 60 * 60 * 1000),
     });
+  console.log(domain);
+  console.log(res.headers);
+  console.log(res.cookies);
+  console.log(res);
   return res;
 });
