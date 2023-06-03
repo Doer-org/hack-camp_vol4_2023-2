@@ -10,3 +10,8 @@ export const cardUserStyle = style({
   alignItems: "center",
   gap: "20px",
 });
+
+export const cardUserNameStyle = style({
+  fontSize: "14px",
+  fontWeight: "700",
+});

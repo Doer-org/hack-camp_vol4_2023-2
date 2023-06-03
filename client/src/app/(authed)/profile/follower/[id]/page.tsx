@@ -33,7 +33,9 @@ const Page = ({ params }: Props) => {
             <div className={styles.cardStyle}>
               <div className={styles.cardUserStyle}>
                 <Avator size="small" image="" />
-                <span>{user?.user_name}</span>
+                <span className={styles.cardUserNameStyle}>
+                  {user?.user_name}
+                </span>
               </div>
               <FollowButton following={following} followed={followed} />
             </div>
@@ -47,13 +49,20 @@ const Page = ({ params }: Props) => {
   return (
     <>
       <CommonHeader title="フォロワー" left={<Arrow />} right={<Logo />} />
-      <div className={commonStyles.containerStyle}>
+      <div
+        className={[
+          commonStyles.containerStyle,
+          commonStyles.headerAvoidStyle["common"],
+        ].join(" ")}
+      >
         <div className={commonStyles.contentStyle}>
           <Card>
             <div className={styles.cardStyle}>
               <div className={styles.cardUserStyle}>
                 <Avator size="small" image="" />
-                <span>{debugUser?.user_name}</span>
+                <span className={styles.cardUserNameStyle}>
+                  {debugUser?.user_name}
+                </span>
               </div>
               <FollowButton following={false} followed={true} />
             </div>
