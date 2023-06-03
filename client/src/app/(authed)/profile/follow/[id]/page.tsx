@@ -1,11 +1,11 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { Arrow, Logo, Card, Avator, Button } from "@/ui";
+import { Arrow, Logo, Card, Avator } from "@/ui";
 import { CommonHeader } from "@/app/_ui";
 import * as styles from "../_styles/follow.css";
 import { getFollows, getUser } from "@/api";
 import { User } from "@/utils";
-import { FollowButton } from "../../_styles/_ui";
+import { FollowButton } from "../../../_styles/_ui";
 
 type Props = {
   params: { id: string };
