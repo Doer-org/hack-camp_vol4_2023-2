@@ -14,7 +14,8 @@ let rec UserType =
         fieldsFn =
             fun () ->
                 [ Define.Field("user_id", String, (fun _ user -> user.user_id))
-                  Define.Field("user_name", String, (fun _ user -> user.user_name)) ]
+                  Define.Field("user_name", String, (fun _ user -> user.user_name))
+                  Define.Field("image_url", String, (fun _ user -> user.image_url)) ]
     )
 
 and UserLogType =

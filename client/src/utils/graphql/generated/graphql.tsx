@@ -202,6 +202,7 @@ export type Ramen_Favorite_Ramenya = {
 /** user */
 export type User = {
   __typename?: "user";
+  image_url: Scalars["String"]["output"];
   user_id: Scalars["String"]["output"];
   user_name: Scalars["String"]["output"];
 };
@@ -228,6 +229,7 @@ export type CreateUserMutation = {
     __typename?: "user";
     user_name: string;
     user_id: string;
+    image_url: string;
   } | null;
 };
 
@@ -337,6 +339,7 @@ export type GetUserByTokenQuery = {
     __typename?: "user";
     user_id: string;
     user_name: string;
+    image_url: string;
   } | null;
 };
 
@@ -344,7 +347,12 @@ export type GetUsersQueryVariables = Exact<{ [key: string]: never }>;
 
 export type GetUsersQuery = {
   __typename?: "Query";
-  getUsers: Array<{ __typename?: "user"; user_id: string; user_name: string }>;
+  getUsers: Array<{
+    __typename?: "user";
+    user_id: string;
+    user_name: string;
+    image_url: string;
+  }>;
 };
 
 export type GetUserQueryVariables = Exact<{
@@ -366,6 +374,7 @@ export type GetFollowsQuery = {
     __typename?: "user";
     user_id: string;
     user_name: string;
+    image_url: string;
   }>;
 };
 
@@ -379,6 +388,7 @@ export type GetFollowersQuery = {
     __typename?: "user";
     user_id: string;
     user_name: string;
+    image_url: string;
   }>;
 };
 
@@ -484,6 +494,7 @@ export const CreateUserDocument = {
               selections: [
                 { kind: "Field", name: { kind: "Name", value: "user_name" } },
                 { kind: "Field", name: { kind: "Name", value: "user_id" } },
+                { kind: "Field", name: { kind: "Name", value: "image_url" } },
               ],
             },
           },
@@ -1076,6 +1087,7 @@ export const GetUserByTokenDocument = {
               selections: [
                 { kind: "Field", name: { kind: "Name", value: "user_id" } },
                 { kind: "Field", name: { kind: "Name", value: "user_name" } },
+                { kind: "Field", name: { kind: "Name", value: "image_url" } },
               ],
             },
           },
@@ -1102,6 +1114,7 @@ export const GetUsersDocument = {
               selections: [
                 { kind: "Field", name: { kind: "Name", value: "user_id" } },
                 { kind: "Field", name: { kind: "Name", value: "user_name" } },
+                { kind: "Field", name: { kind: "Name", value: "image_url" } },
               ],
             },
           },
@@ -1206,6 +1219,7 @@ export const GetFollowsDocument = {
               selections: [
                 { kind: "Field", name: { kind: "Name", value: "user_id" } },
                 { kind: "Field", name: { kind: "Name", value: "user_name" } },
+                { kind: "Field", name: { kind: "Name", value: "image_url" } },
               ],
             },
           },
@@ -1258,6 +1272,7 @@ export const GetFollowersDocument = {
               selections: [
                 { kind: "Field", name: { kind: "Name", value: "user_id" } },
                 { kind: "Field", name: { kind: "Name", value: "user_name" } },
+                { kind: "Field", name: { kind: "Name", value: "image_url" } },
               ],
             },
           },

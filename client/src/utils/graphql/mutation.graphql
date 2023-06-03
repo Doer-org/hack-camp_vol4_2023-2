@@ -2,6 +2,7 @@ mutation createUser {
   createUser {
     user_name
     user_id
+    image_url  
   }
 }
 
