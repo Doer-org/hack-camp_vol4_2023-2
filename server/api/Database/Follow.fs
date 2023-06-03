@@ -11,8 +11,11 @@ let follow (conn: IDbConnection) (follow: User.Follow) : Result<User.Follow, str
 
         cmd.CommandText <-
             "
-            INSERT INTO Follow (user_id_from, user_id_to)
-            VALUES (@user_id_from, @user_id_to);"
+            INSERT INTO Follow (`user_id_from`, `user_id_to`)
+            VALUES (@user_id_from, @user_id_to)
+            ON DUPLICATE KEY UPDATE
+                `user_id_from` = VALUES(`user_id_from`),
+                `user_id_to` = VALUES(`user_id_to`);"
 
         cmd.AddParameter("user_id_from", follow.user_id_from)
         cmd.AddParameter("user_id_to", follow.user_id_to)
