@@ -20,7 +20,7 @@ const _FollowButton = ({ from, to }: Props) => {
   };
 
   return (
-    <Button color="black" onClick={handleClick}>
+    <Button color="black" size="small" onClick={handleClick}>
       {following ? "フォロー中" : "フォローする"}
     </Button>
   );
