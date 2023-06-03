@@ -16,4 +16,5 @@ export const size = styleVariants({
   tiny: { width: "28px", height: "28px" },
   small: { width: "42px", height: "42px" },
   medium: { width: "52px", height: "52px" },
+  large: { width: "62px", height: "62px" },
 });

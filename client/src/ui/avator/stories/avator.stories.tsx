@@ -56,3 +56,14 @@ export const Yasuda: Story = {
     );
   },
 };
+
+export const Saki: Story = {
+  render: () => {
+    return (
+      <Avator
+        image="https://avatars.githubusercontent.com/u/134147341?v=4"
+        size="large"
+      />
+    );
+  },
+};
