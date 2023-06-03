@@ -361,7 +361,12 @@ export type GetUserQueryVariables = Exact<{
 
 export type GetUserQuery = {
   __typename?: "Query";
-  user: { __typename?: "user"; user_id: string; user_name: string } | null;
+  user: {
+    __typename?: "user";
+    user_id: string;
+    user_name: string;
+    image_url: string;
+  } | null;
 };
 
 export type GetFollowsQueryVariables = Exact<{
@@ -1167,6 +1172,7 @@ export const GetUserDocument = {
               selections: [
                 { kind: "Field", name: { kind: "Name", value: "user_id" } },
                 { kind: "Field", name: { kind: "Name", value: "user_name" } },
+                { kind: "Field", name: { kind: "Name", value: "image_url" } },
               ],
             },
           },
