@@ -5,6 +5,7 @@ import * as styles from "../_styles/timeline.css";
 import { Label } from "@/ui";
 import { getTimeLine, getUser } from "@/api";
 import { User } from "@/utils";
+import { Avator, Card } from "@/ui";
 
 type Props = {
   params: { id: string };
@@ -25,8 +26,18 @@ const Page = ({ params }: Props) => {
       timeline?.forEach(async (tl) => {
         const user = await getUser(tl.user_id);
         tlDOM.push(
-          <div className={styles.noticeStyle}>
-            <NoticeCard user={user} action={tl.summary} />
+          <div className={styles.cardWrapperStyle}>
+            <Card>
+              <div className={styles.cardInnerStyle}>
+                <Avator image={""} size="small" />
+                <p className={styles.actionStyle}>
+                  <span className={styles.userNameStyle}>
+                    {user?.user_name}
+                  </span>
+                  さんが{tl.summary}
+                </p>
+              </div>
+            </Card>
           </div>
         );
       });
@@ -36,8 +47,27 @@ const Page = ({ params }: Props) => {
 
   return (
     <div>
-      <div className={styles.noticeStyle}>
-        <NoticeCard user={debugUser} action="本プロフィールの内容を変更" />
+      <div className={styles.cardWrapperStyle}>
+        <Card>
+          <div className={styles.cardInnerStyle}>
+            <Avator image={""} size="small" />
+            <p className={styles.actionStyle}>
+              <span className={styles.userNameStyle}>あ</span>
+              さんがあああ
+            </p>
+          </div>
+        </Card>
+      </div>
+      <div className={styles.cardWrapperStyle}>
+        <Card>
+          <div className={styles.cardInnerStyle}>
+            <Avator image={""} size="small" />
+            <p className={styles.actionStyle}>
+              <span className={styles.userNameStyle}>あ</span>
+              さんがあああ
+            </p>
+          </div>
+        </Card>
       </div>
       {timelineDOM}
     </div>
