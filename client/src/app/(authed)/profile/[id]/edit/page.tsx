@@ -1,5 +1,6 @@
 "use client";
 import React, { useState } from "react";
+import * as commonStyles from "../../../_styles/common.css";
 import * as styles from "../../_styles/profile.css";
 import { CommonHeader, RecomCard } from "@/app/_ui";
 import { Arrow, Button, Like, SearchResult } from "@/ui";
@@ -81,8 +82,13 @@ const Page = () => {
         title="編集"
         right={<Button color="black">更新</Button>}
       />
-      <div className={styles.containerStyle}>
-        <div className={styles.contentStyle}>
+      <div
+        className={[
+          commonStyles.containerStyle,
+          commonStyles.headerAvoidStyle["common"],
+        ].join(" ")}
+      >
+        <div className={commonStyles.contentStyle}>
           <div className={styles.headStyle}>
             <div className={styles.categoriesStyle}>
               <Button color="gray">音楽</Button>

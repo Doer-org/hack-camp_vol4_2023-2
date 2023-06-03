@@ -1,5 +1,6 @@
 "use client";
 import React from "react";
+import * as commonStyles from "../../_styles/common.css";
 import * as styles from "../_styles/profile.css";
 import { Button, Like } from "@/ui";
 import { RecomCard, ProfileHeader } from "@/app/_ui";
@@ -40,8 +41,13 @@ const Page = ({ params }: Props) => {
           right={<Button color="black">フォロー中</Button>}
         />
       )}
-      <div className={styles.containerStyle}>
-        <div className={styles.contentStyle}>
+      <div
+        className={[
+          commonStyles.containerStyle,
+          commonStyles.headerAvoidStyle["profile"],
+        ].join(" ")}
+      >
+        <div className={commonStyles.contentStyle}>
           <div className={styles.headStyle}>
             <div className={styles.categoriesStyle}>
               <Button color="gray">音楽</Button>

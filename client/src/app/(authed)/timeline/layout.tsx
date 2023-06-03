@@ -27,7 +27,12 @@ export default function CommmonLayout({
       <div className={navClassList.join(" ")}>
         <NavMenu />
       </div>
-      <div className={styles.containerStyle}>
+      <div
+        className={[
+          styles.containerStyle,
+          styles.headerAvoidStyle["common"],
+        ].join(" ")}
+      >
         <div className={styles.contentStyle}>{children}</div>
       </div>
     </>

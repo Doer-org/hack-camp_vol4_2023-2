@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { Arrow, Logo, Card, Avator, Like } from "@/ui";
 import { CommonHeader } from "@/app/_ui";
+import * as commonStyles from "../../_styles/common.css";
 import * as styles from "../_styles/bookmark.css";
 import { getUsers } from "@/api";
 import { User } from "@/utils";
@@ -48,8 +49,13 @@ const Page = ({ params }: Props) => {
         left={<Arrow />}
         right={<Logo />}
       />
-      <div className={styles.containerStyle}>
-        <div className={styles.contentStyle}>
+      <div
+        className={[
+          commonStyles.containerStyle,
+          commonStyles.headerAvoidStyle["common"],
+        ].join(" ")}
+      >
+        <div className={commonStyles.contentStyle}>
           <Card>
             <div className={styles.cardStyle}>
               <div className={styles.cardUserStyle}>

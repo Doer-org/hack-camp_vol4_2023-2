@@ -5,16 +5,6 @@ export const linkStyle = style({
   color: "#fff",
 });
 
-export const containerStyle = style({
-  paddingTop: "118px",
-  paddingBottom: "56px",
-});
-
-export const contentStyle = style({
-  margin: "24px 0",
-  padding: "0 24px",
-});
-
 export const headStyle = style({
   display: "flex",
   justifyContent: "space-between",
