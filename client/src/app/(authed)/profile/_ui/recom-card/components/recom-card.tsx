@@ -1,3 +1,4 @@
+"use client";
 import { Card } from "@/ui";
 import { Ranking } from "@/ui/ranking/components";
 import React from "react";

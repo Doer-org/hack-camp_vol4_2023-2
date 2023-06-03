@@ -1,6 +1,6 @@
 import { env } from "@/utils";
 import { ResponseError, Result, Token, spotifyApiClient } from "../client";
-import { ArtistsResponse, TracksResponse } from "./types";
+import { ArtistsResponse, TracksResponse } from "../types";
 
 const { spotifyApiBaseURL } = env();
 

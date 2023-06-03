@@ -4,6 +4,5 @@ export * from "./nav-footer";
 export * from "./nav-menu";
 export * from "./notice-card";
 export * from "./profile-header";
-export * from "./recom-card";
 export * from "./sns-button";
 export * from "./top-header";
