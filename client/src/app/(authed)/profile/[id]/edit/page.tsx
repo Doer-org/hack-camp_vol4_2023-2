@@ -40,18 +40,21 @@ const Page = ({ params }: Props) => {
       if (first) {
         const sArtist = await readArtist(first.artist, token);
         if (sArtist?.type !== "error") {
+          setFirstId(sArtist?.value.id || "0");
           setFirstImage(sArtist?.value.images[2].url);
         }
       }
       if (second) {
         const sArtist = await readArtist(second.artist, token);
         if (sArtist?.type !== "error") {
+          setSecondId(sArtist?.value.id || "0");
           setSecondImage(sArtist?.value.images[2].url);
         }
       }
       if (third) {
         const sArtist = await readArtist(third.artist, token);
         if (sArtist?.type !== "error") {
+          setThirdId(sArtist?.value.id || "0");
           setThirdImage(sArtist?.value.images[2].url);
         }
       }
