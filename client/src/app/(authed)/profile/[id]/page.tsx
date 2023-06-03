@@ -5,41 +5,42 @@ import * as styles from "../_styles/profile.css";
 import { Button, Like } from "@/ui";
 import { RecomCard, ProfileHeader } from "@/app/_ui";
 import Link from "next/link";
+import { getUser } from "@/api";
 
 type Props = {
   params: { id: string };
 };
 
-const user = {
-  name: "Aoki",
-  icon: "https://avatars.githubusercontent.com/u/55625375?v=4",
-  me: true,
-  following: 20,
-  follower: 20,
-};
+const Page = async ({ params }: Props) => {
+  const user = await getUser(params.id);
 
-const Page = ({ params }: Props) => {
   return (
     <>
-      {user.me ? (
-        <ProfileHeader
-          user={user}
-          right={
-            <Button color="black">
-              <Link
-                href={`/profile/${params.id}/edit`}
-                className={styles.linkStyle}
-              >
-                編集
-              </Link>
-            </Button>
-          }
-        />
+      {true ? ( // 自分かどうかを判定
+        <>
+          {/* @ts-expect-error Async Server Component */}
+          <ProfileHeader
+            user={user}
+            right={
+              <Button color="black">
+                <Link
+                  href={`/profile/${params.id}/edit`}
+                  className={styles.linkStyle}
+                >
+                  編集
+                </Link>
+              </Button>
+            }
+          />
+        </>
       ) : (
-        <ProfileHeader
-          user={user}
-          right={<Button color="black">フォロー中</Button>}
-        />
+        <>
+          {/* @ts-expect-error Async Server Component */}
+          <ProfileHeader
+            user={user}
+            right={<Button color="black">フォロー中</Button>}
+          />
+        </>
       )}
       <div
         className={[
