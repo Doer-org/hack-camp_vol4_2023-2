@@ -1,5 +1,12 @@
+import { Noto_Sans_JP } from "next/font/google";
 import { NavFooter } from "./_ui";
 import * as styles from "./_styles/global.css";
+
+const notoSansJP = Noto_Sans_JP({
+  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
+  display: "swap",
+  preload: false,
+});
 
 export const metadata = {
   title: "Create Next App",
@@ -18,7 +25,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={styles.resetStyle}>
+      <body className={[styles.resetStyle, notoSansJP.className].join(" ")}>
         <div className={styles.baseStyle}>{children}</div>
         <NavFooter user={me} />
       </body>
