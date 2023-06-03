@@ -28,7 +28,7 @@ const Page = ({ params }: Props) => {
             <Card>
               <div className={styles.cardStyle}>
                 <div className={styles.cardUserStyle}>
-                  <Avator size="small" image="" />
+                  <Avator size="small" image={user?.image_url} />
                   <span className={styles.cardUserNameStyle}>
                     {user?.user_name}
                   </span>

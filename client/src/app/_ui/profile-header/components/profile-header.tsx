@@ -27,10 +27,7 @@ const _ProfileHeader = ({ user, right }: Props) => {
     <Header>
       <div className={styles.headStyle}>
         <div className={styles.profileStyle}>
-          <Avator
-            size="medium"
-            image="https://avatars.githubusercontent.com/u/55625375?v=4"
-          />
+          <Avator size="medium" image={user?.image_url} />
           <span>{user?.user_name}</span>
         </div>
         {right}

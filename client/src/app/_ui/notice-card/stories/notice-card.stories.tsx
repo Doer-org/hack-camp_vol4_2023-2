@@ -32,6 +32,7 @@ export const Aoki: Story = {
     user: {
       user_id: "1",
       user_name: "Aoki",
+      image_url: "https://avatars.githubusercontent.com/u/55625375?v=4",
     },
     action: "本プロフィールの内容を変更",
   },

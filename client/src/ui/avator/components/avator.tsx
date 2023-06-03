@@ -2,7 +2,7 @@ import React from "react";
 import * as styles from "../styles/avator.css";
 
 type Props = {
-  image: string;
+  image?: string;
   size: "tiny" | "small" | "medium" | "large";
   onClick?: () => void;
 };

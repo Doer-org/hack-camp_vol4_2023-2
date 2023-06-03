@@ -32,7 +32,7 @@ const Page = ({ params }: Props) => {
             <Card>
               <div className={styles.cardInnerStyle}>
                 <div className={styles.cardUserStyle}>
-                  <Avator size="small" image="" />
+                  <Avator size="small" image={user?.image_url} />
                   <div>
                     <span className={styles.cardUserNameStyle}>
                       {user?.user_name}

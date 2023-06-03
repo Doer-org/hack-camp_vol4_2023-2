@@ -12,11 +12,6 @@ type Props = {
   params: { id: string };
 };
 
-const debugUser: User = {
-  user_id: "1",
-  user_name: "Aoki",
-};
-
 const Page = ({ params }: Props) => {
   const [followerDOM, setFollowerDOM] = useState<React.ReactNode[]>();
 
@@ -33,7 +28,7 @@ const Page = ({ params }: Props) => {
             <Card>
               <div className={styles.cardStyle}>
                 <div className={styles.cardUserStyle}>
-                  <Avator size="small" image="" />
+                  <Avator size="small" image={user?.image_url} />
                   <span className={styles.cardUserNameStyle}>
                     {user?.user_name}
                   </span>
