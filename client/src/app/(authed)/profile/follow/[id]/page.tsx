@@ -25,7 +25,8 @@ const Page = ({ params }: Props) => {
       const fDOM: React.ReactNode[] = [];
       follows?.forEach(async (f) => {
         const user = await getUser(f.user_id);
-        const following = true; // me は userをフォローしているかどうか
+        const following = true; // me は user をフォローしているかどうか
+        const followed = false; // me は user にフォローされているかどうか
         fDOM.push(
           <Card>
             <div className={styles.cardStyle}>
@@ -33,7 +34,7 @@ const Page = ({ params }: Props) => {
                 <Avator size="small" image="" />
                 <span>{user?.user_name}</span>
               </div>
-              <FollowButton following={following} />
+              <FollowButton following={following} followed={followed} />
             </div>
           </Card>
         );
@@ -53,7 +54,7 @@ const Page = ({ params }: Props) => {
                 <Avator size="small" image="" />
                 <span>{debugUser?.user_name}</span>
               </div>
-              <FollowButton following={true} />
+              <FollowButton following={false} followed={true} />
             </div>
           </Card>
           {followDOM}

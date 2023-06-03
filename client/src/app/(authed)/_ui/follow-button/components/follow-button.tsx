@@ -4,9 +4,10 @@ import { Button } from "@/ui";
 
 type Props = {
   following: boolean;
+  followed: boolean;
 };
 
-const _FollowButton = ({ following }: Props) => {
+const _FollowButton = ({ following, followed }: Props) => {
   const [followingState, setFollowingState] = useState<boolean>();
 
   useEffect(() => {
@@ -23,7 +24,11 @@ const _FollowButton = ({ following }: Props) => {
       size="small"
       onClick={handleClick}
     >
-      {followingState ? "フォロー中" : "フォローする"}
+      {followingState
+        ? "フォロー中"
+        : followed
+        ? "フォローバック"
+        : "フォローする"}
     </Button>
   );
 };
