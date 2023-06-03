@@ -1,26 +1,33 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import * as commonStyles from "../../_styles/common.css";
 import * as styles from "../_styles/profile.css";
 import { Button, Like } from "@/ui";
 import { RecomCard, ProfileHeader } from "@/app/_ui";
 import Link from "next/link";
 import { getUser } from "@/api";
+import { User } from "@/utils";
 
 type Props = {
   params: { id: string };
 };
 
-const Page = async ({ params }: Props) => {
-  const user = await getUser(params.id);
+const Page = ({ params }: Props) => {
+  const [refUser, setRefUser] = useState<User | null>(null);
+
+  useEffect(() => {
+    (async () => {
+      const user = await getUser(params.id);
+      setRefUser(user);
+    })();
+  }, [params.id]);
 
   return (
     <>
       {true ? ( // 自分かどうかを判定
         <>
-          {/* @ts-expect-error Async Server Component */}
           <ProfileHeader
-            user={user}
+            user={refUser}
             right={
               <Button color="black">
                 <Link
@@ -35,9 +42,8 @@ const Page = async ({ params }: Props) => {
         </>
       ) : (
         <>
-          {/* @ts-expect-error Async Server Component */}
           <ProfileHeader
-            user={user}
+            user={refUser}
             right={<Button color="black">フォロー中</Button>}
           />
         </>

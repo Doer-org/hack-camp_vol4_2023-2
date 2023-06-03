@@ -1,4 +1,5 @@
-import React from "react";
+"use client";
+import React, { useEffect, useState } from "react";
 import * as styles from "../styles/profile-header.css";
 import { Avator, Button, Header, Logo } from "@/ui";
 import { User } from "@/utils";
@@ -9,9 +10,18 @@ type Props = {
   right?: React.ReactNode;
 };
 
-const _ProfileHeader = async ({ user, right }: Props) => {
-  const follows = await getFollows(user?.user_id || "0");
-  const followers = await getFollowers(user?.user_id || "0");
+const _ProfileHeader = ({ user, right }: Props) => {
+  const [followNum, setFollowNum] = useState<number>();
+  const [followerNum, setFollowerNum] = useState<number>();
+
+  useEffect(() => {
+    (async () => {
+      const follows = await getFollows(user?.user_id || "0");
+      const followers = await getFollowers(user?.user_id || "0");
+      setFollowNum(follows?.length);
+      setFollowerNum(followers?.length);
+    })();
+  }, [user?.user_id]);
 
   return (
     <Header>
@@ -27,11 +37,11 @@ const _ProfileHeader = async ({ user, right }: Props) => {
       </div>
       <div className={styles.followWrapperStyle}>
         <span className={styles.followStyle}>
-          <span className={styles.followCountStyle}>{follows?.length}</span>
+          <span className={styles.followCountStyle}>{followNum}</span>
           <span className={styles.followlabelStyle}>フォロー</span>
         </span>
         <span className={styles.followStyle}>
-          <span className={styles.followCountStyle}>{followers?.length}</span>
+          <span className={styles.followCountStyle}>{followerNum}</span>
           <span className={styles.followlabelStyle}>フォロワー</span>
         </span>
       </div>
