@@ -3,14 +3,10 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { Avator, BellIcon, Footer, HomeIcon } from "@/ui";
 import * as styles from "../styles/nav-footer.css";
-
-type User = {
-  id: number;
-  icon: string;
-};
+import { User } from "@/utils";
 
 type Props = {
-  user: User;
+  user: User | null;
 };
 
 const _NavFooter = ({ user }: Props) => {
@@ -38,7 +34,7 @@ const _NavFooter = ({ user }: Props) => {
                   : styles.avatorInactive
               }
             >
-              <Avator size="tiny" image={user.icon} />
+              <Avator size="tiny" image={user?.image_url} />
             </div>
           </Link>
         </div>
