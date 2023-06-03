@@ -6,7 +6,7 @@ import { Button, Like } from "@/ui";
 import { ProfileHeader } from "@/app/_ui";
 import { RecomCard } from "../_ui";
 import Link from "next/link";
-import { getUser } from "@/api";
+import { getUser, getFavoriteArtist, getAccessToken, readArtist } from "@/api";
 import { User } from "@/utils";
 
 type Props = {
@@ -16,10 +16,39 @@ type Props = {
 const Page = ({ params }: Props) => {
   const [refUser, setRefUser] = useState<User | null>(null);
 
+  const [firstImage, setFirstImage] = useState<string>();
+  const [secondImage, setSecondImage] = useState<string>();
+  const [thirdImage, setThirdImage] = useState<string>();
+
   useEffect(() => {
     (async () => {
       const user = await getUser(params.id);
       setRefUser(user);
+
+      const artists = await getFavoriteArtist(user?.user_id || "0");
+      const first = artists?.filter((a) => a.rank === 1)[0];
+      const second = artists?.filter((a) => a.rank === 2)[0];
+      const third = artists?.filter((a) => a.rank === 3)[0];
+
+      const token = await getAccessToken();
+      if (first) {
+        const sArtist = await readArtist(first.artist, token);
+        if (sArtist?.type !== "error") {
+          setFirstImage(sArtist?.value.images[2].url);
+        }
+      }
+      if (second) {
+        const sArtist = await readArtist(second.artist, token);
+        if (sArtist?.type !== "error") {
+          setSecondImage(sArtist?.value.images[2].url);
+        }
+      }
+      if (third) {
+        const sArtist = await readArtist(third.artist, token);
+        if (sArtist?.type !== "error") {
+          setThirdImage(sArtist?.value.images[2].url);
+        }
+      }
     })();
   }, [params.id]);
 
@@ -65,14 +94,16 @@ const Page = ({ params }: Props) => {
           </div>
           <div className={styles.cardListStyle}>
             <div className={styles.cardStyle}>
-              <RecomCard user={refUser} contentType="music" contentName="曲" />
-            </div>
-            <div className={styles.cardStyle}>
               <RecomCard
-                user={refUser}
                 contentType="person"
                 contentName="アーティスト"
+                firstImage={firstImage}
+                secondImage={secondImage}
+                thirdImage={thirdImage}
               />
+            </div>
+            <div className={styles.cardStyle}>
+              <RecomCard contentType="music" contentName="曲" />
             </div>
           </div>
         </div>
