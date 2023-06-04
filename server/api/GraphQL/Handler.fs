@@ -237,8 +237,25 @@ let handleGraphQL isTest (auth0_jwks: string, auth0_domain: string, auth0_audien
             let token =
                 getToken ctx
                 |> function
-                    | Error _ -> None
-                    | Ok token -> Some token
+                    | Error e -> 
+                        printfn "%A" e
+                        None
+                    | Ok v ->
+
+                        match header with
+                        | Error e -> 
+                            printfn "%A" e
+                            None
+                        | Ok h ->
+                            let token: Domain.Token =
+                                { sub = v.sub
+                                  permissions = v.permissions
+                                  picture = h.picture
+                                  name = h.nickname }
+
+                            token |> Some
+            printfn "%A" token
+
 
             let handler = baseHandler store token
 
