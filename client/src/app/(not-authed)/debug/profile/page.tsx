@@ -1,13 +1,14 @@
 import {
   CreateReactionButton,
   GetMyTimelineButton,
+  GetTokenButton,
   Token2UserInfoButton,
   UpdateFavoriteRamenya,
 } from "../_ui";
 
 const Page = () => {
   return (
-    <main
+    <div
       className=""
       style={{
         display: "flex",
@@ -20,7 +21,8 @@ const Page = () => {
       <CreateReactionButton />
       <UpdateFavoriteRamenya />
       <GetMyTimelineButton />
-    </main>
+      <GetTokenButton />
+    </div>
   );
 };
 
