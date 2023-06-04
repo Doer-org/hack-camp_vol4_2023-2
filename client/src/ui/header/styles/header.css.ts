@@ -12,5 +12,5 @@ export const headerStyle = style({
 });
 
 export const size = styleVariants({
-  small: { height: "78px" },
+  small: { height: "66px" },
 });
