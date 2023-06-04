@@ -14,6 +14,7 @@ import {
 } from "@/api";
 import { updateFavoriteArtist, getUser } from "@/api";
 import { useRouter } from "next/navigation";
+import { User } from "@/utils";
 
 type Artist = {
   id: string;
@@ -25,10 +26,17 @@ type Props = {
   params: { id: string };
 };
 
+const guest: User = {
+  user_id: "guest",
+  user_name: "Guest",
+  image_url: "",
+};
+
 const Page = ({ params }: Props) => {
   useEffect(() => {
     (async () => {
       const user = await getUser(params.id);
+      setRefUser(user);
 
       const artists = await getFavoriteArtist(user?.user_id || "0");
       const first = artists?.filter((a) => a.rank === 1)[0];
@@ -59,6 +67,8 @@ const Page = ({ params }: Props) => {
       }
     })();
   }, [params.id]);
+
+  const [refUser, setRefUser] = useState<User | null>(null);
 
   const [canSearch, setCanSearch] = useState<boolean>(false);
   const [artists, setArtists] = useState<Artist[]>([]);
@@ -153,7 +163,7 @@ const Page = ({ params }: Props) => {
               <Button color="gray">音楽</Button>
               <Button color="pink">本</Button>
             </div>
-            <Like liked={true} num={20} />
+            <Like user={refUser || guest} liked={true} num={20} />
           </div>
           <div className={styles.cardListStyle}>
             <div className={styles.cardStyle}>
