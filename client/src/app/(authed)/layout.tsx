@@ -4,7 +4,7 @@ const AuthLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <>
       {children}
-      <NavFooter user={null} /> {/* ログインしているユーザを取得したい */}
+      <NavFooter />
     </>
   );
 };

@@ -1,21 +1,36 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { Avator, BellIcon, Footer, HomeIcon } from "@/ui";
 import * as styles from "../styles/nav-footer.css";
-import { User } from "@/utils";
+import { fetchAuthInfo } from "@/api/auth";
 
-type Props = {
-  user: User | null;
+type Me = {
+  nickname: string;
+  name: string;
+  picture: string;
+  updated_at: string;
+  sub: string;
+  sid: string;
 };
 
-const _NavFooter = ({ user }: Props) => {
+const _NavFooter = () => {
   type activeType = "timeline" | "profile" | "notice" | "other";
   const [active, setActive] = useState<activeType>("timeline");
+  const [me, setMe] = useState<Me>();
 
   const handleTimelineClick = () => setActive("timeline");
   const handleProfileClick = () => setActive("profile");
   const handleNoticeClick = () => setActive("notice");
+
+  useEffect(() => {
+    (async () => {
+      const authInfo = await fetchAuthInfo();
+      const me = authInfo.me;
+      console.log(me);
+      setMe(me);
+    })();
+  }, []);
 
   return (
     <Footer>
@@ -34,7 +49,7 @@ const _NavFooter = ({ user }: Props) => {
                   : styles.avatorInactive
               }
             >
-              <Avator size="tiny" image={user?.image_url} />
+              <Avator size="tiny" image={me?.picture} />
             </div>
           </Link>
         </div>
