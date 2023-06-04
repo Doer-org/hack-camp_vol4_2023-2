@@ -1,5 +1,6 @@
 import React from "react";
 import * as styles from "../styles/logo.css";
+import Link from "next/link";
 
 type Props = {
   size?: "small" | "large";
@@ -12,7 +13,9 @@ const _Logo = ({ size = "small", ...props }: Props) => {
       className={[styles.size[size], styles.wrapperStyle].join(" ")}
       {...props}
     >
-      <img className={styles.imageStyle} src="/assets/logo.png" alt="ロゴ" />
+      <Link href="/">
+        <img className={styles.imageStyle} src="/assets/logo.png" alt="ロゴ" />
+      </Link>
     </div>
   );
 };
