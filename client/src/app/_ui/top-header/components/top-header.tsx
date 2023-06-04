@@ -11,7 +11,7 @@ const _TopHeader = () => {
           <Logo />
           <h1 className={styles.titleStyle}>トモシル</h1>
         </div>
-        <Link href="/timeline" className={styles.linkStyle} prefetch={false}>
+        <Link href="/timeline/1" className={styles.linkStyle} prefetch={false}>
           <Button color="black">Log in</Button>
         </Link>
       </div>

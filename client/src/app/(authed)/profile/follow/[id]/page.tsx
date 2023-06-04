@@ -61,7 +61,51 @@ const Page = ({ params }: Props) => {
           commonStyles.headerAvoidStyle["common"],
         ].join(" ")}
       >
-        <div className={commonStyles.contentStyle}>{followDOM}</div>
+        <div className={commonStyles.contentStyle}>
+          <div className={styles.cardWrapperStyle}>
+            <Card>
+              <div className={styles.cardStyle}>
+                <div className={styles.cardUserStyle}>
+                  <Avator
+                    size="small"
+                    image={
+                      "https://avatars.githubusercontent.com/u/55625375?v=4"
+                    }
+                  />
+                  <span className={styles.cardUserNameStyle}>Aoki</span>
+                </div>
+                <FollowButton
+                  user_from={guest}
+                  user_to={guest}
+                  followType="follow"
+                  following={true}
+                />
+              </div>
+            </Card>
+          </div>
+          <div className={styles.cardWrapperStyle}>
+            <Card>
+              <div className={styles.cardStyle}>
+                <div className={styles.cardUserStyle}>
+                  <Avator
+                    size="small"
+                    image={
+                      "https://avatars.githubusercontent.com/u/55625375?v=4"
+                    }
+                  />
+                  <span className={styles.cardUserNameStyle}>YUGA</span>
+                </div>
+                <FollowButton
+                  user_from={guest}
+                  user_to={guest}
+                  followType="follow"
+                  following={true}
+                />
+              </div>
+            </Card>
+          </div>
+          {followDOM}
+        </div>
       </div>
     </>
   );
