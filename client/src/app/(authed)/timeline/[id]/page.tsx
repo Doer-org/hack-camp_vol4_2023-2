@@ -40,7 +40,89 @@ const Page = ({ params }: Props) => {
     })();
   }, []);
 
-  return <div>{timelineDOM}</div>;
+  return (
+    <div>
+      {timelineDOM}
+      <div className={styles.cardWrapperStyle}>
+        <Card>
+          <div className={styles.cardInnerStyle}>
+            <Avator
+              image={
+                "https://avatars.githubusercontent.com/u/55625375?s=64&v=4"
+              }
+              size="small"
+            />
+            <p className={styles.actionStyle}>
+              <span className={styles.userNameStyle}>Aoki</span>
+              さんが音楽プロフィールの内容を変更しました！
+            </p>
+          </div>
+        </Card>
+      </div>
+      <div className={styles.cardWrapperStyle}>
+        <Card>
+          <div className={styles.cardInnerStyle}>
+            <Avator
+              image={
+                "https://avatars.githubusercontent.com/u/134147341?s=64&v=4"
+              }
+              size="small"
+            />
+            <p className={styles.actionStyle}>
+              <span className={styles.userNameStyle}>さき</span>
+              さんが本プロフィールの内容を変更しました！
+            </p>
+          </div>
+        </Card>
+      </div>
+      <div className={styles.cardWrapperStyle}>
+        <Card>
+          <div className={styles.cardInnerStyle}>
+            <Avator
+              image={
+                "https://avatars.githubusercontent.com/u/113420384?s=64&v=4"
+              }
+              size="small"
+            />
+            <p className={styles.actionStyle}>
+              <span className={styles.userNameStyle}>yuga</span>
+              さんが新しく本プロフィールを作成しました！
+            </p>
+          </div>
+        </Card>
+      </div>
+      <div className={styles.cardWrapperStyle}>
+        <Card>
+          <div className={styles.cardInnerStyle}>
+            <Avator
+              image={
+                "https://avatars.githubusercontent.com/u/134787738?s=60&v=4"
+              }
+              size="small"
+            />
+            <p className={styles.actionStyle}>
+              <span className={styles.userNameStyle}>Ayano</span>
+              さんが新しく本プロフィールを作成しました！
+            </p>
+          </div>
+        </Card>
+      </div>
+      <div className={styles.cardWrapperStyle}>
+        <Card>
+          <div className={styles.cardInnerStyle}>
+            <Avator
+              image={"https://avatars.githubusercontent.com/u/86759515?v=4"}
+              size="small"
+            />
+            <p className={styles.actionStyle}>
+              <span className={styles.userNameStyle}>Yasuda</span>
+              さんが新しく音楽プロフィールを作成しました！
+            </p>
+          </div>
+        </Card>
+      </div>
+    </div>
+  );
 };
 
 export default Page;
