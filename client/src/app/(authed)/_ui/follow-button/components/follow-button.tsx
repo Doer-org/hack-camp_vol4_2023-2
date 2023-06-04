@@ -1,34 +1,40 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { Button } from "@/ui";
+import { User } from "@/utils";
+import { getFollows, updateFollow, getFollowers } from "@/api";
 
 type Props = {
+  user_from: User;
+  user_to: User;
+  followType: "follow" | "follower";
   following: boolean;
-  followed: boolean;
 };
 
-const _FollowButton = ({ following, followed }: Props) => {
-  const [followingState, setFollowingState] = useState<boolean>();
-
-  useEffect(() => {
-    // フォローを更新する処理
-  }, [followingState]);
+const _FollowButton = ({
+  user_from,
+  user_to,
+  followType,
+  following,
+}: Props) => {
+  const [isFollow, setIsFollow] = useState<boolean>(following);
 
   const handleClick = () => {
-    setFollowingState((prev) => !prev);
+    setIsFollow((prev) => {
+      (async () => {
+        await updateFollow(user_from.user_id, user_to.user_id, !prev);
+      })();
+      return !prev;
+    });
   };
 
   return (
     <Button
-      color={followingState ? "black" : "gray"}
+      color={isFollow ? "black" : "gray"}
       size="small"
       onClick={handleClick}
     >
-      {followingState
-        ? "フォロー中"
-        : followed
-        ? "フォローバック"
-        : "フォローする"}
+      {isFollow ? "フォロー中" : "フォローする"}
     </Button>
   );
 };

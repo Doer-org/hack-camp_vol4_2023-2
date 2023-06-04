@@ -4,12 +4,18 @@ import { Arrow, Logo, Card, Avator } from "@/ui";
 import { CommonHeader } from "@/app/_ui";
 import * as commonStyles from "../../../_styles/common.css";
 import * as styles from "../_styles/follower.css";
-import { getFollowers, getUser } from "@/api";
+import { getFollowers, getFollows, getUser } from "@/api";
 import { User } from "@/utils";
 import { FollowButton } from "../../../_ui";
 
 type Props = {
   params: { id: string };
+};
+
+const guest: User = {
+  user_id: "guest",
+  user_name: "Guest",
+  image_url: "",
 };
 
 const Page = ({ params }: Props) => {
@@ -18,22 +24,32 @@ const Page = ({ params }: Props) => {
   useEffect(() => {
     (async () => {
       const followers = await getFollowers(params.id);
+      const follows = await getFollows(params.id);
+      const user = await getUser(params.id);
       const fDOM: React.ReactNode[] = [];
       followers?.forEach(async (f) => {
-        const user = await getUser(f.user_id);
-        const following = true; // me は user をフォローしているかどうか
-        const followed = false; // me は user にフォローされているかどうか
+        let following = false;
+        const jouken = follows?.filter((ff) => ff.user_id === f.user_id);
+        if (jouken !== undefined && jouken.length > 0) {
+          following = true;
+        }
+
         fDOM.push(
-          <div className={styles.cardWrapperStyle}>
+          <div key={f.user_id} className={styles.cardWrapperStyle}>
             <Card>
               <div className={styles.cardStyle}>
                 <div className={styles.cardUserStyle}>
-                  <Avator size="small" image={user?.image_url} />
+                  <Avator size="small" image={f?.image_url} />
                   <span className={styles.cardUserNameStyle}>
-                    {user?.user_name}
+                    {f?.user_name}
                   </span>
                 </div>
-                <FollowButton following={following} followed={followed} />
+                <FollowButton
+                  user_from={user || guest}
+                  user_to={f}
+                  followType="follower"
+                  following={following}
+                />
               </div>
             </Card>
           </div>

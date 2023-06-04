@@ -12,28 +12,37 @@ type Props = {
   params: { id: string };
 };
 
+const guest: User = {
+  user_id: "guest",
+  user_name: "Guest",
+  image_url: "",
+};
+
 const Page = ({ params }: Props) => {
   const [followDOM, setFollowDOM] = useState<React.ReactNode[]>();
 
   useEffect(() => {
     (async () => {
       const follows = await getFollows(params.id);
+      const user = await getUser(params.id);
       const fDOM: React.ReactNode[] = [];
       follows?.forEach(async (f) => {
-        const user = await getUser(f.user_id);
-        const following = true; // me は user をフォローしているかどうか
-        const followed = false; // me は user にフォローされているかどうか
         fDOM.push(
-          <div className={styles.cardWrapperStyle}>
+          <div key={f.user_id} className={styles.cardWrapperStyle}>
             <Card>
               <div className={styles.cardStyle}>
                 <div className={styles.cardUserStyle}>
-                  <Avator size="small" image={user?.image_url} />
+                  <Avator size="small" image={f?.image_url} />
                   <span className={styles.cardUserNameStyle}>
-                    {user?.user_name}
+                    {f?.user_name}
                   </span>
                 </div>
-                <FollowButton following={following} followed={followed} />
+                <FollowButton
+                  user_from={user || guest}
+                  user_to={f}
+                  followType="follow"
+                  following={true}
+                />
               </div>
             </Card>
           </div>
