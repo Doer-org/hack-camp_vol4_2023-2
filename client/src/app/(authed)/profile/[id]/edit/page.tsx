@@ -160,8 +160,8 @@ const Page = ({ params }: Props) => {
         <div className={commonStyles.contentStyle}>
           <div className={styles.headStyle}>
             <div className={styles.categoriesStyle}>
-              <Button color="gray">音楽</Button>
-              <Button color="pink">本</Button>
+              <Button color="pink">音楽</Button>
+              <Button color="gray">本</Button>
             </div>
             <Like user={refUser || guest} liked={true} num={20} />
           </div>
