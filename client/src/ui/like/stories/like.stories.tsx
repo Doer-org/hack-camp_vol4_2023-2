@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
 import { Like } from "../components";
+import { argumentsObjectFromField } from "@apollo/client/utilities";
 
 const meta: Meta<typeof Like> = {
   title: "Hack/Like",
@@ -25,7 +26,11 @@ export default meta;
 type Story = StoryObj<typeof Like>;
 
 export const Default: Story = {
-  render: () => {
-    return <Like liked={false} num={24} />;
+  args: {
+    user: {
+      user_id: "guest",
+      user_name: "Guest",
+      image_url: "",
+    },
   },
 };

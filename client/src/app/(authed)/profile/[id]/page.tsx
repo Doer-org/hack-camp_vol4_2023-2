@@ -9,12 +9,28 @@ import Link from "next/link";
 import { getUser, getFavoriteArtist, getAccessToken, readArtist } from "@/api";
 import { User } from "@/utils";
 
+type Me = {
+  nickname: string;
+  name: string;
+  picture: string;
+  updated_at: string;
+  sub: string;
+  sid: string;
+};
+
 type Props = {
   params: { id: string };
 };
 
+const guest: User = {
+  user_id: "guest",
+  user_name: "Guest",
+  image_url: "",
+};
+
 const Page = ({ params }: Props) => {
   const [refUser, setRefUser] = useState<User | null>(null);
+  const [me, setMe] = useState<Me>();
 
   const [firstImage, setFirstImage] = useState<string>();
   const [secondImage, setSecondImage] = useState<string>();
@@ -54,7 +70,8 @@ const Page = ({ params }: Props) => {
 
   return (
     <>
-      {true ? ( // 自分かどうかを判定
+      {/* {me?.sid === refUser?.user_id ? ( // 自分かどうかを判定 */}
+      {true ? (
         <>
           <ProfileHeader
             user={refUser}
@@ -87,10 +104,10 @@ const Page = ({ params }: Props) => {
         <div className={commonStyles.contentStyle}>
           <div className={styles.headStyle}>
             <div className={styles.categoriesStyle}>
-              <Button color="gray">音楽</Button>
-              <Button color="pink">本</Button>
+              <Button color="pink">音楽</Button>
+              <Button color="gray">本</Button>
             </div>
-            <Like liked={true} num={20} />
+            <Like user={refUser || guest} liked={true} />
           </div>
           <div className={styles.cardListStyle}>
             <div className={styles.cardStyle}>

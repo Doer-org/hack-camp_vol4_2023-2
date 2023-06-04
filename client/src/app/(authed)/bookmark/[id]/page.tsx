@@ -5,9 +5,16 @@ import { CommonHeader } from "@/app/_ui";
 import * as commonStyles from "../../_styles/common.css";
 import * as styles from "../_styles/bookmark.css";
 import { getUser, getReaction } from "@/api";
+import { User } from "@/utils";
 
 type Props = {
   params: { id: string };
+};
+
+const guest: User = {
+  user_id: "guest",
+  user_name: "Guest",
+  image_url: "",
 };
 
 const Page = ({ params }: Props) => {
@@ -40,7 +47,11 @@ const Page = ({ params }: Props) => {
                     さんの音楽プロフィール
                   </div>
                 </div>
-                <Like num={tmpBookmarks?.length || 0} liked={true} />
+                <Like
+                  user={user || guest}
+                  num={tmpBookmarks?.length || 0}
+                  liked={true}
+                />
               </div>
             </Card>
           </div>
