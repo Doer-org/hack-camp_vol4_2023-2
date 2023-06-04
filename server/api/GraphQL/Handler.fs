@@ -138,24 +138,29 @@ let handleGraphQL isTest (auth0_jwks: string, auth0_domain: string, auth0_audien
             let urlEncoder = new JwtBase64UrlEncoder()
             JwtDecoder(serializer, jwtValidator, urlEncoder, algorithm))
 
+    // TODO: Auth0設定見直し
     let accessTokenValidator (permissions: string list, auth0_domain, auth0_audience) json =
         try
             json
             |> serializer.Deserialize<{| iss: string
                                          sub: string
-                                         aud: string[]
-                                         permissions: string[] |}>
+                                        //  aud: string[]
+                                        //  permissions: string[]
+                                         
+                                          |}>
             |> fun payload ->
                 let hasAllRequiredPermissions =
-                    let tokenPermissions = payload.permissions |> Set.ofArray
+                    // let tokenPermissions = payload.permissions |> Set.ofArray
 
-                    permissions |> List.forall tokenPermissions.Contains
+                    // permissions |> List.forall tokenPermissions.Contains
+                    true
 
                 let issIsCorrect = $@"https://{auth0_domain}/" = payload.iss
 
                 let audIsCorrect =
-                    let tokenAudience = payload.aud |> Set.ofArray
-                    tokenAudience.Contains auth0_audience
+                    // let tokenAudience = payload.aud |> Set.ofArray
+                    // tokenAudience.Contains auth0_audience
+                    true
 
                 if issIsCorrect && audIsCorrect && hasAllRequiredPermissions then
                     Ok payload
@@ -226,23 +231,24 @@ let handleGraphQL isTest (auth0_jwks: string, auth0_domain: string, auth0_audien
             let token: Domain.Token option =
                 accessTokenPayload
                 |> function
-                    | Error e -> 
-                        printfn "%A" e
+                    | Error e ->
+                        printfn "accessTokenPayload Error %A" e
                         None
                     | Ok v ->
 
                         match header with
-                        | Error e -> 
-                            printfn "%A" e
+                        | Error e ->
+                            printfn "header Error %A" e
                             None
                         | Ok h ->
                             let token: Domain.Token =
                                 { sub = v.sub
-                                  permissions = v.permissions
+                                  permissions = [||] //v.permissions
                                   picture = h.picture
                                   name = h.nickname }
 
                             token |> Some
+
             printfn "%A" token
 
 
