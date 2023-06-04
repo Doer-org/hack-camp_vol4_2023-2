@@ -5,7 +5,7 @@ export const containerStyle = style({
 });
 
 export const headerAvoidStyle = styleVariants({
-  common: { paddingTop: "78px" },
+  common: { paddingTop: "66px" },
   profile: { paddingTop: "112px" },
 });
 
