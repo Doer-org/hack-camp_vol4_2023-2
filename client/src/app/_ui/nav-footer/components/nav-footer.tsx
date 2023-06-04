@@ -27,7 +27,6 @@ const _NavFooter = () => {
     (async () => {
       const authInfo = await fetchAuthInfo();
       const me = authInfo.me;
-      console.log(me);
       setMe(me);
     })();
   }, []);
