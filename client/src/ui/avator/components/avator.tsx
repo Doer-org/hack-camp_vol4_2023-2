@@ -13,7 +13,9 @@ const _Avator = ({ size, image, ...props }: Props) => {
       className={[styles.size[size], styles.wrapperStyle].join(" ")}
       {...props}
     >
-      <img className={styles.imageStyle} src={image} alt="アバター" />
+      {image && (
+        <img className={styles.imageStyle} src={image} alt="アバター" />
+      )}
     </div>
   );
 };

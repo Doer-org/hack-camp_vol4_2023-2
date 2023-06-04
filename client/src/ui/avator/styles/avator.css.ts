@@ -4,6 +4,7 @@ export const wrapperStyle = style({
   borderRadius: "50%",
   cursor: "pointer",
   flexShrink: "0",
+  background: "#f9f8f4",
 });
 
 export const imageStyle = style({
