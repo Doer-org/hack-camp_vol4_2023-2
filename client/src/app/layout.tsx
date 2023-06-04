@@ -23,7 +23,6 @@ export default function RootLayout({
     <html lang="en">
       <body className={[styles.resetStyle, notoSansJP.className].join(" ")}>
         <div className={styles.baseStyle}>{children}</div>
-        <NavFooter user={null} /> {/* ログインしているユーザを取得したい */}
       </body>
     </html>
   );

@@ -164,41 +164,40 @@ let handleGraphQL isTest (auth0_jwks: string, auth0_domain: string, auth0_audien
         with _ ->
             Error "invalid access token"
 
-    let idTokenValidator json =
+
+    let validateToken (jwtSerializer: string -> Result<'T, string>) token =
+
         try
-            json
-            |> serializer.Deserialize<{| iss: string
-                                         sub: string
-                                         picture: string
-                                         nickname: string |}>
-            |> fun payload ->
-                let issIsCorrect = $@"https://{auth0_domain}/" = payload.iss
+            let accessTokenHeader = jwtHeaderDecoder token
+            let decorder = jwtDecoder (accessTokenHeader.KeyId)
 
-                if issIsCorrect then
-                    Ok payload
-                else
-                    Error "invalid id token payload"
-        with _ ->
-            Error "invalid id token"
+            decorder
+            |> Result.map (fun decorder -> decorder.Decode(token))
+            |> Result.map jwtSerializer
+            |> Result.defaultWith (fun _ -> Error "token解析に失敗")
+        with
+        | :? Exceptions.InvalidTokenPartsException as e -> Error e.Message
+        | :? ArgumentOutOfRangeException as e -> Error e.Message
+        | :? ArgumentException as e -> Error e.Message
+        | e -> Error e.Message
 
-    let validateToken (jwtSerializer: string -> Result<'T, string>) tokenKey =
-        fun ctx ->
-            let cookie = Request.getCookie ctx
-            let token = cookie.Get tokenKey
 
-            try
-                let accessTokenHeader = jwtHeaderDecoder token
-                let decorder = jwtDecoder (accessTokenHeader.KeyId)
+    let authorizationHeader ctx =
+        Request.getHeaders ctx
+        |> fun e -> e.TryGet "Authorization"
+        |> function
+            | None -> Error "no authorization header"
+            | Some o ->
+                try
+                    o
+                    |> serializer.Deserialize<{| accessToken: string
+                                                 sub: string
+                                                 picture: string
+                                                 nickname: string |}>
+                    |> Ok
+                with _ ->
+                    Error "invalid authorization header"
 
-                decorder
-                |> Result.map (fun decorder -> decorder.Decode(token))
-                |> Result.map jwtSerializer
-                |> Result.defaultWith (fun _ -> Error "token解析に失敗")
-            with
-            | :? Exceptions.InvalidTokenPartsException as e -> Error e.Message
-            | :? ArgumentOutOfRangeException as e -> Error e.Message
-            | :? ArgumentException as e -> Error e.Message
-            | e -> Error e.Message
 
     fun ctx ->
 
@@ -210,32 +209,22 @@ let handleGraphQL isTest (auth0_jwks: string, auth0_domain: string, auth0_audien
                     return Response.ofPlainText $"{resp}" ctx
                 }
 
-        let accessTokenHandler =
-            validateToken (accessTokenValidator ([], auth0_domain, auth0_audience)) "accessToken"
+        let accessTokenValidator =
+            validateToken (accessTokenValidator ([], auth0_domain, auth0_audience))
 
-        let idTokenHandler = validateToken idTokenValidator "idToken"
-
-        let getToken ctx =
-
-            let accessToken = accessTokenHandler ctx
-            let idToken = idTokenHandler ctx
-
-            match accessToken, idToken with
-            | Ok at, Ok it ->
-                let token: Domain.Token =
-                    { sub = at.sub
-                      permissions = at.permissions
-                      name = it.nickname
-                      picture = it.picture }
-
-                Ok token
-            | _, _ -> Error "invalid token"
 
         task {
             let store = ctx.GetService<Store.IStore>()
 
-            let token =
-                getToken ctx
+            let header = authorizationHeader ctx
+
+            printfn "%A" header
+
+            let accessTokenPayload =
+                header |> Result.bind (fun v -> accessTokenValidator v.accessToken)
+
+            let token: Domain.Token option =
+                accessTokenPayload
                 |> function
                     | Error e -> 
                         printfn "%A" e

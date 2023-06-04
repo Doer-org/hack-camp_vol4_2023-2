@@ -1,11 +1,12 @@
-import { ApolloClient, InMemoryCache } from "@apollo/client";
+import { ApolloClient, HttpLink, InMemoryCache } from "@apollo/client";
+import fetch from "cross-fetch";
 import { expect, test } from "vitest";
 import * as schema from "../generated/graphql";
 
 const IS_TEST_ENV = false; // serverがTest環境かどうか
 
 const graphqlClient = new ApolloClient({
-  uri: `http://localhost:8080/graphql`, // TODO: vitestで環境変数読み込み
+  link: new HttpLink({ uri: `http://localhost:8080/graphql`, fetch }), //`http://localhost:8080/graphql`, // TODO: vitestで環境変数読み込み
   cache: new InMemoryCache(),
 });
 
