@@ -28,7 +28,7 @@ const Page = ({ params }: Props) => {
       const fDOM: React.ReactNode[] = [];
       follows?.forEach(async (f) => {
         fDOM.push(
-          <div className={styles.cardWrapperStyle}>
+          <div key={f.user_id} className={styles.cardWrapperStyle}>
             <Card>
               <div className={styles.cardStyle}>
                 <div className={styles.cardUserStyle}>
@@ -37,7 +37,12 @@ const Page = ({ params }: Props) => {
                     {f?.user_name}
                   </span>
                 </div>
-                <FollowButton user_from={user || guest} user_to={f} />
+                <FollowButton
+                  user_from={user || guest}
+                  user_to={f}
+                  followType="follow"
+                  following={true}
+                />
               </div>
             </Card>
           </div>

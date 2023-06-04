@@ -4,7 +4,7 @@ import { Arrow, Logo, Card, Avator } from "@/ui";
 import { CommonHeader } from "@/app/_ui";
 import * as commonStyles from "../../../_styles/common.css";
 import * as styles from "../_styles/follower.css";
-import { getFollowers, getUser } from "@/api";
+import { getFollowers, getFollows, getUser } from "@/api";
 import { User } from "@/utils";
 import { FollowButton } from "../../../_ui";
 
@@ -24,11 +24,18 @@ const Page = ({ params }: Props) => {
   useEffect(() => {
     (async () => {
       const followers = await getFollowers(params.id);
+      const follows = await getFollows(params.id);
       const user = await getUser(params.id);
       const fDOM: React.ReactNode[] = [];
       followers?.forEach(async (f) => {
+        let following = false;
+        const jouken = follows?.filter((ff) => ff.user_id === f.user_id);
+        if (jouken !== undefined && jouken.length > 0) {
+          following = true;
+        }
+
         fDOM.push(
-          <div className={styles.cardWrapperStyle}>
+          <div key={f.user_id} className={styles.cardWrapperStyle}>
             <Card>
               <div className={styles.cardStyle}>
                 <div className={styles.cardUserStyle}>
@@ -37,7 +44,12 @@ const Page = ({ params }: Props) => {
                     {f?.user_name}
                   </span>
                 </div>
-                <FollowButton user_from={f} user_to={user || guest} />
+                <FollowButton
+                  user_from={user || guest}
+                  user_to={f}
+                  followType="follower"
+                  following={following}
+                />
               </div>
             </Card>
           </div>

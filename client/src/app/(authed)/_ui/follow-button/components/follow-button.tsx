@@ -2,28 +2,28 @@
 import React, { useEffect, useState } from "react";
 import { Button } from "@/ui";
 import { User } from "@/utils";
-import { getFollows, updateFollow } from "@/api";
+import { getFollows, updateFollow, getFollowers } from "@/api";
 
 type Props = {
   user_from: User;
   user_to: User;
+  followType: "follow" | "follower";
+  following: boolean;
 };
 
-const _FollowButton = ({ user_from, user_to }: Props) => {
-  const [isFollow, setIsFollow] = useState<boolean>(false);
-
-  useEffect(() => {
-    (async () => {
-      const follows = await getFollows(user_from.user_id);
-      if (follows?.filter((f) => f.user_id === user_to.user_id)) {
-        setIsFollow(true);
-      }
-    })();
-  }, []);
+const _FollowButton = ({
+  user_from,
+  user_to,
+  followType,
+  following,
+}: Props) => {
+  const [isFollow, setIsFollow] = useState<boolean>(following);
 
   const handleClick = () => {
     setIsFollow((prev) => {
-      updateFollow(user_from.user_id, user_to.user_id, prev);
+      (async () => {
+        await updateFollow(user_from.user_id, user_to.user_id, !prev);
+      })();
       return !prev;
     });
   };
