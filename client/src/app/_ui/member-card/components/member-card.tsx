@@ -22,12 +22,20 @@ const _MemberCard = ({ icon, name, role, github, twitter }: Props) => {
           <p className={styles.roleStyle}>{role}</p>
           <div className={styles.snsArea}>
             {github !== undefined && (
-              <a href={`https://github.com/${github}`}>
+              <a
+                href={`https://github.com/${github}`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <SnsIcon sns="github" />
               </a>
             )}
             {twitter !== undefined && (
-              <a href={`https://twitter.com/${twitter}`}>
+              <a
+                href={`https://twitter.com/${twitter}`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <SnsIcon sns="twitter" />
               </a>
             )}
