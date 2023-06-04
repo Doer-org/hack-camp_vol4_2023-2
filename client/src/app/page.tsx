@@ -154,13 +154,25 @@ export default function Home() {
             技術のキャッチアップだけでなく、ハッカソン出場やチームメンバーの育成などキャリアに繋げられる活動を行っています。
           </p>
           <div className={styles.doerSns}>
-            <a href="https://github.com/Doer-org">
+            <a
+              href="https://github.com/Doer-org"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               <SnsIcon sns="github" />
             </a>
-            <a href="https://twitter.com/du_doer">
+            <a
+              href="https://twitter.com/du_doer"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               <SnsIcon sns="twitter" />
             </a>
-            <a href="https://doer.vercel.app/">
+            <a
+              href="https://doer.vercel.app/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               <SnsIcon sns="doer" />
             </a>
           </div>
