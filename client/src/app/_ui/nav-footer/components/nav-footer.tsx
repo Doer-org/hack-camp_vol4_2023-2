@@ -35,12 +35,20 @@ const _NavFooter = () => {
     <Footer>
       <nav className={styles.contentStyle}>
         <div className={styles.itemStyle} onClick={handleTimelineClick}>
-          <Link href="/timeline" className={styles.linkStyle} prefetch={false}>
+          <Link
+            href={`/timeline/${me?.sid}`}
+            className={styles.linkStyle}
+            prefetch={false}
+          >
             <HomeIcon fill={active === "timeline"} />
           </Link>
         </div>
         <div className={styles.itemStyle} onClick={handleProfileClick}>
-          <Link href="/profile" className={styles.linkStyle} prefetch={false}>
+          <Link
+            href={`/profile/${me?.sid}`}
+            className={styles.linkStyle}
+            prefetch={false}
+          >
             <div
               className={
                 active === "profile"
@@ -54,7 +62,7 @@ const _NavFooter = () => {
         </div>
         <div className={styles.itemStyle} onClick={handleNoticeClick}>
           <Link
-            href="/notification"
+            href={`/notification/${me?.sid}`}
             className={styles.linkStyle}
             prefetch={false}
           >
