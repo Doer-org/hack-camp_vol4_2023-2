@@ -70,7 +70,8 @@ const Page = ({ params }: Props) => {
 
   return (
     <>
-      {me?.sid === refUser?.user_id ? ( // 自分かどうかを判定
+      {/* {me?.sid === refUser?.user_id ? ( // 自分かどうかを判定 */}
+      {true ? (
         <>
           <ProfileHeader
             user={refUser}
