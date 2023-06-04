@@ -15,7 +15,11 @@ export default function CommmonLayout({
     setOpen((prev) => !prev);
   };
 
-  const navClassList = [styles.navStyle, open && styles.navOpenStyle];
+  const navClassList = [
+    styles.navStyle,
+    styles.headerAvoidStyle["common"],
+    open && styles.navOpenStyle,
+  ];
 
   return (
     <>
