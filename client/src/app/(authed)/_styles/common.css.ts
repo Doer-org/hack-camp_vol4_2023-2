@@ -18,7 +18,6 @@ export const navStyle = style({
   position: "fixed",
   width: "100%",
   height: "100%",
-  paddingTop: "78px",
   paddingBottom: "56px",
   boxSizing: "border-box",
   pointerEvents: "none",
