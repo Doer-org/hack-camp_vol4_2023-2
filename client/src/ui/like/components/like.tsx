@@ -1,25 +1,48 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import * as styles from "../styles/like.css";
+import { getReaction, updateReaction } from "@/api";
+import { User } from "@/utils";
+
+type Me = {
+  nickname: string;
+  name: string;
+  picture: string;
+  updated_at: string;
+  sub: string;
+  sid: string;
+};
 
 type Props = {
   liked: boolean;
-  num: number;
+  num?: number;
+  user: User;
 };
 
-const _Like = ({ liked, num, ...props }: Props) => {
+const _Like = ({ liked, num, user, ...props }: Props) => {
   const [likedState, setLikedState] = useState<boolean>(liked);
-  const [numState, setNumState] = useState<number>(num);
+  const [numState, setNumState] = useState<number>(num || 0);
   const [color, setColor] = useState<"pink" | "gray">(liked ? "pink" : "gray");
+  const [me, setMe] = useState<Me>();
+
+  useEffect(() => {
+    (async () => {
+      const reactions = await getReaction(user.user_id);
+      const reactionedNum = reactions?.filter(
+        (r) => r.user_id_to === user.user_id
+      ).length;
+      setNumState(reactionedNum || 0);
+    })();
+  }, [likedState]);
 
   const handleClick = () => {
     setLikedState((prevLiked) => {
       if (prevLiked) {
-        setNumState((prevNum) => --prevNum);
         setColor("gray");
+        // 削除処理を書く
       } else {
-        setNumState((prevNum) => ++prevNum);
         setColor("pink");
+        updateReaction(me?.sid || "guest", user.user_id, "like");
       }
       return !prevLiked;
     });
