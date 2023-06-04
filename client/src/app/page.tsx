@@ -14,7 +14,7 @@ export default function Home() {
         <section className={styles.contentStyle}>
           <div className={styles.catchphraseArea}>
             <div className={styles.logo}>
-              <Logo size="large" />
+              <Logo link={false} size="large" />
             </div>
             <h2 className={styles.catchphrase}>
               友達の趣味を

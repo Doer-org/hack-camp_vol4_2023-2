@@ -4,6 +4,12 @@ export const wrapperStyle = style({
   cursor: "pointer",
 });
 
+export const linkStyle = style({
+  display: "block",
+  width: "100%",
+  height: "100%",
+});
+
 export const imageStyle = style({
   width: "100%",
   height: "100%",
