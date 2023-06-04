@@ -144,10 +144,10 @@ let handleGraphQL isTest (auth0_jwks: string, auth0_domain: string, auth0_audien
             json
             |> serializer.Deserialize<{| iss: string
                                          sub: string
-                                        //  aud: string[]
-                                        //  permissions: string[]
-                                         
-                                          |}>
+            //  aud: string[]
+            //  permissions: string[]
+
+            |} >
             |> fun payload ->
                 let hasAllRequiredPermissions =
                     // let tokenPermissions = payload.permissions |> Set.ofArray
@@ -232,17 +232,29 @@ let handleGraphQL isTest (auth0_jwks: string, auth0_domain: string, auth0_audien
                 accessTokenPayload
                 |> function
                     | Error e ->
-                        printfn "accessTokenPayload Error %A" e
-                        None
+                        // printfn "accessTokenPayload Error %A" e
+                        // None
+                        match header with
+                        | Error e ->
+                            printfn "header Error 1 %A" e
+                            None
+                        | Ok h ->
+                            let token: Domain.Token =
+                                { sub = h.sub
+                                  permissions = [||] //v.permissions
+                                  picture = h.picture
+                                  name = h.nickname }
+
+                            token |> Some
                     | Ok v ->
 
                         match header with
                         | Error e ->
-                            printfn "header Error %A" e
+                            printfn "header Error 2 %A" e
                             None
                         | Ok h ->
                             let token: Domain.Token =
-                                { sub = v.sub
+                                { sub = h.sub
                                   permissions = [||] //v.permissions
                                   picture = h.picture
                                   name = h.nickname }
