@@ -3,6 +3,7 @@ export * from "./avatar";
 export * from "./bell-icon";
 export * from "./button";
 export * from "./card";
+export * from "./common-header";
 export * from "./footer";
 export * from "./hamburger";
 export * from "./header";
