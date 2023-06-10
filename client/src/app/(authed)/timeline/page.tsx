@@ -1,6 +1,12 @@
-"use client";
-import React from "react";
+import { Timeline, TimelineHeader } from "./_ui";
 
-export default function Page() {
-  return <>Timeline Page</>;
-}
+const Page = () => {
+  return (
+    <>
+      <TimelineHeader user_id="abc" />
+      <Timeline />
+    </>
+  );
+};
+
+export default Page;
