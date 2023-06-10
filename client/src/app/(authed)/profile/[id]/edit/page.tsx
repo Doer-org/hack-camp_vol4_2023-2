@@ -1,20 +1,21 @@
 "use client";
+import {
+  getAccessToken,
+  getFavoriteArtist,
+  getUser,
+  readArtist,
+  searchArtist,
+  updateFavoriteArtist,
+} from "@/api";
+import { CommonHeader } from "@/app/_ui";
+import { Arrow, Button, Like, SearchResult } from "@/ui";
+import { SearchBar } from "@/ui/search-bar/components";
+import { Data, User } from "@/utils";
+import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import * as commonStyles from "../../../_styles/common.css";
 import * as styles from "../../_styles/profile.css";
-import { CommonHeader } from "@/app/_ui";
 import { RecomCard } from "../../_ui";
-import { Arrow, Button, Like, SearchResult } from "@/ui";
-import { SearchBar } from "@/ui/search-bar/components";
-import {
-  getAccessToken,
-  searchArtist,
-  readArtist,
-  getFavoriteArtist,
-} from "@/api";
-import { updateFavoriteArtist, getUser } from "@/api";
-import { useRouter } from "next/navigation";
-import { User } from "@/utils";
 
 type Artist = {
   id: string;
@@ -26,7 +27,7 @@ type Props = {
   params: { id: string };
 };
 
-const guest: User = {
+const guest: User extends { data: Data } ? Data : never = {
   user_id: "guest",
   user_name: "Guest",
   image_url: "",
@@ -68,7 +69,7 @@ const Page = ({ params }: Props) => {
     })();
   }, [params.id]);
 
-  const [refUser, setRefUser] = useState<User | null>(null);
+  const [refUser, setRefUser] = useState<Data | null>();
 
   const [canSearch, setCanSearch] = useState<boolean>(false);
   const [artists, setArtists] = useState<Artist[]>([]);

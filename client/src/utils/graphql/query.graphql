@@ -1,87 +1,90 @@
 query getUserByToken {
-  getUserByToken {
+  userByToken {
     user_id
     user_name
     image_url
   }
 }
-
-query getUsers {
-  getUsers {
-    user_id
-    user_name
-    image_url
-  }
-}
-
 query getUser($user_id: String!) {
   user(user_id: $user_id) {
-    user_id
-    user_name
-    image_url
+    data {
+      user_id
+      user_name
+      image_url
+    }
+    follow {
+      user_id
+      user_name
+      image_url
+    }
+    follower {
+      user_id
+      user_name
+      image_url
+    }
+    user_log {
+      user_id
+      timeline_last_access
+    }
   }
 }
 
-query getFollows($user_id: String!) {
-  getFollows(user_id: $user_id) {
-    user_id
-    user_name
-    image_url
-  }
-}
-
-query getFollowers($user_id: String!) {
-  getFollowers(user_id: $user_id) {
-    user_id
-    user_name
-    image_url
+query getProfile($user_id: String!) {
+  profile(user_id: $user_id) {
+    ramen {
+      ramenya
+      rank
+      timestamp
+      user_id
+    }
+    music {
+      user_id
+      music
+      rank
+      timestamp
+    }
+    artist {
+      user_id
+      artist
+      rank
+      timestamp
+    }
+    reaction {
+      user_id_from
+      user_id_to
+      timestamp
+      kind
+    }
   }
 }
 
 query getTimeline($user_id: String!) {
-  getTimeline(user_id: $user_id) {
+  timeline(user_id: $user_id) {
     user_id
+    timestamp
     summary
-    timestamp
-  }
-}
-
-query getReaction($user_id: String!) {
-  getReaction(user_id: $user_id) {
-    user_id_from
-    user_id_to
-    kind
-    timestamp
-  }
-}
-
-query getRamenProfile($user_id: String!) {
-  getRamenProfile(user_id: $user_id) {
-    user_id
-    rank
-    ramenya
   }
 }
 
 query getLastAccess($user_id: String!) {
-  getLastAccess(user_id: $user_id) {
+  lastAccess(user_id: $user_id) {
     user_id
     timeline_last_access
   }
 }
 
-query getFavoriteMusic($user_id: String!) {
-  getFavoriteMusic(user_id: $user_id) {
+query getAllUsers {
+  allUsers {
     user_id
-    rank
-    music
+    user_name
+    image_url
   }
 }
 
-query getFavoriteArtist($user_id: String!) {
-  getFavoriteArtist(user_id: $user_id) {
+query getAllTimeline($user_id: String!) {
+  allTimeline {
     user_id
-    rank
-    artist
+    summary
+    timestamp
   }
 }

@@ -1,12 +1,12 @@
 "use client";
+import { getFollowers, getFollows } from "@/api";
+import { Avator, Header } from "@/ui";
+import { User } from "@/utils";
 import React, { useEffect, useState } from "react";
 import * as styles from "../styles/profile-header.css";
-import { Avator, Button, Header, Logo } from "@/ui";
-import { User } from "@/utils";
-import { getFollows, getFollowers } from "@/api";
 
 type Props = {
-  user: User | null;
+  user: User extends { data: infer U } ? U : never | null;
   right?: React.ReactNode;
 };
 

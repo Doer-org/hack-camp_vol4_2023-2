@@ -29,7 +29,7 @@ const Page = ({ params }: Props) => {
             key={n.user_id_from + n.timestamp}
             className={styles.noticeStyle}
           >
-            <NoticeCard user={user} action={kind2ja.get(n.kind)} />
+            {user && <NoticeCard user={user} action={kind2ja.get(n.kind)} />}
           </div>
         );
       });

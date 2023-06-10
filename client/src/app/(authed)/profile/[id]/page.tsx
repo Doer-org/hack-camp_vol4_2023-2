@@ -1,13 +1,13 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import { getAccessToken, getFavoriteArtist, getUser, readArtist } from "@/api";
+import { ProfileHeader } from "@/app/_ui";
+import { Button, Like } from "@/ui";
+import { Data, User } from "@/utils";
+import Link from "next/link";
+import { useEffect, useState } from "react";
 import * as commonStyles from "../../_styles/common.css";
 import * as styles from "../_styles/profile.css";
-import { Button, Like } from "@/ui";
-import { ProfileHeader } from "@/app/_ui";
 import { RecomCard } from "../_ui";
-import Link from "next/link";
-import { getUser, getFavoriteArtist, getAccessToken, readArtist } from "@/api";
-import { User } from "@/utils";
 
 type Me = {
   nickname: string;
@@ -22,14 +22,14 @@ type Props = {
   params: { id: string };
 };
 
-const guest: User = {
+const guest: User extends { data: Data } ? Data : never = {
   user_id: "guest",
   user_name: "Guest",
   image_url: "",
 };
 
 const Page = ({ params }: Props) => {
-  const [refUser, setRefUser] = useState<User | null>(null);
+  const [refUser, setRefUser] = useState<Data | null>(null);
   const [me, setMe] = useState<Me>();
 
   const [firstImage, setFirstImage] = useState<string>();
@@ -71,7 +71,7 @@ const Page = ({ params }: Props) => {
   return (
     <>
       {/* {me?.sid === refUser?.user_id ? ( // 自分かどうかを判定 */}
-      {true ? (
+      {true && refUser ? (
         <>
           <ProfileHeader
             user={refUser}
@@ -89,10 +89,10 @@ const Page = ({ params }: Props) => {
         </>
       ) : (
         <>
-          <ProfileHeader
+          {/* <ProfileHeader
             user={refUser}
             right={<Button color="black">フォロー中</Button>}
-          />
+          /> */}
         </>
       )}
       <div

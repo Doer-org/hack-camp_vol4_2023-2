@@ -1,8 +1,8 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import * as styles from "../styles/like.css";
 import { getReaction, updateReaction } from "@/api";
 import { User } from "@/utils";
+import { useEffect, useState } from "react";
+import * as styles from "../styles/like.css";
 
 type Me = {
   nickname: string;
@@ -16,7 +16,7 @@ type Me = {
 type Props = {
   liked: boolean;
   num?: number;
-  user: User;
+  user: User extends { data: infer U } ? U : never;
 };
 
 const _Like = ({ liked, num, user, ...props }: Props) => {

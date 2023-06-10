@@ -1,17 +1,17 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import { Arrow, Logo, Card, Avator, Like } from "@/ui";
+import { getReaction, getUser } from "@/api";
 import { CommonHeader } from "@/app/_ui";
+import { Arrow, Avator, Card, Like, Logo } from "@/ui";
+import { User } from "@/utils";
+import React, { useEffect, useState } from "react";
 import * as commonStyles from "../../_styles/common.css";
 import * as styles from "../_styles/bookmark.css";
-import { getUser, getReaction } from "@/api";
-import { User } from "@/utils";
 
 type Props = {
   params: { id: string };
 };
 
-const guest: User = {
+const guest: User extends { data: infer U } ? U : never = {
   user_id: "guest",
   user_name: "Guest",
   image_url: "",
