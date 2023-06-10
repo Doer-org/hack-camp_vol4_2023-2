@@ -1,10 +1,9 @@
-import React from "react";
 import { Avator, Card } from "@/ui";
-import * as styles from "../styles/notice-card.css";
 import { User } from "@/utils";
+import * as styles from "../styles/notice-card.css";
 
 type Props = {
-  user: User | null;
+  user: User extends { data: infer U } ? U : never | null;
   profileType?: string;
   action?: string;
 };

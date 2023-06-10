@@ -2,6 +2,10 @@ overwrite: true
 schema: "http://localhost:8080/graphql"
 documents:
   - "src/**/*.graphql"
+extensions:
+  endpoints:
+    default:
+      url: "http://localhost:8080/graphql"
 generates:
   ./src/utils/graphql/generated/graphql.tsx:
     plugins:

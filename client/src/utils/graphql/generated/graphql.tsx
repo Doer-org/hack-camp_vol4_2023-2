@@ -33,7 +33,7 @@ export type Scalars = {
 export type Mutation = {
   __typename?: "Mutation";
   /** create user */
-  createUser: Maybe<User>;
+  createUser: Maybe<Data>;
   /** post timeline */
   postTimeLine: Maybe<Profile_Change_Log>;
   /** update favotrite artists */
@@ -86,65 +86,43 @@ export type MutationUpdateReactionArgs = {
 export type Query = {
   __typename?: "Query";
   /** get all users timeline */
-  getAllTimeline: Array<Profile_Change_Log>;
-  /** get favorite artists */
-  getFavoriteArtist: Array<Music_Favorite_Artist>;
-  /** get favorite music */
-  getFavoriteMusic: Array<Music_Favorite_Music>;
-  /** get followers */
-  getFollowers: Array<User>;
-  /** get follows */
-  getFollows: Array<User>;
-  /** get last access */
-  getLastAccess: Maybe<User_Log>;
-  /** get ramen profile */
-  getRamenProfile: Array<Ramen_Favorite_Ramenya>;
-  /** get reaction */
-  getReaction: Array<Profile_Reaction>;
-  /** get following users timeline */
-  getTimeline: Array<Profile_Change_Log>;
-  /** getUserByToken */
-  getUserByToken: Maybe<User>;
+  allTimeline: Array<Profile_Change_Log>;
   /** get all users */
-  getUsers: Array<User>;
+  allUsers: Array<Data>;
+  /** get last access */
+  lastAccess: Maybe<User_Log>;
+  /** get profile */
+  profile: Profile;
+  /** get following users timeline */
+  timeline: Array<Profile_Change_Log>;
   /** get user */
-  user: Maybe<User>;
+  user: User;
+  /** getUserByToken */
+  userByToken: Maybe<Data>;
 };
 
-export type QueryGetFavoriteArtistArgs = {
+export type QueryLastAccessArgs = {
   user_id: Scalars["String"]["input"];
 };
 
-export type QueryGetFavoriteMusicArgs = {
+export type QueryProfileArgs = {
   user_id: Scalars["String"]["input"];
 };
 
-export type QueryGetFollowersArgs = {
-  user_id: Scalars["String"]["input"];
-};
-
-export type QueryGetFollowsArgs = {
-  user_id: Scalars["String"]["input"];
-};
-
-export type QueryGetLastAccessArgs = {
-  user_id: Scalars["String"]["input"];
-};
-
-export type QueryGetRamenProfileArgs = {
-  user_id: Scalars["String"]["input"];
-};
-
-export type QueryGetReactionArgs = {
-  user_id: Scalars["String"]["input"];
-};
-
-export type QueryGetTimelineArgs = {
+export type QueryTimelineArgs = {
   user_id: Scalars["String"]["input"];
 };
 
 export type QueryUserArgs = {
   user_id: Scalars["String"]["input"];
+};
+
+/** user data */
+export type Data = {
+  __typename?: "data";
+  image_url: Scalars["String"]["output"];
+  user_id: Scalars["String"]["output"];
+  user_name: Scalars["String"]["output"];
 };
 
 /** アーティスト */
@@ -168,9 +146,10 @@ export type Music_Favorite_Music = {
 /** プロフィール */
 export type Profile = {
   __typename?: "profile";
-  details: Scalars["String"]["output"];
-  timestamp: Scalars["String"]["output"];
-  user_id: Scalars["String"]["output"];
+  artist: Array<Music_Favorite_Artist>;
+  music: Array<Music_Favorite_Music>;
+  ramen: Array<Ramen_Favorite_Ramenya>;
+  reaction: Array<Profile_Reaction>;
 };
 
 /** 変更履歴 */
@@ -202,9 +181,10 @@ export type Ramen_Favorite_Ramenya = {
 /** user */
 export type User = {
   __typename?: "user";
-  image_url: Scalars["String"]["output"];
-  user_id: Scalars["String"]["output"];
-  user_name: Scalars["String"]["output"];
+  data: Data;
+  follow: Array<Data>;
+  follower: Array<Data>;
+  user_log: Maybe<User_Log>;
 };
 
 /** Follow */
@@ -226,7 +206,7 @@ export type CreateUserMutationVariables = Exact<{ [key: string]: never }>;
 export type CreateUserMutation = {
   __typename?: "Mutation";
   createUser: {
-    __typename?: "user";
+    __typename?: "data";
     user_name: string;
     user_id: string;
     image_url: string;
@@ -335,24 +315,12 @@ export type GetUserByTokenQueryVariables = Exact<{ [key: string]: never }>;
 
 export type GetUserByTokenQuery = {
   __typename?: "Query";
-  getUserByToken: {
-    __typename?: "user";
+  userByToken: {
+    __typename?: "data";
     user_id: string;
     user_name: string;
     image_url: string;
   } | null;
-};
-
-export type GetUsersQueryVariables = Exact<{ [key: string]: never }>;
-
-export type GetUsersQuery = {
-  __typename?: "Query";
-  getUsers: Array<{
-    __typename?: "user";
-    user_id: string;
-    user_name: string;
-    image_url: string;
-  }>;
 };
 
 export type GetUserQueryVariables = Exact<{
@@ -363,38 +331,69 @@ export type GetUserQuery = {
   __typename?: "Query";
   user: {
     __typename?: "user";
-    user_id: string;
-    user_name: string;
-    image_url: string;
-  } | null;
+    data: {
+      __typename?: "data";
+      user_id: string;
+      user_name: string;
+      image_url: string;
+    };
+    follow: Array<{
+      __typename?: "data";
+      user_id: string;
+      user_name: string;
+      image_url: string;
+    }>;
+    follower: Array<{
+      __typename?: "data";
+      user_id: string;
+      user_name: string;
+      image_url: string;
+    }>;
+    user_log: {
+      __typename?: "user_log";
+      user_id: string;
+      timeline_last_access: string;
+    } | null;
+  };
 };
 
-export type GetFollowsQueryVariables = Exact<{
+export type GetProfileQueryVariables = Exact<{
   user_id: Scalars["String"]["input"];
 }>;
 
-export type GetFollowsQuery = {
+export type GetProfileQuery = {
   __typename?: "Query";
-  getFollows: Array<{
-    __typename?: "user";
-    user_id: string;
-    user_name: string;
-    image_url: string;
-  }>;
-};
-
-export type GetFollowersQueryVariables = Exact<{
-  user_id: Scalars["String"]["input"];
-}>;
-
-export type GetFollowersQuery = {
-  __typename?: "Query";
-  getFollowers: Array<{
-    __typename?: "user";
-    user_id: string;
-    user_name: string;
-    image_url: string;
-  }>;
+  profile: {
+    __typename?: "profile";
+    ramen: Array<{
+      __typename?: "ramen_favorite_ramenya";
+      ramenya: string;
+      rank: number;
+      timestamp: string;
+      user_id: string;
+    }>;
+    music: Array<{
+      __typename?: "music_favorite_music";
+      user_id: string;
+      music: string;
+      rank: number;
+      timestamp: string;
+    }>;
+    artist: Array<{
+      __typename?: "music_favorite_artist";
+      user_id: string;
+      artist: string;
+      rank: number;
+      timestamp: string;
+    }>;
+    reaction: Array<{
+      __typename?: "profile_reaction";
+      user_id_from: string;
+      user_id_to: string;
+      timestamp: string;
+      kind: string;
+    }>;
+  };
 };
 
 export type GetTimelineQueryVariables = Exact<{
@@ -403,40 +402,11 @@ export type GetTimelineQueryVariables = Exact<{
 
 export type GetTimelineQuery = {
   __typename?: "Query";
-  getTimeline: Array<{
+  timeline: Array<{
     __typename?: "profile_change_log";
     user_id: string;
+    timestamp: string;
     summary: string;
-    timestamp: string;
-  }>;
-};
-
-export type GetReactionQueryVariables = Exact<{
-  user_id: Scalars["String"]["input"];
-}>;
-
-export type GetReactionQuery = {
-  __typename?: "Query";
-  getReaction: Array<{
-    __typename?: "profile_reaction";
-    user_id_from: string;
-    user_id_to: string;
-    kind: string;
-    timestamp: string;
-  }>;
-};
-
-export type GetRamenProfileQueryVariables = Exact<{
-  user_id: Scalars["String"]["input"];
-}>;
-
-export type GetRamenProfileQuery = {
-  __typename?: "Query";
-  getRamenProfile: Array<{
-    __typename?: "ramen_favorite_ramenya";
-    user_id: string;
-    rank: number;
-    ramenya: string;
   }>;
 };
 
@@ -446,38 +416,36 @@ export type GetLastAccessQueryVariables = Exact<{
 
 export type GetLastAccessQuery = {
   __typename?: "Query";
-  getLastAccess: {
+  lastAccess: {
     __typename?: "user_log";
     user_id: string;
     timeline_last_access: string;
   } | null;
 };
 
-export type GetFavoriteMusicQueryVariables = Exact<{
-  user_id: Scalars["String"]["input"];
-}>;
+export type GetAllUsersQueryVariables = Exact<{ [key: string]: never }>;
 
-export type GetFavoriteMusicQuery = {
+export type GetAllUsersQuery = {
   __typename?: "Query";
-  getFavoriteMusic: Array<{
-    __typename?: "music_favorite_music";
+  allUsers: Array<{
+    __typename?: "data";
     user_id: string;
-    rank: number;
-    music: string;
+    user_name: string;
+    image_url: string;
   }>;
 };
 
-export type GetFavoriteArtistQueryVariables = Exact<{
+export type GetAllTimelineQueryVariables = Exact<{
   user_id: Scalars["String"]["input"];
 }>;
 
-export type GetFavoriteArtistQuery = {
+export type GetAllTimelineQuery = {
   __typename?: "Query";
-  getFavoriteArtist: Array<{
-    __typename?: "music_favorite_artist";
+  allTimeline: Array<{
+    __typename?: "profile_change_log";
     user_id: string;
-    rank: number;
-    artist: string;
+    summary: string;
+    timestamp: string;
   }>;
 };
 
@@ -1086,7 +1054,7 @@ export const GetUserByTokenDocument = {
         selections: [
           {
             kind: "Field",
-            name: { kind: "Name", value: "getUserByToken" },
+            name: { kind: "Name", value: "userByToken" },
             selectionSet: {
               kind: "SelectionSet",
               selections: [
@@ -1101,33 +1069,6 @@ export const GetUserByTokenDocument = {
     },
   ],
 } as unknown as DocumentNode<GetUserByTokenQuery, GetUserByTokenQueryVariables>;
-export const GetUsersDocument = {
-  kind: "Document",
-  definitions: [
-    {
-      kind: "OperationDefinition",
-      operation: "query",
-      name: { kind: "Name", value: "getUsers" },
-      selectionSet: {
-        kind: "SelectionSet",
-        selections: [
-          {
-            kind: "Field",
-            name: { kind: "Name", value: "getUsers" },
-            selectionSet: {
-              kind: "SelectionSet",
-              selections: [
-                { kind: "Field", name: { kind: "Name", value: "user_id" } },
-                { kind: "Field", name: { kind: "Name", value: "user_name" } },
-                { kind: "Field", name: { kind: "Name", value: "image_url" } },
-              ],
-            },
-          },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<GetUsersQuery, GetUsersQueryVariables>;
 export const GetUserDocument = {
   kind: "Document",
   definitions: [
@@ -1170,9 +1111,86 @@ export const GetUserDocument = {
             selectionSet: {
               kind: "SelectionSet",
               selections: [
-                { kind: "Field", name: { kind: "Name", value: "user_id" } },
-                { kind: "Field", name: { kind: "Name", value: "user_name" } },
-                { kind: "Field", name: { kind: "Name", value: "image_url" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "data" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "user_id" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "user_name" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "image_url" },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "follow" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "user_id" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "user_name" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "image_url" },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "follower" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "user_id" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "user_name" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "image_url" },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "user_log" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "user_id" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "timeline_last_access" },
+                      },
+                    ],
+                  },
+                },
               ],
             },
           },
@@ -1181,13 +1199,13 @@ export const GetUserDocument = {
     },
   ],
 } as unknown as DocumentNode<GetUserQuery, GetUserQueryVariables>;
-export const GetFollowsDocument = {
+export const GetProfileDocument = {
   kind: "Document",
   definitions: [
     {
       kind: "OperationDefinition",
       operation: "query",
-      name: { kind: "Name", value: "getFollows" },
+      name: { kind: "Name", value: "getProfile" },
       variableDefinitions: [
         {
           kind: "VariableDefinition",
@@ -1209,7 +1227,7 @@ export const GetFollowsDocument = {
         selections: [
           {
             kind: "Field",
-            name: { kind: "Name", value: "getFollows" },
+            name: { kind: "Name", value: "profile" },
             arguments: [
               {
                 kind: "Argument",
@@ -1223,62 +1241,91 @@ export const GetFollowsDocument = {
             selectionSet: {
               kind: "SelectionSet",
               selections: [
-                { kind: "Field", name: { kind: "Name", value: "user_id" } },
-                { kind: "Field", name: { kind: "Name", value: "user_name" } },
-                { kind: "Field", name: { kind: "Name", value: "image_url" } },
-              ],
-            },
-          },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<GetFollowsQuery, GetFollowsQueryVariables>;
-export const GetFollowersDocument = {
-  kind: "Document",
-  definitions: [
-    {
-      kind: "OperationDefinition",
-      operation: "query",
-      name: { kind: "Name", value: "getFollowers" },
-      variableDefinitions: [
-        {
-          kind: "VariableDefinition",
-          variable: {
-            kind: "Variable",
-            name: { kind: "Name", value: "user_id" },
-          },
-          type: {
-            kind: "NonNullType",
-            type: {
-              kind: "NamedType",
-              name: { kind: "Name", value: "String" },
-            },
-          },
-        },
-      ],
-      selectionSet: {
-        kind: "SelectionSet",
-        selections: [
-          {
-            kind: "Field",
-            name: { kind: "Name", value: "getFollowers" },
-            arguments: [
-              {
-                kind: "Argument",
-                name: { kind: "Name", value: "user_id" },
-                value: {
-                  kind: "Variable",
-                  name: { kind: "Name", value: "user_id" },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "ramen" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "ramenya" },
+                      },
+                      { kind: "Field", name: { kind: "Name", value: "rank" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "timestamp" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "user_id" },
+                      },
+                    ],
+                  },
                 },
-              },
-            ],
-            selectionSet: {
-              kind: "SelectionSet",
-              selections: [
-                { kind: "Field", name: { kind: "Name", value: "user_id" } },
-                { kind: "Field", name: { kind: "Name", value: "user_name" } },
-                { kind: "Field", name: { kind: "Name", value: "image_url" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "music" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "user_id" },
+                      },
+                      { kind: "Field", name: { kind: "Name", value: "music" } },
+                      { kind: "Field", name: { kind: "Name", value: "rank" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "timestamp" },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "artist" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "user_id" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "artist" },
+                      },
+                      { kind: "Field", name: { kind: "Name", value: "rank" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "timestamp" },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "reaction" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "user_id_from" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "user_id_to" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "timestamp" },
+                      },
+                      { kind: "Field", name: { kind: "Name", value: "kind" } },
+                    ],
+                  },
+                },
               ],
             },
           },
@@ -1286,7 +1333,7 @@ export const GetFollowersDocument = {
       },
     },
   ],
-} as unknown as DocumentNode<GetFollowersQuery, GetFollowersQueryVariables>;
+} as unknown as DocumentNode<GetProfileQuery, GetProfileQueryVariables>;
 export const GetTimelineDocument = {
   kind: "Document",
   definitions: [
@@ -1315,7 +1362,7 @@ export const GetTimelineDocument = {
         selections: [
           {
             kind: "Field",
-            name: { kind: "Name", value: "getTimeline" },
+            name: { kind: "Name", value: "timeline" },
             arguments: [
               {
                 kind: "Argument",
@@ -1330,8 +1377,8 @@ export const GetTimelineDocument = {
               kind: "SelectionSet",
               selections: [
                 { kind: "Field", name: { kind: "Name", value: "user_id" } },
-                { kind: "Field", name: { kind: "Name", value: "summary" } },
                 { kind: "Field", name: { kind: "Name", value: "timestamp" } },
+                { kind: "Field", name: { kind: "Name", value: "summary" } },
               ],
             },
           },
@@ -1340,119 +1387,6 @@ export const GetTimelineDocument = {
     },
   ],
 } as unknown as DocumentNode<GetTimelineQuery, GetTimelineQueryVariables>;
-export const GetReactionDocument = {
-  kind: "Document",
-  definitions: [
-    {
-      kind: "OperationDefinition",
-      operation: "query",
-      name: { kind: "Name", value: "getReaction" },
-      variableDefinitions: [
-        {
-          kind: "VariableDefinition",
-          variable: {
-            kind: "Variable",
-            name: { kind: "Name", value: "user_id" },
-          },
-          type: {
-            kind: "NonNullType",
-            type: {
-              kind: "NamedType",
-              name: { kind: "Name", value: "String" },
-            },
-          },
-        },
-      ],
-      selectionSet: {
-        kind: "SelectionSet",
-        selections: [
-          {
-            kind: "Field",
-            name: { kind: "Name", value: "getReaction" },
-            arguments: [
-              {
-                kind: "Argument",
-                name: { kind: "Name", value: "user_id" },
-                value: {
-                  kind: "Variable",
-                  name: { kind: "Name", value: "user_id" },
-                },
-              },
-            ],
-            selectionSet: {
-              kind: "SelectionSet",
-              selections: [
-                {
-                  kind: "Field",
-                  name: { kind: "Name", value: "user_id_from" },
-                },
-                { kind: "Field", name: { kind: "Name", value: "user_id_to" } },
-                { kind: "Field", name: { kind: "Name", value: "kind" } },
-                { kind: "Field", name: { kind: "Name", value: "timestamp" } },
-              ],
-            },
-          },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<GetReactionQuery, GetReactionQueryVariables>;
-export const GetRamenProfileDocument = {
-  kind: "Document",
-  definitions: [
-    {
-      kind: "OperationDefinition",
-      operation: "query",
-      name: { kind: "Name", value: "getRamenProfile" },
-      variableDefinitions: [
-        {
-          kind: "VariableDefinition",
-          variable: {
-            kind: "Variable",
-            name: { kind: "Name", value: "user_id" },
-          },
-          type: {
-            kind: "NonNullType",
-            type: {
-              kind: "NamedType",
-              name: { kind: "Name", value: "String" },
-            },
-          },
-        },
-      ],
-      selectionSet: {
-        kind: "SelectionSet",
-        selections: [
-          {
-            kind: "Field",
-            name: { kind: "Name", value: "getRamenProfile" },
-            arguments: [
-              {
-                kind: "Argument",
-                name: { kind: "Name", value: "user_id" },
-                value: {
-                  kind: "Variable",
-                  name: { kind: "Name", value: "user_id" },
-                },
-              },
-            ],
-            selectionSet: {
-              kind: "SelectionSet",
-              selections: [
-                { kind: "Field", name: { kind: "Name", value: "user_id" } },
-                { kind: "Field", name: { kind: "Name", value: "rank" } },
-                { kind: "Field", name: { kind: "Name", value: "ramenya" } },
-              ],
-            },
-          },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<
-  GetRamenProfileQuery,
-  GetRamenProfileQueryVariables
->;
 export const GetLastAccessDocument = {
   kind: "Document",
   definitions: [
@@ -1481,7 +1415,7 @@ export const GetLastAccessDocument = {
         selections: [
           {
             kind: "Field",
-            name: { kind: "Name", value: "getLastAccess" },
+            name: { kind: "Name", value: "lastAccess" },
             arguments: [
               {
                 kind: "Argument",
@@ -1508,13 +1442,40 @@ export const GetLastAccessDocument = {
     },
   ],
 } as unknown as DocumentNode<GetLastAccessQuery, GetLastAccessQueryVariables>;
-export const GetFavoriteMusicDocument = {
+export const GetAllUsersDocument = {
   kind: "Document",
   definitions: [
     {
       kind: "OperationDefinition",
       operation: "query",
-      name: { kind: "Name", value: "getFavoriteMusic" },
+      name: { kind: "Name", value: "getAllUsers" },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "allUsers" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "user_id" } },
+                { kind: "Field", name: { kind: "Name", value: "user_name" } },
+                { kind: "Field", name: { kind: "Name", value: "image_url" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<GetAllUsersQuery, GetAllUsersQueryVariables>;
+export const GetAllTimelineDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "getAllTimeline" },
       variableDefinitions: [
         {
           kind: "VariableDefinition",
@@ -1536,23 +1497,13 @@ export const GetFavoriteMusicDocument = {
         selections: [
           {
             kind: "Field",
-            name: { kind: "Name", value: "getFavoriteMusic" },
-            arguments: [
-              {
-                kind: "Argument",
-                name: { kind: "Name", value: "user_id" },
-                value: {
-                  kind: "Variable",
-                  name: { kind: "Name", value: "user_id" },
-                },
-              },
-            ],
+            name: { kind: "Name", value: "allTimeline" },
             selectionSet: {
               kind: "SelectionSet",
               selections: [
                 { kind: "Field", name: { kind: "Name", value: "user_id" } },
-                { kind: "Field", name: { kind: "Name", value: "rank" } },
-                { kind: "Field", name: { kind: "Name", value: "music" } },
+                { kind: "Field", name: { kind: "Name", value: "summary" } },
+                { kind: "Field", name: { kind: "Name", value: "timestamp" } },
               ],
             },
           },
@@ -1560,63 +1511,4 @@ export const GetFavoriteMusicDocument = {
       },
     },
   ],
-} as unknown as DocumentNode<
-  GetFavoriteMusicQuery,
-  GetFavoriteMusicQueryVariables
->;
-export const GetFavoriteArtistDocument = {
-  kind: "Document",
-  definitions: [
-    {
-      kind: "OperationDefinition",
-      operation: "query",
-      name: { kind: "Name", value: "getFavoriteArtist" },
-      variableDefinitions: [
-        {
-          kind: "VariableDefinition",
-          variable: {
-            kind: "Variable",
-            name: { kind: "Name", value: "user_id" },
-          },
-          type: {
-            kind: "NonNullType",
-            type: {
-              kind: "NamedType",
-              name: { kind: "Name", value: "String" },
-            },
-          },
-        },
-      ],
-      selectionSet: {
-        kind: "SelectionSet",
-        selections: [
-          {
-            kind: "Field",
-            name: { kind: "Name", value: "getFavoriteArtist" },
-            arguments: [
-              {
-                kind: "Argument",
-                name: { kind: "Name", value: "user_id" },
-                value: {
-                  kind: "Variable",
-                  name: { kind: "Name", value: "user_id" },
-                },
-              },
-            ],
-            selectionSet: {
-              kind: "SelectionSet",
-              selections: [
-                { kind: "Field", name: { kind: "Name", value: "user_id" } },
-                { kind: "Field", name: { kind: "Name", value: "rank" } },
-                { kind: "Field", name: { kind: "Name", value: "artist" } },
-              ],
-            },
-          },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<
-  GetFavoriteArtistQuery,
-  GetFavoriteArtistQueryVariables
->;
+} as unknown as DocumentNode<GetAllTimelineQuery, GetAllTimelineQueryVariables>;

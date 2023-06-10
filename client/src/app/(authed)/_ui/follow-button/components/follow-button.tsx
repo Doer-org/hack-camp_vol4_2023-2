@@ -1,12 +1,12 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import { updateFollow } from "@/api";
 import { Button } from "@/ui";
 import { User } from "@/utils";
-import { getFollows, updateFollow, getFollowers } from "@/api";
+import { useState } from "react";
 
 type Props = {
-  user_from: User;
-  user_to: User;
+  user_from: User extends { data: infer U } ? U : never;
+  user_to: User extends { data: infer U } ? U : never;
   followType: "follow" | "follower";
   following: boolean;
 };

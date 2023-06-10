@@ -12,7 +12,7 @@ type Props = {
   params: { id: string };
 };
 
-const guest: User = {
+const guest: User extends { data: infer U } ? U : never = {
   user_id: "guest",
   user_name: "Guest",
   image_url: "",

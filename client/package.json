@@ -13,7 +13,7 @@
     "build-storybook": "storybook build",
     "prepare": "cd .. && husky install client/.husky",
     "test": "vitest",
-    "graphql:codegen": "graphql-codegen --config codegen.yaml"
+    "graphql:codegen": "graphql-codegen --config .graphqlrc.yaml"
   },
   "lint-staged": {
     "*.{js,ts,jsx,tsx}": [

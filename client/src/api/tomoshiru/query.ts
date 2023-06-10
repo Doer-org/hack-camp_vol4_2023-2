@@ -20,7 +20,7 @@ export const getUserByToken = async () => {
       query: schema.GetUserByTokenDocument,
     })
     .catch(() => null);
-  return data?.data.getUserByToken || null;
+  return data?.data.userByToken || null;
 };
 
 export const getUsers = async () => {
@@ -28,10 +28,10 @@ export const getUsers = async () => {
     await client()
   )
     .query({
-      query: schema.GetUsersDocument,
+      query: schema.GetAllUsersDocument,
     })
     .catch(() => null);
-  return data && data.data.getUsers;
+  return data && data.data.allUsers;
 };
 
 export const getUser = async (user_id: string) => {
@@ -43,7 +43,7 @@ export const getUser = async (user_id: string) => {
       variables: { user_id },
     })
     .catch(() => null);
-  return data?.data.user || null;
+  return data?.data.user.data || null;
 };
 
 export const getFollows = async (user_id: string) => {
@@ -51,11 +51,11 @@ export const getFollows = async (user_id: string) => {
     await client()
   )
     .query({
-      query: schema.GetFollowsDocument,
+      query: schema.GetUserDocument,
       variables: { user_id },
     })
     .catch(() => null);
-  return data?.data.getFollows || null;
+  return data?.data.user.follow || null;
 };
 
 export const getFollowers = async (user_id: string) => {
@@ -63,11 +63,11 @@ export const getFollowers = async (user_id: string) => {
     await client()
   )
     .query({
-      query: schema.GetFollowersDocument,
+      query: schema.GetUserDocument,
       variables: { user_id },
     })
     .catch(() => null);
-  return data?.data.getFollowers || null;
+  return data?.data.user.follower || null;
 };
 
 export const getTimeLine = async (user_id: string) => {
@@ -79,7 +79,7 @@ export const getTimeLine = async (user_id: string) => {
       variables: { user_id },
     })
     .catch(() => null);
-  return data?.data.getTimeline || null;
+  return data?.data.timeline || null;
 };
 
 export const getReaction = async (user_id: string) => {
@@ -87,11 +87,11 @@ export const getReaction = async (user_id: string) => {
     await client()
   )
     .query({
-      query: schema.GetReactionDocument,
+      query: schema.GetProfileDocument,
       variables: { user_id },
     })
     .catch(() => null);
-  return data?.data.getReaction || null;
+  return data?.data.profile.reaction || null;
 };
 
 export const getRamenProfile = async (user_id: string) => {
@@ -99,11 +99,11 @@ export const getRamenProfile = async (user_id: string) => {
     await client()
   )
     .query({
-      query: schema.GetRamenProfileDocument,
+      query: schema.GetProfileDocument,
       variables: { user_id },
     })
     .catch(() => null);
-  return data?.data.getRamenProfile || null;
+  return data?.data.profile.ramen || null;
 };
 
 export const getLastAccess = async (user_id: string) => {
@@ -115,7 +115,7 @@ export const getLastAccess = async (user_id: string) => {
       variables: { user_id },
     })
     .catch(() => null);
-  return data?.data.getLastAccess || null;
+  return data?.data.lastAccess || null;
 };
 
 export const getFavoriteMusic = async (user_id: string) => {
@@ -123,11 +123,11 @@ export const getFavoriteMusic = async (user_id: string) => {
     await client()
   )
     .query({
-      query: schema.GetFavoriteMusicDocument,
+      query: schema.GetProfileDocument,
       variables: { user_id },
     })
     .catch(() => null);
-  return data?.data.getFavoriteMusic || null;
+  return data?.data.profile.music || null;
 };
 
 export const getFavoriteArtist = async (user_id: string) => {
@@ -135,9 +135,9 @@ export const getFavoriteArtist = async (user_id: string) => {
     await client()
   )
     .query({
-      query: schema.GetFavoriteArtistDocument,
+      query: schema.GetProfileDocument,
       variables: { user_id },
     })
     .catch(() => null);
-  return data?.data.getFavoriteArtist || null;
+  return data?.data.profile.artist || null;
 };
