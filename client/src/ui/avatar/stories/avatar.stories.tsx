@@ -1,10 +1,10 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
-import { Avator } from "../components/avator";
+import { Avatar } from "../components/Avatar";
 
-const meta: Meta<typeof Avator> = {
-  title: "Hack/Avator",
-  component: Avator,
+const meta: Meta<typeof Avatar> = {
+  title: "Hack/Avatar",
+  component: Avatar,
   decorators: [
     (Story) => (
       <div
@@ -22,12 +22,12 @@ const meta: Meta<typeof Avator> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof Avator>;
+type Story = StoryObj<typeof Avatar>;
 
 export const Yuga: Story = {
   render: () => {
     return (
-      <Avator
+      <Avatar
         image="https://avatars.githubusercontent.com/u/113420384?v=4"
         size="tiny"
       />
@@ -38,7 +38,7 @@ export const Yuga: Story = {
 export const Aoki: Story = {
   render: () => {
     return (
-      <Avator
+      <Avatar
         image="https://avatars.githubusercontent.com/u/55625375?v=4"
         size="small"
       />
@@ -49,7 +49,7 @@ export const Aoki: Story = {
 export const Yasuda: Story = {
   render: () => {
     return (
-      <Avator
+      <Avatar
         image="https://avatars.githubusercontent.com/u/86759515?v=4"
         size="medium"
       />
@@ -60,7 +60,7 @@ export const Yasuda: Story = {
 export const Saki: Story = {
   render: () => {
     return (
-      <Avator
+      <Avatar
         image="https://avatars.githubusercontent.com/u/134147341?v=4"
         size="large"
       />

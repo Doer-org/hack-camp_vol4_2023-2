@@ -1,12 +1,12 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import { Arrow, Logo, Card, Avator } from "@/ui";
-import { CommonHeader } from "@/app/_ui";
-import * as commonStyles from "../../../_styles/common.css";
-import * as styles from "../_styles/follow.css";
 import { getFollows, getUser } from "@/api";
+import { CommonHeader } from "@/app/_ui";
+import { Arrow, Avatar, Card, Logo } from "@/ui";
 import { User } from "@/utils";
+import React, { useEffect, useState } from "react";
+import * as commonStyles from "../../../_styles/common.css";
 import { FollowButton } from "../../../_ui";
+import * as styles from "../_styles/follow.css";
 
 type Props = {
   params: { id: string };
@@ -32,7 +32,7 @@ const Page = ({ params }: Props) => {
             <Card>
               <div className={styles.cardStyle}>
                 <div className={styles.cardUserStyle}>
-                  <Avator size="small" image={f?.image_url} />
+                  <Avatar size="small" image={f?.image_url} />
                   <span className={styles.cardUserNameStyle}>
                     {f?.user_name}
                   </span>
@@ -66,7 +66,7 @@ const Page = ({ params }: Props) => {
             <Card>
               <div className={styles.cardStyle}>
                 <div className={styles.cardUserStyle}>
-                  <Avator
+                  <Avatar
                     size="small"
                     image={
                       "https://avatars.githubusercontent.com/u/55625375?v=4"
@@ -87,7 +87,7 @@ const Page = ({ params }: Props) => {
             <Card>
               <div className={styles.cardStyle}>
                 <div className={styles.cardUserStyle}>
-                  <Avator
+                  <Avatar
                     size="small"
                     image={
                       "https://avatars.githubusercontent.com/u/55625375?v=4"

@@ -1,11 +1,8 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import { NoticeCard } from "@/app/_ui";
-import * as styles from "../_styles/timeline.css";
-import { Label } from "@/ui";
 import { getTimeLine, getUser } from "@/api";
-import { User } from "@/utils";
-import { Avator, Card } from "@/ui";
+import { Avatar, Card } from "@/ui";
+import React, { useEffect, useState } from "react";
+import * as styles from "../_styles/timeline.css";
 
 type Props = {
   params: { id: string };
@@ -24,7 +21,7 @@ const Page = ({ params }: Props) => {
           <div className={styles.cardWrapperStyle}>
             <Card>
               <div className={styles.cardInnerStyle}>
-                <Avator image={user?.image_url} size="small" />
+                <Avatar image={user?.image_url} size="small" />
                 <p className={styles.actionStyle}>
                   <span className={styles.userNameStyle}>
                     {user?.user_name}
@@ -38,7 +35,7 @@ const Page = ({ params }: Props) => {
       });
       setTimelineDOM(tlDOM);
     })();
-  }, []);
+  }, [params]);
 
   return (
     <div>
@@ -46,7 +43,7 @@ const Page = ({ params }: Props) => {
       <div className={styles.cardWrapperStyle}>
         <Card>
           <div className={styles.cardInnerStyle}>
-            <Avator
+            <Avatar
               image={
                 "https://avatars.githubusercontent.com/u/55625375?s=64&v=4"
               }
@@ -62,7 +59,7 @@ const Page = ({ params }: Props) => {
       <div className={styles.cardWrapperStyle}>
         <Card>
           <div className={styles.cardInnerStyle}>
-            <Avator
+            <Avatar
               image={
                 "https://avatars.githubusercontent.com/u/134147341?s=64&v=4"
               }
@@ -78,7 +75,7 @@ const Page = ({ params }: Props) => {
       <div className={styles.cardWrapperStyle}>
         <Card>
           <div className={styles.cardInnerStyle}>
-            <Avator
+            <Avatar
               image={
                 "https://avatars.githubusercontent.com/u/113420384?s=64&v=4"
               }
@@ -94,7 +91,7 @@ const Page = ({ params }: Props) => {
       <div className={styles.cardWrapperStyle}>
         <Card>
           <div className={styles.cardInnerStyle}>
-            <Avator
+            <Avatar
               image={
                 "https://avatars.githubusercontent.com/u/134787738?s=60&v=4"
               }
@@ -110,7 +107,7 @@ const Page = ({ params }: Props) => {
       <div className={styles.cardWrapperStyle}>
         <Card>
           <div className={styles.cardInnerStyle}>
-            <Avator
+            <Avatar
               image={"https://avatars.githubusercontent.com/u/86759515?v=4"}
               size="small"
             />
