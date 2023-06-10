@@ -1,15 +1,24 @@
 ﻿module GraphQL.Schema.Types
 
+#nowarn "40"
+
 open FSharp.Data.GraphQL.Types
 
 open Domain
 
 type Root = { RequestId: string }
 
-let rec UserType =
+module Response =
+    type User =
+        { data: Domain.User
+          follow: Domain.User list
+          follower: Domain.User list
+          user_log: User.Log option }
+
+let UserDataType =
     Define.Object<User>(
-        name = "user",
-        description = "user",
+        name = "data",
+        description = "user data",
         isTypeOf = (fun o -> o :? User),
         fieldsFn =
             fun () ->
@@ -18,7 +27,8 @@ let rec UserType =
                   Define.Field("image_url", String, (fun _ user -> user.image_url)) ]
     )
 
-and UserLogType =
+
+let UserLogType =
     Define.Object<User.Log>(
         name = "user_log",
         description = "タイムラインの最終アクセスがいつか",
@@ -33,7 +43,20 @@ and UserLogType =
                   ) ]
     )
 
-and UserFollowType =
+let UserType =
+    Define.Object<Response.User>(
+        name = "user",
+        description = "user",
+        isTypeOf = (fun o -> o :? Response.User),
+        fieldsFn =
+            fun () ->
+                [ Define.Field("data", UserDataType, (fun _ user -> user.data))
+                  Define.Field("follow", ListOf UserDataType, (fun _ user -> user.follow))
+                  Define.Field("follower", ListOf UserDataType, (fun _ user -> user.follower))
+                  Define.Field("user_log", Nullable UserLogType, (fun _ user -> user.user_log)) ]
+    )
+
+let UserFollowType =
     Define.Object<User.Follow>(
         name = "user_follow",
         description = "Follow",
@@ -44,19 +67,7 @@ and UserFollowType =
                   Define.Field("user_id_to", String, (fun _ follow -> follow.user_id_to)) ]
     )
 
-and ProfileType =
-    Define.Object<Profile>(
-        name = "profile",
-        description = "プロフィール",
-        isTypeOf = (fun o -> o :? Profile),
-        fieldsFn =
-            fun () ->
-                [ Define.Field("user_id", String, (fun _ profile -> profile.user_id))
-                  Define.Field("details", String, (fun _ profile -> profile.details))
-                  Define.Field("timestamp", String, (fun _ profile -> profile.timestamp.LocalDateTime.ToString())) ]
-    )
-
-and ProfileChangeLogType =
+let ProfileChangeLogType =
     Define.Object<Profile.ChangeLog>(
         name = "profile_change_log",
         description = "変更履歴",
@@ -68,7 +79,7 @@ and ProfileChangeLogType =
                   Define.Field("timestamp", String, (fun _ change_log -> change_log.timestamp.LocalDateTime.ToString())) ]
     )
 
-and ProfileReactionType =
+let ProfileReactionType =
     Define.Object<Profile.Reaction>(
         name = "profile_reaction",
         description = "リアクション",
@@ -81,7 +92,7 @@ and ProfileReactionType =
                   Define.Field("timestamp", String, (fun _ reaction -> reaction.timestamp.LocalDateTime.ToString())) ]
     )
 
-and ProfileRamenFavoriteRamenyaType =
+let ProfileRamenFavoriteRamenyaType =
     Define.Object<Profile.Ramen.FavoriteRamenya>(
         name = "ramen_favorite_ramenya",
         description = "ラーメン屋",
@@ -98,7 +109,7 @@ and ProfileRamenFavoriteRamenyaType =
                   ) ]
     )
 
-and ProfileMusicFavoriteMusicType =
+let ProfileMusicFavoriteMusicType =
     Define.Object<Profile.Music.FavoriteMusic>(
         name = "music_favorite_music",
         description = "音楽",
@@ -115,7 +126,7 @@ and ProfileMusicFavoriteMusicType =
                   ) ]
     )
 
-and ProfileMusicFavoriteArtistType =
+let ProfileMusicFavoriteArtistType =
     Define.Object<Profile.Music.FavoriteArtist>(
         name = "music_favorite_artist",
         description = "アーティスト",
@@ -132,7 +143,20 @@ and ProfileMusicFavoriteArtistType =
                   ) ]
     )
 
-and RootType =
+let ProfileType =
+    Define.Object<Profile>(
+        name = "profile",
+        description = "プロフィール",
+        isTypeOf = (fun o -> o :? Profile),
+        fieldsFn =
+            fun () ->
+                [ Define.Field("ramen", ListOf ProfileRamenFavoriteRamenyaType, (fun _ profile -> profile.ramens))
+                  Define.Field("music", ListOf ProfileMusicFavoriteMusicType, (fun _ profile -> profile.musics))
+                  Define.Field("artist", ListOf ProfileMusicFavoriteArtistType, (fun _ profile -> profile.artists))
+                  Define.Field("reaction", ListOf ProfileReactionType, (fun _ profile -> profile.reactions)) ]
+    )
+
+let RootType =
     Define.Object<Root>(
         name = "Root",
         description = "Root type passed to all resolvers.",

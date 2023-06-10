@@ -28,10 +28,6 @@ module User =
         { user_id_from: UserID
           user_id_to: UserID }
 
-type Profile =
-    { user_id: UserID
-      details: string
-      timestamp: DateTimeOffset }
 
 module Profile =
     // Todo: change log id
@@ -67,6 +63,12 @@ module Profile =
               artist: string
               rank: int
               timestamp: DateTimeOffset }
+
+type Profile =
+    { reactions: Profile.Reaction list
+      ramens: Profile.Ramen.FavoriteRamenya list
+      musics: Profile.Music.FavoriteMusic list
+      artists: Profile.Music.FavoriteArtist list }
 
 
 type private CommandResult<'T> = Result<'T, string>

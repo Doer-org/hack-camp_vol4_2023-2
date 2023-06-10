@@ -19,7 +19,7 @@ module private MutationCommand =
 let private createUser (isTest: bool) (token: Domain.Token option) (store: Store.IStore) =
     Define.Field(
         MutationCommand.createUser,
-        Nullable UserType,
+        Nullable UserDataType,
         "create user",
         fun _ _ ->
             let sub =
