@@ -1,45 +1,40 @@
 "use client";
-import React, { useState, useEffect } from "react";
-import * as styles from "../styles/nav-menu.css";
 import Link from "next/link";
-import { fetchAuthInfo } from "@/api/auth";
+import * as styles from "../styles/nav-menu.css";
 
-type Me = {
-  nickname: string;
-  name: string;
-  picture: string;
-  updated_at: string;
-  sub: string;
-  sid: string;
+type Props = {
+  user_id: string;
+  isOpen: boolean;
 };
 
-const _NavMenu = () => {
-  const [me, setMe] = useState<Me>();
-
-  useEffect(() => {
-    (async () => {
-      const authInfo = await fetchAuthInfo();
-      const me = authInfo.me;
-      setMe(me);
-    })();
-  }, []);
-
+const _NavMenu = ({ user_id, isOpen = false }: Props) => {
+  const navClassList = [
+    styles.navStyle,
+    styles.headerAvoidStyle["common"],
+    // isOpen && styles.navOpenStyle,
+  ];
   return (
-    <div className={styles.frameStyle}>
+    // <div className={navClassList.join(" ")}>
+    <div
+      className={styles.frameStyle}
+      style={{
+        display: !isOpen ? "none" : undefined,
+      }}
+    >
       <ul className={styles.innerStyle}>
         <li className={styles.itemStyle}>
-          <Link href={`/profile/${me?.sid}`} className={styles.linkStyle}>
+          <Link href={`/profile/${user_id}`} className={styles.linkStyle}>
             プロフィール
           </Link>
         </li>
         <li className={styles.itemStyle}>
-          <Link href={`/notification/${me?.sid}`} className={styles.linkStyle}>
+          <Link href={`/notification/${user_id}`} className={styles.linkStyle}>
             通知
           </Link>
         </li>
         <li className={styles.itemStyle}>
           <Link
-            href={`/profile/follow/${me?.sid}`}
+            href={`/profile/follow/${user_id}`}
             className={styles.linkStyle}
           >
             フォロー
@@ -47,14 +42,14 @@ const _NavMenu = () => {
         </li>
         <li className={styles.itemStyle}>
           <Link
-            href={`/profile/follower/${me?.sid}`}
+            href={`/profile/follower/${user_id}`}
             className={styles.linkStyle}
           >
             フォロワー
           </Link>
         </li>
         <li className={styles.itemStyle}>
-          <Link href={`/bookmark/${me?.sid}`} className={styles.linkStyle}>
+          <Link href={`/bookmark/${user_id}`} className={styles.linkStyle}>
             いいねしたプロフィール
           </Link>
         </li>
@@ -65,6 +60,7 @@ const _NavMenu = () => {
         </li>
       </ul>
     </div>
+    // </div>
   );
 };
 
