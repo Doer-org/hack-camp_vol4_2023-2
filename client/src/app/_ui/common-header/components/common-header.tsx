@@ -1,21 +1,28 @@
-import React from "react";
 import { Header } from "@/ui";
-import * as styles from "../styles/common-header.css";
+import { ReactNode } from "react";
 
 type Props = {
   title?: string;
-  left: React.ReactNode;
-  right: React.ReactNode;
+  left: ReactNode;
+  right: ReactNode;
 };
 
 const _CommonHeader = ({ left, title, right }: Props) => {
   return (
     <Header size="small">
-      <div className={styles.contentStyle}>
-        {left}
-        <h2 className={styles.titleStyle}>{title}</h2>
-        {right}
+      {left}
+      <div
+        style={{
+          fontSize: "1rem",
+          fontWeight: 700,
+          lineHeight: "1.5rem",
+          textAlign: "center",
+          whiteSpace: "nowrap",
+        }}
+      >
+        {title}
       </div>
+      {right}
     </Header>
   );
 };

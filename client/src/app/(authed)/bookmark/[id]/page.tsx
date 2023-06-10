@@ -1,7 +1,7 @@
 "use client";
 import { getReaction, getUser } from "@/api";
 import { CommonHeader } from "@/app/_ui";
-import { Arrow, Avator, Card, Like, Logo } from "@/ui";
+import { Arrow, Avatar, Card, Like, Logo } from "@/ui";
 import { User } from "@/utils";
 import React, { useEffect, useState } from "react";
 import * as commonStyles from "../../_styles/common.css";
@@ -39,7 +39,7 @@ const Page = ({ params }: Props) => {
             <Card>
               <div className={styles.cardInnerStyle}>
                 <div className={styles.cardUserStyle}>
-                  <Avator size="small" image={user?.image_url} />
+                  <Avatar size="small" image={user?.image_url} />
                   <div>
                     <span className={styles.cardUserNameStyle}>
                       {user?.user_name}

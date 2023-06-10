@@ -1,5 +1,4 @@
-import React from "react";
-import { Avator, Card, SnsIcon } from "@/ui";
+import { Avatar, Card, SnsIcon } from "@/ui";
 import * as styles from "../styles/member-card.css";
 
 type Props = {
@@ -16,7 +15,7 @@ const _MemberCard = ({ icon, name, role, github, twitter }: Props) => {
       <div className={styles.contentStyle}>
         <div>
           <div className={styles.iconStyle}>
-            <Avator image={icon} size="large" />
+            <Avatar image={icon} size="large" />
           </div>
           <p className={styles.nameStyle}>{name}</p>
           <p className={styles.roleStyle}>{role}</p>

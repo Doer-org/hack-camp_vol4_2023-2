@@ -1,5 +1,4 @@
-import React from "react";
-import * as styles from "../styles/avator.css";
+import * as styles from "../styles/avatar.css";
 
 type Props = {
   image?: string;
@@ -7,7 +6,7 @@ type Props = {
   onClick?: () => void;
 };
 
-const _Avator = ({ size, image, ...props }: Props) => {
+const _Avatar = ({ size, image, ...props }: Props) => {
   return (
     <div
       className={[styles.size[size], styles.wrapperStyle].join(" ")}
@@ -20,4 +19,4 @@ const _Avator = ({ size, image, ...props }: Props) => {
   );
 };
 
-export const Avator = _Avator;
+export const Avatar = _Avatar;

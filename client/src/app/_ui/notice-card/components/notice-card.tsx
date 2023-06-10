@@ -1,4 +1,4 @@
-import { Avator, Card } from "@/ui";
+import { Avatar, Card } from "@/ui";
 import { User } from "@/utils";
 import * as styles from "../styles/notice-card.css";
 
@@ -12,7 +12,7 @@ const _NoticeCard = ({ user, profileType, action }: Props) => {
   return (
     <Card>
       <div className={styles.contentStyle}>
-        <Avator image={user?.image_url} size="small" />
+        <Avatar image={user?.image_url} size="small" />
         <p className={styles.actionStyle}>
           <span className={styles.userNameStyle}>{user?.user_name}</span>
           さんがあなたの{profileType}プロフィールに{action || "リアクション"}

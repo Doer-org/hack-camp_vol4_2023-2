@@ -1,6 +1,6 @@
 "use client";
 import { getFollowers, getFollows } from "@/api";
-import { Avator, Header } from "@/ui";
+import { Avatar, Header } from "@/ui";
 import { User } from "@/utils";
 import React, { useEffect, useState } from "react";
 import * as styles from "../styles/profile-header.css";
@@ -27,7 +27,7 @@ const _ProfileHeader = ({ user, right }: Props) => {
     <Header>
       <div className={styles.headStyle}>
         <div className={styles.profileStyle}>
-          <Avator size="medium" image={user?.image_url} />
+          <Avatar size="medium" image={user?.image_url} />
           <span>{user?.user_name}</span>
         </div>
         {right}

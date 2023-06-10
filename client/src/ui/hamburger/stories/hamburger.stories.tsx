@@ -25,7 +25,10 @@ export default meta;
 type Story = StoryObj<typeof Hamburger>;
 
 export const Default: Story = {
-  render: () => {
-    return <Hamburger />;
+  args: {
+    isOpen: true,
+  },
+  render: (props) => {
+    return <Hamburger {...props} />;
   },
 };

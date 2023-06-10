@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
-import { Card } from "../components";
-import { Avator } from "@/ui/avator";
+import { Avatar } from "@/ui/avatar";
 import { Button } from "@/ui/button";
+import { Card } from "../components";
 
 const meta: Meta<typeof Card> = {
   title: "Hack/Card",
@@ -50,7 +50,7 @@ export const Aoki: Story = {
               gap: "20px",
             }}
           >
-            <Avator
+            <Avatar
               image="https://avatars.githubusercontent.com/u/55625375?v=4"
               size="small"
             />
@@ -75,7 +75,7 @@ export const Saki: Story = {
           }}
         >
           <div style={{ flexShrink: "0" }}>
-            <Avator
+            <Avatar
               image="https://avatars.githubusercontent.com/u/134147341?v=4"
               size="small"
             />
