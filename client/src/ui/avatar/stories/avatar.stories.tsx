@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-
-import { Avatar } from "../components/Avatar";
+import { Avatar } from "..";
 
 const meta: Meta<typeof Avatar> = {
   title: "Hack/Avatar",

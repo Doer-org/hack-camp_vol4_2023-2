@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
-import { CommonHeader } from "../components";
 import { Arrow, Button, Hamburger, Logo } from "@/ui";
+import { CommonHeader } from "../components";
 
 const meta: Meta<typeof CommonHeader> = {
   title: "Hack/Header/CommonHeader",
@@ -32,7 +32,7 @@ export const Timeline: Story = {
   args: {
     title: "タイムライン",
     left: <Logo />,
-    right: <Hamburger />,
+    right: <Hamburger isOpen={true} />,
   },
 };
 
