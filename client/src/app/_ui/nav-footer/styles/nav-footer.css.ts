@@ -22,7 +22,7 @@ export const linkStyle = style({
   justifyContent: "center",
 });
 
-export const avatorActive = style({
+export const avatarActive = style({
   width: "32px",
   height: "32px",
   display: "flex",
@@ -33,7 +33,7 @@ export const avatorActive = style({
   boxSizing: "border-box",
 });
 
-export const avatorInactive = style({
+export const avatarInactive = style({
   width: "32px",
   height: "32px",
   display: "flex",
