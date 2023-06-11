@@ -11,6 +11,7 @@ export * from "./home-icon";
 export * from "./label";
 export * from "./like";
 export * from "./logo";
+export * from "./member-card";
 export * from "./popover";
 export * from "./ranking";
 export * from "./search-bar";
