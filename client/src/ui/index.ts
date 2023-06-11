@@ -12,6 +12,7 @@ export * from "./label";
 export * from "./like";
 export * from "./logo";
 export * from "./member-card";
+export * from "./nav-menu";
 export * from "./popover";
 export * from "./ranking";
 export * from "./search-bar";
