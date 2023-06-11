@@ -1,6 +1,5 @@
 "use client";
-import { NavMenu } from "@/app/_ui";
-import { CommonHeader, Hamburger, Logo } from "@/ui";
+import { CommonHeader, Hamburger, Logo, NavMenu } from "@/ui";
 import { useState } from "react";
 
 type Props = {
