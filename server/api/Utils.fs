@@ -1,7 +1,5 @@
 ﻿module Utils
 
-
-
 let accountValidation (isTest: bool) (store: Store.IStore) =
 
     if isTest then

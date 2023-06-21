@@ -91,7 +91,11 @@ let private getUser (store: Store.IStore) =
                 | Ok r -> r
     )
 
-let private getTimeline (isTest: bool) (token: Domain.Token option) (store: Store.IStore) =
+let private getTimeline
+    (isTest: bool)
+    (token: Domain.Token option)
+    (store: Store.IStore)
+    =
     let args = {| user_id = "user_id" |}
 
     Define.Field(
@@ -117,7 +121,12 @@ let private getTimeline (isTest: bool) (token: Domain.Token option) (store: Stor
                     (Utils.accountValidation isTest store)
                     DateTimeOffset.Now
                     (fun account validate log ->
-                        let logResult = Domain.updateUserLog store.updateLog account validate log
+                        let logResult =
+                            Domain.updateUserLog
+                                store.updateLog
+                                account
+                                validate
+                                log
 
                         logResult
                         |> function
@@ -148,7 +157,11 @@ let private getAllTimeline (store: Store.IStore) =
                 | Ok logs -> logs |> Seq.toList
     )
 
-let private getLastAccess (isTest: bool) (token: Domain.Token option) (store: Store.IStore) =
+let private getLastAccess
+    (isTest: bool)
+    (token: Domain.Token option)
+    (store: Store.IStore)
+    =
     let args = {| user_id = "user_id" |}
 
     Define.Field(
@@ -168,7 +181,10 @@ let private getLastAccess (isTest: bool) (token: Domain.Token option) (store: St
             let account: User.Account = { sub = sub; user_id = user_id }
 
             let result =
-                Domain.getLog store.getLog account (Utils.accountValidation isTest store)
+                Domain.getLog
+                    store.getLog
+                    account
+                    (Utils.accountValidation isTest store)
 
             result
             |> function
@@ -191,9 +207,19 @@ let private getProfile (store: Store.IStore) =
             let resp =
                 result {
                     let! reaction = Domain.getReaction store.getReaction user_id
-                    let! ramen = Domain.getRamenProfile store.getRamenProfile user_id
-                    let! music = Domain.getFavoriteMusicProfile store.getFavoriteMusicProfile user_id
-                    let! artist = Domain.getFavoriteArtistsProfile store.getFavoriteArtistsProfile user_id
+
+                    let! ramen =
+                        Domain.getRamenProfile store.getRamenProfile user_id
+
+                    let! music =
+                        Domain.getFavoriteMusicProfile
+                            store.getFavoriteMusicProfile
+                            user_id
+
+                    let! artist =
+                        Domain.getFavoriteArtistsProfile
+                            store.getFavoriteArtistsProfile
+                            user_id
 
                     return
                         { reactions = reaction

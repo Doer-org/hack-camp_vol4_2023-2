@@ -9,7 +9,10 @@ open GraphQL
 
 let private serialize =
     let settings = JsonSerializerSettings()
-    settings.ContractResolver <- Serialization.CamelCasePropertyNamesContractResolver()
+
+    settings.ContractResolver <-
+        Serialization.CamelCasePropertyNamesContractResolver()
+
     fun o -> JsonConvert.SerializeObject(o, settings)
 
 let private deserialize (data: string) =
@@ -21,7 +24,8 @@ let private deserialize (data: string) =
                 |> Seq.map (fun x -> x.Name, mapper x.Name x.Value)
                 |> Map.ofSeq
                 |> box
-            | name, JTokenType.Array -> token |> Seq.map (fun x -> mapper name x) |> Array.ofSeq |> box
+            | name, JTokenType.Array ->
+                token |> Seq.map (fun x -> mapper name x) |> Array.ofSeq |> box
             | _ -> (token :?> JValue).Value
 
         token.Children<JProperty>()
@@ -38,15 +42,26 @@ let private json =
     function
     | Direct(data, _) -> serialize data
     | Deferred(data, _, deferred) ->
-        deferred |> Observable.add (fun d -> printfn "Deferred: %s" (serialize d))
+        deferred
+        |> Observable.add (fun d -> printfn "Deferred: %s" (serialize d))
+
         serialize data
     | Stream data ->
-        data |> Observable.add (fun d -> printfn "Subscription data: %s" (serialize d))
+        data
+        |> Observable.add (fun d ->
+            printfn "Subscription data: %s" (serialize d))
+
         "{}"
 
-let private removeWhitespacesAndLineBreaks (str: string) = str.Trim().Replace("\r\n", " ")
+let private removeWhitespacesAndLineBreaks (str: string) =
+    str.Trim().Replace("\r\n", " ")
 
-let private handleGraphQLQuery isTest (token: Domain.Token option) (store: Store.IStore) (body: string) =
+let private handleGraphQLQuery
+    isTest
+    (token: Domain.Token option)
+    (store: Store.IStore)
+    (body: string)
+    =
     task {
         let data = body |> deserialize
 
@@ -57,7 +72,8 @@ let private handleGraphQLQuery isTest (token: Domain.Token option) (store: Store
                     None
                 else
                     match data.["query"] with
-                    | :? string as x -> removeWhitespacesAndLineBreaks x |> Some
+                    | :? string as x ->
+                        removeWhitespacesAndLineBreaks x |> Some
                     | _ -> failwith "failed to parse query.")
 
         let variables =
@@ -73,7 +89,9 @@ let private handleGraphQLQuery isTest (token: Domain.Token option) (store: Store
                     | _ -> failwith "failed to parse variables.")
 
         let executor = Util.executor isTest token store
-        let root: Schema.Types.Root = { RequestId = System.Guid.NewGuid() |> string }
+
+        let root: Schema.Types.Root =
+            { RequestId = System.Guid.NewGuid() |> string }
 
         let! resp =
             match query with
@@ -81,7 +99,8 @@ let private handleGraphQLQuery isTest (token: Domain.Token option) (store: Store
             | Some query ->
                 match variables with
                 | None -> executor.AsyncExecute(query, root)
-                | Some variables -> executor.AsyncExecute(query, root, variables)
+                | Some variables ->
+                    executor.AsyncExecute(query, root, variables)
 
         return json resp
 
@@ -96,7 +115,10 @@ open JWT.Algorithms
 open JWT.Builder
 open JWT.Serializers
 
-let handleGraphQL isTest (auth0_jwks: string, auth0_domain: string, auth0_audience: string) : HttpHandler =
+let handleGraphQL
+    isTest
+    (auth0_jwks: string, auth0_domain: string, auth0_audience: string)
+    : HttpHandler =
 
     let jwtHeaderDecoder = JwtBuilder.Create().DecodeHeader<JwtHeader>
 
@@ -117,9 +139,11 @@ let handleGraphQL isTest (auth0_jwks: string, auth0_domain: string, auth0_audien
     let publicKeys =
         let jwksJson =
             auth0_jwks
-            |> serializer.Deserialize<{| keys: {| kid: string; x5c: string[] |}[] |}>
+            |> serializer.Deserialize<{| keys:
+                                             {| kid: string; x5c: string[] |}[] |}>
 
-        let kid2cert = jwksJson.keys |> Seq.map (fun key -> key.kid, key.x5c[0]) |> dict
+        let kid2cert =
+            jwksJson.keys |> Seq.map (fun key -> key.kid, key.x5c[0]) |> dict
 
         fun kid ->
             kid2cert.TryGetValue kid
@@ -128,7 +152,8 @@ let handleGraphQL isTest (auth0_jwks: string, auth0_domain: string, auth0_audien
                 | true, cert ->
                     cert
                     |> Convert.FromBase64String
-                    |> fun cert -> new X509Certificates.X509Certificate2(rawData = cert)
+                    |> fun cert ->
+                        new X509Certificates.X509Certificate2(rawData = cert)
                     |> Ok
 
     let jwtDecoder (kid: string) =
@@ -138,7 +163,10 @@ let handleGraphQL isTest (auth0_jwks: string, auth0_domain: string, auth0_audien
             let urlEncoder = new JwtBase64UrlEncoder()
             JwtDecoder(serializer, jwtValidator, urlEncoder, algorithm))
 
-    let accessTokenValidator (permissions: string list, auth0_domain, auth0_audience) json =
+    let accessTokenValidator
+        (permissions: string list, auth0_domain, auth0_audience)
+        json
+        =
         try
             json
             |> serializer.Deserialize<{| iss: string
@@ -157,7 +185,9 @@ let handleGraphQL isTest (auth0_jwks: string, auth0_domain: string, auth0_audien
                     let tokenAudience = payload.aud |> Set.ofArray
                     tokenAudience.Contains auth0_audience
 
-                if issIsCorrect && audIsCorrect && hasAllRequiredPermissions then
+                if
+                    issIsCorrect && audIsCorrect && hasAllRequiredPermissions
+                then
                     Ok payload
                 else
                     Error "invalid access token payload"
@@ -201,7 +231,10 @@ let handleGraphQL isTest (auth0_jwks: string, auth0_domain: string, auth0_audien
 
     fun ctx ->
 
-        let baseHandler (store: Store.IStore) (sub: Domain.Token option) : HttpHandler =
+        let baseHandler
+            (store: Store.IStore)
+            (sub: Domain.Token option)
+            : HttpHandler =
             fun ctx ->
                 task {
                     let! body = Request.getBodyString ctx
@@ -210,7 +243,9 @@ let handleGraphQL isTest (auth0_jwks: string, auth0_domain: string, auth0_audien
                 }
 
         let accessTokenValidator =
-            validateToken (accessTokenValidator ([], auth0_domain, auth0_audience))
+            validateToken (
+                accessTokenValidator ([], auth0_domain, auth0_audience)
+            )
 
 
         task {
@@ -221,7 +256,8 @@ let handleGraphQL isTest (auth0_jwks: string, auth0_domain: string, auth0_audien
             printfn "%A" header
 
             let accessTokenPayload =
-                header |> Result.bind (fun v -> accessTokenValidator v.accessToken)
+                header
+                |> Result.bind (fun v -> accessTokenValidator v.accessToken)
 
             let token: Domain.Token option =
                 accessTokenPayload

@@ -58,9 +58,11 @@ let validate
     let publicKeys =
         let jwksJson =
             auth0_jwks
-            |> serializer.Deserialize<{| keys: {| kid: string; x5c: string[] |}[] |}>
+            |> serializer.Deserialize<{| keys:
+                                             {| kid: string; x5c: string[] |}[] |}>
 
-        let kid2cert = jwksJson.keys |> Seq.map (fun key -> key.kid, key.x5c[0]) |> dict
+        let kid2cert =
+            jwksJson.keys |> Seq.map (fun key -> key.kid, key.x5c[0]) |> dict
 
         fun kid ->
             kid2cert.TryGetValue kid
@@ -69,7 +71,8 @@ let validate
                 | true, cert ->
                     cert
                     |> Convert.FromBase64String
-                    |> fun cert -> new X509Certificates.X509Certificate2(rawData = cert)
+                    |> fun cert ->
+                        new X509Certificates.X509Certificate2(rawData = cert)
                     |> Ok
 
     let jwtDecoder (kid: string) =
@@ -88,9 +91,12 @@ let validate
                 try
                     let accessTokenHeader = jwtHeaderDecoder accessToken
                     let decorder = jwtDecoder (accessTokenHeader.KeyId)
-                    decorder |> Result.map (fun decorder -> decorder.Decode(accessToken))
+
+                    decorder
+                    |> Result.map (fun decorder -> decorder.Decode(accessToken))
                 with
-                | :? Exceptions.InvalidTokenPartsException as e -> Error e.Message
+                | :? Exceptions.InvalidTokenPartsException as e ->
+                    Error e.Message
                 | :? ArgumentOutOfRangeException as e -> Error e.Message
                 | :? ArgumentException as e -> Error e.Message
                 | e -> Error e.Message
@@ -121,7 +127,11 @@ let validate
                         let tokenAudience = payload.aud |> Set.ofArray
                         tokenAudience.Contains auth0_audience
 
-                    if issIsCorrect && audIsCorrect && hasAllRequiredPermissions then
+                    if
+                        issIsCorrect
+                        && audIsCorrect
+                        && hasAllRequiredPermissions
+                    then
                         handleValid
                     else
                         handleInvalid

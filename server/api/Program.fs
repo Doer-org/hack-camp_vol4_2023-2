@@ -17,8 +17,13 @@
             let DB_PASSWORD = Environment.GetEnvironmentVariable("DB_PASSWORD")
             let DB_DATABASE = Environment.GetEnvironmentVariable("DB_DATABASE")
             let CLIENT_URL = Environment.GetEnvironmentVariable("CLIENT_URL")
-            let AUTH0_DOMAIN = Environment.GetEnvironmentVariable("AUTH0_DOMAIN")
-            let AUTH0_AUDIENCE = Environment.GetEnvironmentVariable("AUTH0_AUDIENCE")
+
+            let AUTH0_DOMAIN =
+                Environment.GetEnvironmentVariable("AUTH0_DOMAIN")
+
+            let AUTH0_AUDIENCE =
+                Environment.GetEnvironmentVariable("AUTH0_AUDIENCE")
+
             let AUTH0_JWKS = Environment.GetEnvironmentVariable("AUTH0_JWKS")
 
             { new Env.IEnv with
@@ -67,15 +72,21 @@
                         let conn = dbFactory.CreateConnection()
                         Database.Reaction.create conn reaction
 
-                    member _.updateFavoriteMusic(music: Domain.Profile.Music.FavoriteMusic) =
+                    member _.updateFavoriteMusic
+                        (music: Domain.Profile.Music.FavoriteMusic)
+                        =
                         let conn = dbFactory.CreateConnection()
                         Database.FavoriteMusic.update conn music
 
-                    member _.updateFavoriteArtist(artist: Domain.Profile.Music.FavoriteArtist) =
+                    member _.updateFavoriteArtist
+                        (artist: Domain.Profile.Music.FavoriteArtist)
+                        =
                         let conn = dbFactory.CreateConnection()
                         Database.FavoriteArtist.update conn artist
 
-                    member _.updateRamenProfile(ramenya: Domain.Profile.Ramen.FavoriteRamenya) =
+                    member _.updateRamenProfile
+                        (ramenya: Domain.Profile.Ramen.FavoriteRamenya)
+                        =
                         let conn = dbFactory.CreateConnection()
                         Database.FavoriteRamenya.update conn ramenya
 
@@ -147,7 +158,8 @@
 
                 }
 
-            fun (svc: IServiceCollection) -> svc.AddSingleton<Store.IStore>(fun _ -> store)
+            fun (svc: IServiceCollection) ->
+                svc.AddSingleton<Store.IStore>(fun _ -> store)
 
         let validate permissions handler : HttpHandler =
             if (env.ENVIRONMENT = "test") then
@@ -169,11 +181,15 @@
                     fun builder ->
                         builder.AllowAnyHeader() |> ignore
                         builder.AllowAnyMethod() |> ignore
-                        builder.WithOrigins(env.CLIENT_URL).AllowCredentials() |> ignore
+
+                        builder.WithOrigins(env.CLIENT_URL).AllowCredentials()
+                        |> ignore
                 ))
 
             endpoints
-                [ get "/" (Response.ofPlainText $"Hello F# World! {env.ENVIRONMENT}")
+                [ get
+                      "/"
+                      (Response.ofPlainText $"Hello F# World! {env.ENVIRONMENT}")
                   post
                       "/graphql"
                       (GraphQL.Handler.handleGraphQL

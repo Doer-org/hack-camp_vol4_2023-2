@@ -16,7 +16,11 @@ module private MutationCommand =
     let updateRamenProfile = "updateRamenProfile"
 
 
-let private createUser (isTest: bool) (token: Domain.Token option) (store: Store.IStore) =
+let private createUser
+    (isTest: bool)
+    (token: Domain.Token option)
+    (store: Store.IStore)
+    =
     Define.Field(
         MutationCommand.createUser,
         Nullable UserDataType,
@@ -41,7 +45,8 @@ let private createUser (isTest: bool) (token: Domain.Token option) (store: Store
                         failwith "token empty (check env)"
                     else
                         { user_id = id
-                          user_name = $"token empty (created:{DateTimeOffset.Now})"
+                          user_name =
+                            $"token empty (created:{DateTimeOffset.Now})"
                           image_url = "" }
                 | Some token ->
                     { user_id = id
@@ -49,13 +54,21 @@ let private createUser (isTest: bool) (token: Domain.Token option) (store: Store
                       image_url = token.picture }
 
             user
-            |> Domain.createUser (Utils.checkSub store) (store.createAccount) (store.createUser) sub
+            |> Domain.createUser
+                (Utils.checkSub store)
+                (store.createAccount)
+                (store.createUser)
+                sub
             |> function
                 | Error e -> failwith e
                 | Ok user -> Some user
     )
 
-let private createReaction (isTest: bool) (token: Domain.Token option) (store: Store.IStore) =
+let private createReaction
+    (isTest: bool)
+    (token: Domain.Token option)
+    (store: Store.IStore)
+    =
     let args =
         {| user_id_from = "user_id_from"
            user_id_to = "user_id_to"
@@ -105,7 +118,11 @@ let private createReaction (isTest: bool) (token: Domain.Token option) (store: S
                 | Ok r -> Some r
     )
 
-let private updateFollow (isTest: bool) (token: Domain.Token option) (store: Store.IStore) =
+let private updateFollow
+    (isTest: bool)
+    (token: Domain.Token option)
+    (store: Store.IStore)
+    =
     let args =
         {| user_id_from = "user_id_from"
            user_id_to = "user_id_to"
@@ -150,7 +167,11 @@ let private updateFollow (isTest: bool) (token: Domain.Token option) (store: Sto
                 | Ok follow -> Some follow
     )
 
-let private postTimeLine (isTest: bool) (token: Domain.Token option) (store: Store.IStore) =
+let private postTimeLine
+    (isTest: bool)
+    (token: Domain.Token option)
+    (store: Store.IStore)
+    =
     let args =
         {| user_id = "user_id"
            summary = "summary" |}
@@ -159,7 +180,8 @@ let private postTimeLine (isTest: bool) (token: Domain.Token option) (store: Sto
         MutationCommand.postTimeLine,
         Nullable ProfileChangeLogType,
         "post timeline",
-        [ Define.Input(args.user_id, String); Define.Input(args.summary, String) ],
+        [ Define.Input(args.user_id, String)
+          Define.Input(args.summary, String) ],
         fun ctx _ ->
             let sub =
                 token
@@ -175,7 +197,11 @@ let private postTimeLine (isTest: bool) (token: Domain.Token option) (store: Sto
             let account: User.Account = { sub = sub; user_id = log.user_id }
 
             let result =
-                Domain.postTimeLine (store.createChangeLog) account (Utils.accountValidation isTest store) log
+                Domain.postTimeLine
+                    (store.createChangeLog)
+                    account
+                    (Utils.accountValidation isTest store)
+                    log
 
             result
             |> function
@@ -183,7 +209,11 @@ let private postTimeLine (isTest: bool) (token: Domain.Token option) (store: Sto
                 | Ok log -> Some log
     )
 
-let private updateFavoriteArtist (isTest: bool) (token: Domain.Token option) (store: Store.IStore) =
+let private updateFavoriteArtist
+    (isTest: bool)
+    (token: Domain.Token option)
+    (store: Store.IStore)
+    =
     let args =
         {| user_id = "user_id"
            rank = "rank"
@@ -213,13 +243,20 @@ let private updateFavoriteArtist (isTest: bool) (token: Domain.Token option) (st
             let account: User.Account = { sub = sub; user_id = artist.user_id }
 
             artist
-            |> Domain.updateFavoriteArtist store.updateFavoriteArtist account (Utils.accountValidation isTest store)
+            |> Domain.updateFavoriteArtist
+                store.updateFavoriteArtist
+                account
+                (Utils.accountValidation isTest store)
             |> function
                 | Error e -> failwith e
                 | Ok follow -> Some follow
     )
 
-let private updateFavoriteMusic (isTest: bool) (token: Domain.Token option) (store: Store.IStore) =
+let private updateFavoriteMusic
+    (isTest: bool)
+    (token: Domain.Token option)
+    (store: Store.IStore)
+    =
     let args =
         {| user_id = "user_id"
            rank = "rank"
@@ -249,13 +286,20 @@ let private updateFavoriteMusic (isTest: bool) (token: Domain.Token option) (sto
             let account: User.Account = { sub = sub; user_id = music.user_id }
 
             music
-            |> Domain.updateFavoriteMusic store.updateFavoriteMusic account (Utils.accountValidation isTest store)
+            |> Domain.updateFavoriteMusic
+                store.updateFavoriteMusic
+                account
+                (Utils.accountValidation isTest store)
             |> function
                 | Error e -> failwith e
                 | Ok follow -> Some follow
     )
 
-let private updateRamenProfile (isTest: bool) (token: Domain.Token option) (store: Store.IStore) =
+let private updateRamenProfile
+    (isTest: bool)
+    (token: Domain.Token option)
+    (store: Store.IStore)
+    =
     let args =
         {| user_id = "user_id"
            ramenya = "ramenya"
@@ -285,7 +329,10 @@ let private updateRamenProfile (isTest: bool) (token: Domain.Token option) (stor
             let account: User.Account = { sub = sub; user_id = ramen.user_id }
 
             ramen
-            |> Domain.updateFavoriteRamen store.updateRamenProfile account (Utils.accountValidation isTest store)
+            |> Domain.updateFavoriteRamen
+                store.updateRamenProfile
+                account
+                (Utils.accountValidation isTest store)
             // (fun _ ->
             //     let log: Domain.Profile.ChangeLog =
             //         { user_id = ramen.user_id

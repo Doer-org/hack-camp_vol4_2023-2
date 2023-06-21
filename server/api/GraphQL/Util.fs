@@ -21,7 +21,17 @@ let private schemaConfig =
               ProfileRamenFavoriteRamenyaType
               ProfileReactionType ] }
 
-let private schema isTest (token: Domain.Token option) (store: Store.IStore) : ISchema<Root> =
-    upcast Schema(Query isTest token store, Mutation isTest token store, config = schemaConfig)
+let private schema
+    isTest
+    (token: Domain.Token option)
+    (store: Store.IStore)
+    : ISchema<Root> =
+    upcast
+        Schema(
+            Query isTest token store,
+            Mutation isTest token store,
+            config = schemaConfig
+        )
 
-let executor (isTest: bool) (token: Domain.Token option) (store: Store.IStore) = Executor(schema isTest token store)
+let executor (isTest: bool) (token: Domain.Token option) (store: Store.IStore) =
+    Executor(schema isTest token store)

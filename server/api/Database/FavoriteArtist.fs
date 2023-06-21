@@ -5,7 +5,10 @@ open System.Data
 open Domain.Profile.Music
 open Database
 
-let update (conn: IDbConnection) (favoriteArtist: FavoriteArtist) : Result<FavoriteArtist, string> =
+let update
+    (conn: IDbConnection)
+    (favoriteArtist: FavoriteArtist)
+    : Result<FavoriteArtist, string> =
     try
         use cmd = conn.CreateCommand()
 
@@ -27,7 +30,10 @@ let update (conn: IDbConnection) (favoriteArtist: FavoriteArtist) : Result<Favor
     with e ->
         Error e.Message
 
-let getByUserID (conn: IDbConnection) (user_id: string) : Result<FavoriteArtist list, string> =
+let getByUserID
+    (conn: IDbConnection)
+    (user_id: string)
+    : Result<FavoriteArtist list, string> =
     try
         use cmd = conn.CreateCommand()
 
