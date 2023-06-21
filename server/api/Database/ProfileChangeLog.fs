@@ -5,7 +5,10 @@ open System.Data
 open Domain.Profile
 open Database
 
-let create (conn: IDbConnection) (changelog: ChangeLog) : Result<ChangeLog, string> =
+let create
+    (conn: IDbConnection)
+    (changelog: ChangeLog)
+    : Result<ChangeLog, string> =
     try
         use cmd = conn.CreateCommand()
 
@@ -23,7 +26,10 @@ let create (conn: IDbConnection) (changelog: ChangeLog) : Result<ChangeLog, stri
     with e ->
         Error e.Message
 
-let getByUserID (conn: IDbConnection) (user_id: string) : Result<ChangeLog list, string> =
+let getByUserID
+    (conn: IDbConnection)
+    (user_id: string)
+    : Result<ChangeLog list, string> =
     try
         use cmd = conn.CreateCommand()
 

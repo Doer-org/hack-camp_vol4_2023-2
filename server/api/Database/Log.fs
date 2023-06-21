@@ -25,7 +25,10 @@ let update (conn: IDbConnection) (log: Log) : Result<Log, string> =
     with e ->
         Error e.Message
 
-let getByUserID (conn: IDbConnection) (user_id: string) : Result<Log option, string> =
+let getByUserID
+    (conn: IDbConnection)
+    (user_id: string)
+    : Result<Log option, string> =
     try
         use cmd = conn.CreateCommand()
 

@@ -5,7 +5,10 @@ open System.Data
 open Domain.Profile
 open Database
 
-let update (conn: IDbConnection) (reaction: Reaction) : Result<Reaction, string> =
+let update
+    (conn: IDbConnection)
+    (reaction: Reaction)
+    : Result<Reaction, string> =
     try
         use cmd = conn.CreateCommand()
 
@@ -27,7 +30,10 @@ let update (conn: IDbConnection) (reaction: Reaction) : Result<Reaction, string>
     with e ->
         Error e.Message
 
-let create (conn: IDbConnection) (reaction: Reaction) : Result<Reaction, string> =
+let create
+    (conn: IDbConnection)
+    (reaction: Reaction)
+    : Result<Reaction, string> =
     try
         use cmd = conn.CreateCommand()
 
@@ -47,7 +53,10 @@ let create (conn: IDbConnection) (reaction: Reaction) : Result<Reaction, string>
     with e ->
         Error e.Message
 
-let getByUserID (conn: IDbConnection) (user_id: string) : Result<Reaction list, string> =
+let getByUserID
+    (conn: IDbConnection)
+    (user_id: string)
+    : Result<Reaction list, string> =
     try
         use cmd = conn.CreateCommand()
 

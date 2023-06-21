@@ -6,13 +6,15 @@ open Domain
 open Store
 
 module Error =
-    let index: HttpHandler = fun ctx -> Response.ofJson {| message = "error!" |} ctx
+    let index: HttpHandler =
+        fun ctx -> Response.ofJson {| message = "error!" |} ctx
 
 module Users =
     /// GET /users
     let index: HttpHandler =
         fun ctx ->
-            let users = ctx.GetService<IStore>() |> (fun store -> store.getAllUsers ())
+            let users =
+                ctx.GetService<IStore>() |> (fun store -> store.getAllUsers ())
 
             match users with
             | Error e -> Response.ofJson {| error = e |} ctx
@@ -40,7 +42,9 @@ module Users =
                       user_name = param.user_name
                       image_url = "" }
 
-                let user = ctx.GetService<IStore>() |> fun store -> store.createUser user
+                let user =
+                    ctx.GetService<IStore>()
+                    |> fun store -> store.createUser user
 
                 match user with
                 | Error e -> Response.ofJson {| error = e |}

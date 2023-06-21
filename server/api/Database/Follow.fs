@@ -5,7 +5,10 @@ open Domain
 open Domain.User
 open Database
 
-let follow (conn: IDbConnection) (follow: User.Follow) : Result<User.Follow, string> =
+let follow
+    (conn: IDbConnection)
+    (follow: User.Follow)
+    : Result<User.Follow, string> =
     try
         use cmd = conn.CreateCommand()
 
@@ -25,7 +28,10 @@ let follow (conn: IDbConnection) (follow: User.Follow) : Result<User.Follow, str
     with e ->
         Error e.Message
 
-let unfollow (conn: IDbConnection) (follow: User.Follow) : Result<User.Follow, string> =
+let unfollow
+    (conn: IDbConnection)
+    (follow: User.Follow)
+    : Result<User.Follow, string> =
     try
         use cmd = conn.CreateCommand()
 
@@ -43,7 +49,10 @@ let unfollow (conn: IDbConnection) (follow: User.Follow) : Result<User.Follow, s
     with e ->
         Error e.Message
 
-let getFollowing (conn: IDbConnection) (user_id: string) : Result<User list, string> =
+let getFollowing
+    (conn: IDbConnection)
+    (user_id: string)
+    : Result<User list, string> =
     try
         use cmd = conn.CreateCommand()
 
@@ -65,7 +74,10 @@ let getFollowing (conn: IDbConnection) (user_id: string) : Result<User list, str
     with e ->
         Error e.Message
 
-let getFollowers (conn: IDbConnection) (user_id: string) : Result<User list, string> =
+let getFollowers
+    (conn: IDbConnection)
+    (user_id: string)
+    : Result<User list, string> =
     try
         use cmd = conn.CreateCommand()
 

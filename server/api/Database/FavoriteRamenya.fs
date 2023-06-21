@@ -5,7 +5,10 @@ open System.Data
 open Domain.Profile.Ramen
 open Database
 
-let update (conn: IDbConnection) (ramenya: FavoriteRamenya) : Result<FavoriteRamenya, string> =
+let update
+    (conn: IDbConnection)
+    (ramenya: FavoriteRamenya)
+    : Result<FavoriteRamenya, string> =
     try
         use cmd = conn.CreateCommand()
 
@@ -27,7 +30,10 @@ let update (conn: IDbConnection) (ramenya: FavoriteRamenya) : Result<FavoriteRam
     with e ->
         Error e.Message
 
-let getByUserID (conn: IDbConnection) (user_id: string) : Result<FavoriteRamenya list, string> =
+let getByUserID
+    (conn: IDbConnection)
+    (user_id: string)
+    : Result<FavoriteRamenya list, string> =
     try
         use cmd = conn.CreateCommand()
 
