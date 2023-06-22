@@ -1,9 +1,5 @@
 name: Client Build Check
-on:
-  push:
-    paths:
-      - .github/**
-      - client/**
+on: [push]
 
 jobs:
   build:
