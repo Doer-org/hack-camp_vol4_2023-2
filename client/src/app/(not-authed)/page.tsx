@@ -1,9 +1,9 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
-import { Button, Logo, SnsIcon } from "@/ui";
+import { Button, Logo, MemberCard, SnsIcon } from "@/ui";
 import Link from "next/link";
 import * as styles from "../_styles/top.css";
-import { MemberCard, TopHeader } from "../_ui";
+import { TopHeader } from "../_ui";
 
 export default function Home() {
   return (

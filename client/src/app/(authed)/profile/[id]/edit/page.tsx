@@ -7,8 +7,7 @@ import {
   searchArtist,
   updateFavoriteArtist,
 } from "@/api";
-import { CommonHeader } from "@/app/_ui";
-import { Arrow, Button, Like, SearchResult } from "@/ui";
+import { Arrow, Button, CommonHeader, Like, SearchResult } from "@/ui";
 import { SearchBar } from "@/ui/search-bar/components";
 import { Data, User } from "@/utils";
 import { useRouter } from "next/navigation";

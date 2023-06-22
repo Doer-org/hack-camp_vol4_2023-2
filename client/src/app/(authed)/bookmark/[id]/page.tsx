@@ -1,7 +1,6 @@
 "use client";
 import { getReaction, getUser } from "@/api";
-import { CommonHeader } from "@/app/_ui";
-import { Arrow, Avatar, Card, Like, Logo } from "@/ui";
+import { Arrow, Avatar, Card, CommonHeader, Like, Logo } from "@/ui";
 import { User } from "@/utils";
 import React, { useEffect, useState } from "react";
 import * as commonStyles from "../../_styles/common.css";
