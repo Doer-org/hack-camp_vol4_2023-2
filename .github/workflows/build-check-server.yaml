@@ -1,4 +1,4 @@
-name: Build Check
+name: Server Build Check
 on: [push]
 
 jobs:

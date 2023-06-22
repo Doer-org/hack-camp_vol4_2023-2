@@ -1,4 +1,4 @@
-name: Build Check
+name: Client Build Check
 on:
   push:
     paths:
