@@ -1,9 +1,5 @@
-name: Build Check
-on:
-  push:
-    paths:
-      - .github/**
-      - client/**
+name: Client Build Check
+on: [push]
 
 jobs:
   build:
@@ -24,6 +20,14 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
+
+      - name: Cache dependencies
+        uses: actions/cache@v2
+        with:
+          path: ~/.pnpm-store
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('client/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-
 
       - name: Install pnpm
         uses: pnpm/action-setup@v2
